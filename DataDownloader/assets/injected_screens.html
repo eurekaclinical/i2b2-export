@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<body>
+
+		<div id='DataDownloader-mainDiv'>
+
+			<div id="DataDownloader-TABS" class="yui-navset">
+				<ul class="yui-nav">
+					<li id="DataDownloader-TAB0" class="selected"><a href="#DataDownloader-TAB0"><em>Specify Data</em></a></li>
+					<li id="DataDownloader-TAB1"><a href="#DataDownloader-TAB1"><em>View Results</em></a></li>
+					<li id="DataDownloader-TAB2"><a href="#DataDownloader-TAB2"><em>Plugin Help</em></a></li>
+				</ul>
+				<div class="yui-content" id="DataDownloader-CONTENT">
+				    <div>
+				        <div class="DataDownloader-MainContent">
+					       	<div class="DataDownloader-MainContentPad">
+							<div class="DataDownloader-stepContent" style="margin-bottom: 20px;">
+							     <h1>Step 1: Configure Export Format</h1>
+								<div>
+									<label for="DataDownloader-loadConfig">Use an existing configuration:</label>
+									<select id="DataDownloader-loadConfig" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;">
+										<option>foo</option>
+										<option>bar</option>
+										<option>baz</option>
+									</select>
+									<button id="DataDownloader-deleteConfig">Delete</button>
+								</div>
+								<p>Or define a new configuration using the table below. You can also edit an existing configuration.</p>
+							     <table>
+							         <tr>
+							             <td>
+									<label for="DataDownloader-rowdim" style="float: left;">Each row represents a </label>
+							                 <select id="DataDownloader-rowdim" name="rowdim">
+							                     <option value="patient">Patient</option>
+							                     <option value="visit">Visit</option>
+							                     <option value="provider">Provider</option>
+							                 </select>
+							             </td>
+							         </tr>
+							     </table>
+							     <table id="DataDownloader-configTable">
+							         <tr id="DataDownloader-headerRow">
+							             <th>Remove</th>
+								     <th>Reorder</th>
+							             <th>Column Concept</th>
+								     <th>Column Name</th>
+							             <th>Display Format</th>
+							             <th>Options</th>
+							         </tr>
+                                    <tr id="DataDownloader-columnConfig-1">
+                                        <td class="deleteBtn"><img id="DataDownloader-deleteBtn-1" src="http://placehold.it/35/dbe8ff&text="></td>
+					<td class="deleteBtn">
+						<a href="#"><img id="DataDownloader-upBtn-1" src="http://placehold.it/20/dbe8ff/00ff00&text=UP"></a>
+						<br />
+						<a href="#"><img id="DataDownloader-dnBtn-1" src="http://placehold.it/20/dbe8ff/00ff00&text=DN"></a>
+					</td>
+                                        <td class="droptrgtCell">
+						<div class="droptrgtInit SDX-CONCPT" id="DataDownloader-CONCPTDROP-1"><span class="droptrgtInit">Drop a concept here</span><div>
+					</td>
+					<td class="columnNameCell">
+						<input type="text" id="DataDownloader-columnName-1" name="columnName-1" placeholder="Column name" size="16" maxLength="255" />
+					</td>
+                                        <td class="dispfmt">
+                                            <select id="DataDownloader-dispfmt-select-1" name="dispfmt-1">
+						<option disabled selected>Select a concept first</option>
+                                            </select>
+                                       </td>
+                                       <td>
+                                       		<div id="DataDownloader-howmany-container-1" class="options" style="display: none;">
+							<label for="DataDownloader-howmany-1" style="padding-left: 5px;">How many?</label>
+							<input id="DataDownloader-howmany-1" type="text" name="howmany-1" value="1" size="4"/>
+						</div>
+						<div id="DataDownloader-units-container-1" class="options" style="display: none;">
+							<input type="checkbox" name="units-1" id="DataDownloader-units-1"/>
+							<label for="DataDownloader-units-1">Include units</label>
+						</div>
+						<div id="DataDownloader-timerange-container-1" class="options" style="display: none;">
+							<input type="checkbox" name="timerange-1" id="DataDownloader-timerange-1"/>
+							<label for="DataDownloader-timerange-1">Include time range</label>
+						</div>
+						<div id="DataDownloader-aggregation-container-1" class="options" style="display: none;">
+							<input type="radio" name="aggregation-1" id="DataDownloader-min-1" value="min" />
+							<label for="DataDownloader-min-1" class="aggMargin">Min</label>
+						
+							<input type="radio" name="aggregation-1" id="DataDownloader-max-1" value="max" />
+							<label for="DataDownloader-max-1" class="aggMargin">Max</label>
+				
+							<input type="radio" name="aggregation-1" id="DataDownloader-avg-1" value="avg" />
+							<label for="DataDownloader-avg-1">Avg</label>
+						</div>
+					</td>
+                                    </tr>
+                                </table>
+                                <div id="DataDownloader-addColumn"><button id="DataDownloader-addColumnBtn">Add</button></div>
+				<div id="DataDownloader-globalOptions" style="margin-top: 20px;">
+					<h2>Export Format Options</h2>
+					<label for="DataDownloader-whitespace">Replace all whitespace in column names with:</label>
+					<input id="DataDownloader-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
+					<br />
+					<label for="DataDownloader-delimiter">Column separator:</label>
+					<input id="DataDownloader-delimiter" name="delimiter" type="text" size="2" maxLength="32" value="," />
+					<br />
+					<label for="DataDownloader-missing">Show missing values as:</label>
+					<input id="DataDownloader-missing" name="missing" type="text" size="8" maxLength="32" value="(NULL)" />
+				</div>
+				<div id="DataDownloader-preview" style="margin-top: 20px;">
+					<h2>Export Preview</h2>
+					<button id="DataDownloader-previewBtn">Preview</button>
+					<textarea readonly="true" spellcheck="false" id="DataDownloader-previewText" style="width: 100%; overflow-x: scroll; overflow-y: scroll">Preview goes here</textarea>
+				</div>
+				<div id=DataDownloader-saveRunBtnPanel" style="padding: 6px;">
+					<h2>Save Configuration</h2>
+					<label for="DataDownloader-saveas">Save output configuration as:</label>
+					<input id="DataDownloader-saveas" type="text" name="saveas" placeholder="Name this configuration" maxLength="255" />
+					<button id="DataDownloader-saveonly">Save</button>
+				</div>	
+			</div>
+			<div class="DataDownloader-stepContent">
+				<h1>Step 2: Export a Patient Set</h1>
+				<div id="DataDownloader-saveRunPanel">
+					<div style="margin-bottom: 10px;">
+						<div class="droptrgtlbl">Patient Set:</div>
+						<div class="droptrgt SDX-PRS" id="DataDownloader-PRSDROP">Drop a Patient Set here</div>
+						<button id="DataDownloader-export">Export Patient Set</button>
+					</div>
+				</div>
+			</div>
+							</div>
+						</div>
+					   </div>
+					</div>
+					<div>
+						<div class="DataDownloader-MainContent">
+							<div class="DataDownloader-MainContentPad">
+								<div>Drop a Patient Set and a Concept (Ontology Term) into the input boxes below, and then click the "View Results" tab to retrieve information about when that concept was observed in the selected patient set. You will be presented with a preview of the results for one patient, and you will have the option to download the full results as an Excel spreadsheet.</div>
+								<div class="droptrgtlbl">Patient Set:</div>
+								<div class="droptrgt SDX-PRS" id="DataDownloader-PRSDROP">Drop a Patient Set here</DIV>
+								<div class="droptrgtlbl">Concept:</div>
+								<div class="droptrgt SDX-CONCPT" id="DataDownloader-CONCPTDROP"><div class="concptItem">Drop one or more Concepts here</div></DIV>
+								<div id="DataDownloader-DeleteMsg">Click a concept to remove it from the list. Drop a Concept here to add it to the list.</div>
+								<!-- <div class="outputOptionsLbl">Return:</div>
+								<div class="outputOptions">
+									<form>
+										<span><input type="checkbox" checked id="DataDownloader-OutputPatient" onChange="i2b2.DataDownloader.chgOutputOption(this,'patients');">Patients</span>
+										<span><input type="checkbox" checked id="DataDownloader-OutputEvents" onChange="i2b2.DataDownloader.chgOutputOption(this,'events');">Events</span>
+										<span><input type="checkbox" checked id="DataDownloader-OutputObservations" onChange="i2b2.DataDownloader.chgOutputOption(this,'observations');">Observations</span>
+									</form>
+								</div> -->
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="DataDownloader-MainContent">
+							<div class="results-directions">Please return to the "Specify Data" tab and select both a Patient Set and one or more Concepts.</div>
+							<div class="results-working" style="display:none;">Your request is processing. This may take a moment. Please wait...</div>
+							<div class="results-empty" style="display:none;">No patients matched this concept.</div>
+							<div class="results-finished" style="display:none;">
+								<div class="results-text">Below is a preview of the results for one patient. To download the full results, click this button: <form id="DataDownloader-Form"><input type="hidden" id="requestXml" name="requestXml"></input><button onclick="i2b2.DataDownloader.getResults('excel');">Download</button></form></div>
+								<!-- <div style="display: none;">
+									<iframe id="DataDownloader-CSV" style="display: none;"></iframe>	
+								</div> -->
+								<div id="DataDownloader-InfoPDO">
+									<div id="DataDownloader-Data"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="DataDownloader-MainContent">
+							<div class="DataDownloader-MainContentPad">
+								<h1>PDO Data Downloader</h1>
+								<hr size="1" noshade>
+								<h2>Introduction</h2>
+								This plugin allows you to preview and download the results of a query you have run.
+								<h2>Instructions</h2>
+								Navigate to the "Specify Data" tab. Then, drag and drop a Patient Set onto the input box. Finally, click the "View Results" tab to view a preview of the results for one patient. You may then export the full result set as a CSV file.
+								<!-- <h2>About Us</h2>
+								This plugin was created by Nick Benik and Griffin Weber, MD, PhD.
+								<h2>Terms of Use</h2>
+								This example plugin is distributed with the i2b2 web client framework and may be used free of charge. -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+
+	</body>
+</html>
