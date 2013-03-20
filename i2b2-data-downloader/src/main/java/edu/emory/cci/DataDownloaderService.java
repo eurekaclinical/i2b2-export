@@ -19,13 +19,23 @@ public final class DataDownloaderService {
      *            set to query, and the output format configuration.
      * @return either the formatted output as a CSV file or a status code
      *         indicating an error
+     * @throws DataDownloaderException 
      */
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/downloadData")
-    public Response generateOutput(String xml) {
-        return Response.status(200).build();
+    public Response generateOutput(String xml) throws DataDownloaderException { 
+        UserAuthenticator ua = new UserAuthenticator(xml);
+        try {
+            if (ua.authenticateUser()) {
+                return Response.status(200).build();
+            } else {
+                return Response.status(300).build();
+            }
+        } catch (DataDownloaderXmlException e) {
+            throw new DataDownloaderException(e);
+        }
     }
 
     /**
@@ -36,13 +46,23 @@ public final class DataDownloaderService {
      *            operation, including i2b2 username and authentication token,
      *            the output configuration, and its name.
      * @return a status code indicating success or failure
+     * @throws DataDownloaderException 
      */
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_XML)
     @Path("/saveConfig")
-    public Response saveConfiguration(String xml) {
-        return Response.status(200).build();
+    public Response saveConfiguration(String xml) throws DataDownloaderException {
+        UserAuthenticator ua = new UserAuthenticator(xml);
+        try {
+            if (ua.authenticateUser()) {
+                return Response.status(200).build();
+            } else {
+                return Response.status(300).build();
+            }
+        } catch (DataDownloaderXmlException e) {
+            throw new DataDownloaderException(e);
+        }
     }
 
     /**
@@ -53,12 +73,22 @@ public final class DataDownloaderService {
      *            operation, including i2b2 username and authentication token,
      *            and the name of the output configuration to load.
      * @return the output configuration or a status code indicating failure
+     * @throws DataDownloaderException
      */
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_XML)
     @Path("/loadConfig")
-    public Response loadConfiguration(String xml) {
-        return Response.status(200).build();
+    public Response loadConfiguration(String xml) throws DataDownloaderException {
+        UserAuthenticator ua = new UserAuthenticator(xml);
+        try {
+            if (ua.authenticateUser()) {
+                return Response.status(200).build();
+            } else {
+                return Response.status(300).build();
+            }
+        } catch (DataDownloaderXmlException e) {
+            throw new DataDownloaderException(e);
+        }
     }
 }
