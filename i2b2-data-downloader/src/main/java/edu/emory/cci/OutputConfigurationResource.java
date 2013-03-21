@@ -7,37 +7,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/DataDownloader")
-public final class DataDownloaderService {
-    /**
-     * Fetches the requested data from i2b2 and sends an output file back to the
-     * client formatted according to the configuration given in the XML.
-     * 
-     * @param xml
-     *            Contains all required parameters to complete the request,
-     *            including i2b2 username and authentication token, i2b2 patient
-     *            set to query, and the output format configuration.
-     * @return either the formatted output as a CSV file or a status code
-     *         indicating an error
-     * @throws DataDownloaderException 
-     */
-    @POST
-    @Consumes(MediaType.TEXT_XML)
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/downloadData")
-    public Response generateOutput(String xml) throws DataDownloaderException { 
-        UserAuthenticator ua = new UserAuthenticator(xml);
-        try {
-            if (ua.authenticateUser()) {
-                return Response.status(200).build();
-            } else {
-                return Response.status(300).build();
-            }
-        } catch (DataDownloaderXmlException e) {
-            throw new DataDownloaderException(e);
-        }
-    }
-
+@Path("/config")
+@Produces(MediaType.TEXT_XML)
+@Consumes(MediaType.TEXT_XML)
+public class OutputConfigurationResource {
     /**
      * Saves the output configuration as specified in the given XML.
      * 
@@ -49,9 +22,7 @@ public final class DataDownloaderService {
      * @throws DataDownloaderException 
      */
     @POST
-    @Consumes(MediaType.TEXT_XML)
-    @Produces(MediaType.TEXT_XML)
-    @Path("/saveConfig")
+    @Path("/save")
     public Response saveConfiguration(String xml) throws DataDownloaderException {
         UserAuthenticator ua = new UserAuthenticator(xml);
         try {
@@ -76,9 +47,7 @@ public final class DataDownloaderService {
      * @throws DataDownloaderException
      */
     @POST
-    @Consumes(MediaType.TEXT_XML)
-    @Produces(MediaType.TEXT_XML)
-    @Path("/loadConfig")
+    @Path("/load")
     public Response loadConfiguration(String xml) throws DataDownloaderException {
         UserAuthenticator ua = new UserAuthenticator(xml);
         try {

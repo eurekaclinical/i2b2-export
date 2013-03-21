@@ -12,6 +12,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import freemarker.template.Configuration;
@@ -61,8 +63,33 @@ final class UserAuthenticator {
 
             String projectId = (String) XmlUtil.evalXPath(this.xml,
                     "//message_header/project_id", XPathConstants.STRING);
-            String securityNode = (String) XmlUtil.evalXPath(this.xml,
-                    "//message_header/security", XPathConstants.STRING);
+
+            // security node
+            String username = (String) XmlUtil
+                    .evalXPath(this.xml, "//message_header/security/username",
+                            XPathConstants.STRING);
+            String domain = (String) XmlUtil.evalXPath(this.xml,
+                    "//message_header/security/domain", XPathConstants.STRING);
+            Node passwordNode = (Node) XmlUtil.evalXPath(this.xml,
+                    "//message_header/security/password", XPathConstants.NODE);
+            StringBuilder password = new StringBuilder("<password");
+            if (passwordNode.hasAttributes()) {
+                for (int i = 0; i < passwordNode.getAttributes().getLength(); i++) {
+                    Node attr = passwordNode.getAttributes().item(i);
+                    password.append(" ");
+                    password.append(attr.getNodeName());
+                    password.append("=\"");
+                    password.append(attr.getNodeValue());
+                    password.append("\"");
+                }
+            }
+            password.append(">");
+            password.append(passwordNode.getTextContent());
+            password.append("</password>");
+
+            String securityNode = "<domain>" + domain + "</domain>\n"
+                    + "<username>" + username + "</username>\n" + password
+                    + "\n";
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("messageId", messageId);
@@ -71,7 +98,7 @@ final class UserAuthenticator {
             params.put("securityNode", securityNode);
 
             tmpl.process(params, writer);
-            String respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PM_URL,
+            Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PM_URL,
                     writer.toString());
 
             String status = (String) XmlUtil.evalXPath(respXml,

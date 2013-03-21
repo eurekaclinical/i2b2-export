@@ -13,10 +13,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -45,5 +48,19 @@ final class XmlUtil {
             IOException, ParserConfigurationException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(new InputSource(new StringReader(xml)));
+    }
+
+    public static void main(String[] args) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException {
+        String xml = "<message_header>" + " <security>"
+                + "     <username>user</username>"
+                + "     <password isSession=\"true\" valid=\"false\">pass</password>"
+                + "     <domain>domain.com</domain>" + " </security>"
+                + "</message_header>";
+        Node secNode = (Node) evalXPath(xml,
+                "//message_header/security/password", XPathConstants.NODE);
+        for (int i = 0; i < secNode.getAttributes().getLength(); i++) {
+            Node node = secNode.getAttributes().item(i);
+            System.out.println(node.getNodeName() + "|" + node.getNodeValue());
+        }
     }
 }
