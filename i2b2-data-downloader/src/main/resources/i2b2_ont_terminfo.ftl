@@ -17,7 +17,7 @@
 		<receiving_facility>
 			<facility_name>i2b2 Hive</facility_name>
 		</receiving_facility>
-		<datetime_of_message>${messageDateTime}</datetime_of_message>
+		<datetime_of_message>${messageDatetime}</datetime_of_message>
 		<security>
 			${securityNode}
 		</security>
