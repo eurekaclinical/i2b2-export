@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class UserAuthenticator {
+public final class I2b2UserAuthenticator {
 
     private static final String I2B2_PM_URL = "http://localhost:9090/i2b2/rest/PMService/getServices";
 
@@ -31,14 +31,14 @@ public final class UserAuthenticator {
     private String security;
     
     /**
-     * Creates a new UserAuthenticator instance based on the given XML.
+     * Creates a new I2b2UserAuthenticator instance based on the given XML.
      * 
      * @param xml
      *            the i2b2 request XML. All of the user authentication
      *            parameters will be pulled from here.
      * @throws DataDownloaderXmlException if the XML is malformed or incomplete
      */
-    public UserAuthenticator(String xml) throws DataDownloaderXmlException {
+    public I2b2UserAuthenticator(String xml) throws DataDownloaderXmlException {
         this.xml = xml;
         this.config = new Configuration();
         this.config.setClassForTemplateLoading(this.getClass(), "/");

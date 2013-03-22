@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader;
 
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.UserAuthenticator;
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2UserAuthenticator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -26,7 +26,7 @@ public class OutputConfigurationResource {
     @POST
     @Path("/save")
     public Response saveConfiguration(String xml) throws DataDownloaderException {
-        UserAuthenticator ua = new UserAuthenticator(xml);
+        I2b2UserAuthenticator ua = new I2b2UserAuthenticator(xml);
         try {
             if (ua.authenticateUser()) {
                 return Response.status(200).build();
@@ -51,7 +51,7 @@ public class OutputConfigurationResource {
     @POST
     @Path("/load")
     public Response loadConfiguration(String xml) throws DataDownloaderException {
-        UserAuthenticator ua = new UserAuthenticator(xml);
+        I2b2UserAuthenticator ua = new I2b2UserAuthenticator(xml);
         try {
             if (ua.authenticateUser()) {
                 return Response.status(200).build();
