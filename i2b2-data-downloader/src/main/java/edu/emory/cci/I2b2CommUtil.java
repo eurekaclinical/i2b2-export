@@ -5,6 +5,8 @@ import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,6 +15,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 final class I2b2CommUtil {
@@ -45,6 +48,55 @@ final class I2b2CommUtil {
 
         return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(resp.getEntity().getContent());
+    }
+
+    static String extractProjectId(String xml) throws XPathExpressionException,
+            SAXException, IOException, ParserConfigurationException {
+        return (String) XmlUtil.evalXPath(xml, "//message_header/project_id",
+                XPathConstants.STRING);
+    }
+
+    static String extractDomain(String xml) throws XPathExpressionException,
+            SAXException, IOException, ParserConfigurationException {
+        return (String) XmlUtil.evalXPath(xml,
+                "//message_header/security/domain", XPathConstants.STRING);
+    }
+
+    static String extractUsername(String xml) throws XPathExpressionException,
+            SAXException, IOException, ParserConfigurationException {
+        return (String) XmlUtil.evalXPath(xml,
+                "//message_header/security/username", XPathConstants.STRING);
+    }
+
+    static String extractPasswordNode(String xml)
+            throws XPathExpressionException, SAXException, IOException,
+            ParserConfigurationException {
+        Node passwordNode = (Node) XmlUtil.evalXPath(xml,
+                "//message_header/security/password", XPathConstants.NODE);
+        StringBuilder password = new StringBuilder("<password");
+        if (passwordNode.hasAttributes()) {
+            for (int i = 0; i < passwordNode.getAttributes().getLength(); i++) {
+                Node attr = passwordNode.getAttributes().item(i);
+                password.append(" ");
+                password.append(attr.getNodeName());
+                password.append("=\"");
+                password.append(attr.getNodeValue());
+                password.append("\"");
+            }
+        }
+        password.append(">");
+        password.append(passwordNode.getTextContent());
+        password.append("</password>");
+
+        return password.toString();
+    }
+
+    static String extractSecurityNode(String xml)
+            throws XPathExpressionException, SAXException, IOException,
+            ParserConfigurationException {
+        return "<domain>" + extractDomain(xml) + "</domain>\n" + "<username>"
+                + extractUsername(xml) + "</username>\n"
+                + extractPasswordNode(xml);
     }
 
     /**
