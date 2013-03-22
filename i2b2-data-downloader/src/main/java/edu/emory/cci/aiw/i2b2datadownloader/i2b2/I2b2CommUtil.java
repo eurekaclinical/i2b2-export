@@ -1,13 +1,6 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
+import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -18,7 +11,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-final class I2b2CommUtil {
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.io.StringWriter;
+
+public final class I2b2CommUtil {
 
     /**
      * Performs an HTTP POST of an XML request to an i2b2 instance
@@ -36,7 +36,7 @@ final class I2b2CommUtil {
      * @throws SAXException
      * @throws IllegalStateException
      */
-    static Document postXmlToI2b2(String url, String xml)
+    public static Document postXmlToI2b2(String url, String xml)
             throws ClientProtocolException, IOException, IllegalStateException,
             SAXException, ParserConfigurationException {
         HttpClient http = new DefaultHttpClient();
@@ -50,25 +50,25 @@ final class I2b2CommUtil {
                 .parse(resp.getEntity().getContent());
     }
 
-    static String extractProjectId(String xml) throws XPathExpressionException,
+    public static String extractProjectId(String xml) throws XPathExpressionException,
             SAXException, IOException, ParserConfigurationException {
         return (String) XmlUtil.evalXPath(xml, "//message_header/project_id",
                 XPathConstants.STRING);
     }
 
-    static String extractDomain(String xml) throws XPathExpressionException,
+    public static String extractDomain(String xml) throws XPathExpressionException,
             SAXException, IOException, ParserConfigurationException {
         return (String) XmlUtil.evalXPath(xml,
                 "//message_header/security/domain", XPathConstants.STRING);
     }
 
-    static String extractUsername(String xml) throws XPathExpressionException,
+    public static String extractUsername(String xml) throws XPathExpressionException,
             SAXException, IOException, ParserConfigurationException {
         return (String) XmlUtil.evalXPath(xml,
                 "//message_header/security/username", XPathConstants.STRING);
     }
 
-    static String extractPasswordNode(String xml)
+    public static String extractPasswordNode(String xml)
             throws XPathExpressionException, SAXException, IOException,
             ParserConfigurationException {
         Node passwordNode = (Node) XmlUtil.evalXPath(xml,
@@ -91,7 +91,7 @@ final class I2b2CommUtil {
         return password.toString();
     }
 
-    static String extractSecurityNode(String xml)
+    public static String extractSecurityNode(String xml)
             throws XPathExpressionException, SAXException, IOException,
             ParserConfigurationException {
         return "<domain>" + extractDomain(xml) + "</domain>\n" + "<username>"
@@ -102,11 +102,11 @@ final class I2b2CommUtil {
     /**
      * Generates a random message number for i2b2 requests. Copied from the i2b2
      * SMART project: https://community.i2b2.org/wiki/display/SMArt/SMART+i2b2
-     * in file: edu.harvard.i2b2.smart.ws.SmartAuthHelper
+     * in class: edu.harvard.i2b2.smart.ws.SmartAuthHelper
      * 
      * @return a unique message ID
      */
-    static String generateMessageId() {
+    public static String generateMessageId() {
         StringWriter strWriter = new StringWriter();
         for (int i = 0; i < 20; i++) {
             int num = getValidAcsiiValue();

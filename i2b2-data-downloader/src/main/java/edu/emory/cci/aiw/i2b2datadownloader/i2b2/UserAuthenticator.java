@@ -1,5 +1,17 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
+import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -8,20 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
-final class UserAuthenticator {
+public final class UserAuthenticator {
 
     private static final String I2B2_PM_URL = "http://localhost:9090/i2b2/rest/PMService/getServices";
 
@@ -39,7 +38,7 @@ final class UserAuthenticator {
      *            parameters will be pulled from here.
      * @throws DataDownloaderXmlException if the XML is malformed or incomplete
      */
-    UserAuthenticator(String xml) throws DataDownloaderXmlException {
+    public UserAuthenticator(String xml) throws DataDownloaderXmlException {
         this.xml = xml;
         this.config = new Configuration();
         this.config.setClassForTemplateLoading(this.getClass(), "/");
@@ -71,7 +70,7 @@ final class UserAuthenticator {
      *             if an error occurred in the parsing of the incoming or
      *             response XML
      */
-    boolean authenticateUser() throws DataDownloaderXmlException {
+    public boolean authenticateUser() throws DataDownloaderXmlException {
         Template tmpl;
         try {
             tmpl = this.config.getTemplate("i2b2_user_auth.ftl");

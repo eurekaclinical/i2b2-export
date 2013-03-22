@@ -1,5 +1,15 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
+import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -8,18 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
-final class I2b2ConceptRetriever {
+public final class I2b2ConceptRetriever {
     private static final String I2B2_ONT_URL = "http://localhost:9090/i2b2/rest/OntologyService/getTermInfo";
 
     private final Configuration config;
@@ -53,7 +52,7 @@ final class I2b2ConceptRetriever {
         }
     }
 
-    void retrieveConcept(String conceptPath) throws DataDownloaderXmlException {
+    public void retrieveConcept(String conceptPath) throws DataDownloaderXmlException {
         try {
             Template tmpl = this.config.getTemplate("i2b2_ont_terminfo.ftl");
             StringWriter writer = new StringWriter();

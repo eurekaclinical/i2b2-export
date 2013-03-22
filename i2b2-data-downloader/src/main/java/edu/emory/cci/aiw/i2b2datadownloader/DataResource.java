@@ -1,4 +1,6 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader;
+
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.UserAuthenticator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -19,13 +21,13 @@ public final class DataResource {
      *            set to query, and the output format configuration.
      * @return either the formatted output as a CSV file or a status code
      *         indicating an error
-     * @throws DataDownloaderException 
+     * @throws DataDownloaderException
      */
     @POST
     @Path("/download")
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response generateOutput(String xml) throws DataDownloaderException { 
+    public Response generateOutput(String xml) throws DataDownloaderException {
         UserAuthenticator ua = new UserAuthenticator(xml);
         try {
             if (ua.authenticateUser()) {

@@ -1,4 +1,4 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader;
 
 public class DataDownloaderException extends Exception {
 

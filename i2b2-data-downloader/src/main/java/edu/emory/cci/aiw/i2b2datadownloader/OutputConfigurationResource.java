@@ -1,4 +1,6 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader;
+
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.UserAuthenticator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -19,7 +21,7 @@ public class OutputConfigurationResource {
      *            operation, including i2b2 username and authentication token,
      *            the output configuration, and its name.
      * @return a status code indicating success or failure
-     * @throws DataDownloaderException 
+     * @throws DataDownloaderException
      */
     @POST
     @Path("/save")

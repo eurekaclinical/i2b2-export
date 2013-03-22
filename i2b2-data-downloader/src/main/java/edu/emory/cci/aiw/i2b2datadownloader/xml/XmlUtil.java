@@ -1,4 +1,4 @@
-package edu.emory.cci;
+package edu.emory.cci.aiw.i2b2datadownloader.xml;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -23,20 +23,20 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-final class XmlUtil {
-    static Object evalXPath(Document d, String expr, QName returnType)
+public final class XmlUtil {
+    public static Object evalXPath(Document d, String expr, QName returnType)
             throws XPathExpressionException {
         return XPathFactory.newInstance().newXPath().compile(expr)
                 .evaluate(d, returnType);
     }
 
-    static Object evalXPath(String xml, String expr, QName returnType)
+    public static Object evalXPath(String xml, String expr, QName returnType)
             throws XPathExpressionException, SAXException, IOException,
             ParserConfigurationException {
         return evalXPath(xmlStringToDocument(xml), expr, returnType);
     }
 
-    static String xmlDocumentToString(Document d)
+    public static String xmlDocumentToString(Document d)
             throws TransformerFactoryConfigurationError, TransformerException {
         StringWriter writer = new StringWriter();
         Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -44,7 +44,7 @@ final class XmlUtil {
         return writer.toString();
     }
 
-    static Document xmlStringToDocument(String xml) throws SAXException,
+    public static Document xmlStringToDocument(String xml) throws SAXException,
             IOException, ParserConfigurationException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(new InputSource(new StringReader(xml)));
