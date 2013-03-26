@@ -28,7 +28,7 @@ public class OutputConfigurationResource {
     @POST
     @Path("/save")
     public Response saveConfiguration(String xml) throws DataDownloaderException {
-        I2b2UserAuthenticator ua = new I2b2UserAuthenticator(xml);
+		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(xml);
         try {
             if (ua.authenticateUser()) {
                 return Response.status(200).build();

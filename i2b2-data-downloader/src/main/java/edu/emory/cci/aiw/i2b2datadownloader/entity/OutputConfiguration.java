@@ -5,7 +5,7 @@ import java.util.List;
 /**
  *
  */
-public class OuputConfiguration {
+public class OutputConfiguration {
 	private String userId;
 	private String name;
 

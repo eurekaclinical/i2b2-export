@@ -3,7 +3,8 @@ package edu.emory.cci.aiw.i2b2datadownloader.entity;
 /**
  *
  */
-public class OutputColumnConfiguration {
+public class OutputColumnConfiguration implements
+		Comparable<OutputColumnConfiguration> {
 	private Integer order;
 	private String i2b2ConceptPath;
 	private String columnName;
@@ -87,5 +88,10 @@ public class OutputColumnConfiguration {
 	public void setAggregation(
 			AggregationType aggregation) {
 		this.aggregation = aggregation;
+	}
+
+	@Override
+	public int compareTo(OutputColumnConfiguration other) {
+		return this.order.compareTo(other.getOrder());
 	}
 }
