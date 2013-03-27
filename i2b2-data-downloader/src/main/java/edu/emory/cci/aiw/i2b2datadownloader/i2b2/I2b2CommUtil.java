@@ -20,11 +20,16 @@ import java.io.StringWriter;
 
 public final class I2b2CommUtil {
 
+    /*
+     * The i2b2 date format. The colon (:) must be stripped out of the timezone portion first.
+     */
+    public static final String I2B2_DATE_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
     /**
-     * Performs an HTTP POST of an XML request to an i2b2 instance
+     * Performs an HTTP POST of an XML request to an i2b2 service
      * 
      * @param url
-     *            the address of the i2b2 instance to POST to
+     *            the address of the i2b2 service to POST to
      * @param xml
      *            the XML request to send
      * @return the XML response from i2b2 as a {@link Document}

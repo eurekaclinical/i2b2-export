@@ -71,12 +71,11 @@ public final class I2b2UserAuthenticator {
      *             response XML
      */
     public boolean authenticateUser() throws DataDownloaderXmlException {
-        Template tmpl;
         try {
-            tmpl = this.config.getTemplate("i2b2_user_auth.ftl");
+            Template tmpl = this.config.getTemplate("i2b2_user_auth.ftl");
             StringWriter writer = new StringWriter();
 
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            DateFormat sdf = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
             Date now = new Date();
             String messageId = I2b2CommUtil.generateMessageId();
 
