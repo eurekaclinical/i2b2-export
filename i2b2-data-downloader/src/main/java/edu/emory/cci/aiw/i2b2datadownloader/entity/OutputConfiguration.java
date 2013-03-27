@@ -6,7 +6,7 @@ import java.util.List;
  *
  */
 public class OutputConfiguration {
-	private String userId;
+	private Long userId;
 	private String name;
 
 	public static enum RowDimension {
@@ -20,11 +20,11 @@ public class OutputConfiguration {
 
 	private List<OutputColumnConfiguration> columnConfigs;
 
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
