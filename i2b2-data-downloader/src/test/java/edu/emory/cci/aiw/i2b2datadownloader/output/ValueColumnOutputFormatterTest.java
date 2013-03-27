@@ -137,4 +137,15 @@ public class ValueColumnOutputFormatterTest {
 
         Assert.assertEquals("500,Y,2013-05-05T13:00:00.000-0400,2013-05-05T14:00:00.000-0400,400,X,2013-04-04T12:00:00.000-0400,2013-04-04T13:00:00.000-0400,300,W,2013-03-03T11:00:00.000-0500,2013-03-03T12:00:00.000-0500,200,V,2013-02-02T10:00:00.000-0500,2013-02-02T11:00:00.000-0500,100,U,2013-01-01T09:00:00.000-0500,2013-01-01T10:00:00.000-0500,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)", formatter.format(obxs));
     }
+
+    @Test
+    public void testFormatEmpty() {
+        colConfig.setHowMany(2);
+        colConfig.setIncludeTimeRange(true);
+        colConfig.setIncludeUnits(true);
+
+        ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
+
+        Assert.assertEquals("(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)", formatter.format(new ArrayList<Observation>()));
+    }
 }
