@@ -2,13 +2,14 @@ package edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class Event implements Comparable<Event> {
     private final String eventId;
     private final Patient patient;
-    private final String startDate;
-    private final String endDate;
+    private final Date startDate;
+    private final Date endDate;
     private final String inOut;
     private final String location;
     private final String activeStatus;
@@ -39,11 +40,11 @@ public class Event implements Comparable<Event> {
         return patient;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
@@ -71,8 +72,8 @@ public class Event implements Comparable<Event> {
         private final String eventId;
         private final Patient patient;
 
-        private String startDate;
-        private String endDate;
+        private Date startDate;
+        private Date endDate;
         private String inOut;
         private String location;
         private String activeStatus;
@@ -82,12 +83,12 @@ public class Event implements Comparable<Event> {
             this.patient = patient;
         }
 
-        public Builder startDate(String startDate) {
+        public Builder startDate(Date startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public Builder endDate(String endDate) {
+        public Builder endDate(Date endDate) {
             this.endDate = endDate;
             return this;
         }

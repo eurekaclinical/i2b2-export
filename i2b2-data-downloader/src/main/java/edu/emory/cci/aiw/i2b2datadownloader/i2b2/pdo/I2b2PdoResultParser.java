@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo;
 
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -8,9 +9,15 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class I2b2PdoResultParser {
+
+    private final DateFormat i2b2DateFormat;
+
     private Map<String, Patient> patients;
     private Map<String, Event> events;
     private Set<Observation> observations;
@@ -18,6 +25,7 @@ public class I2b2PdoResultParser {
     private Document d;
 
     private I2b2PdoResultParser() {
+        i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
         patients = new HashMap<String, Patient>();
         events = new HashMap<String, Event>();
         observations = new HashSet<Observation>();
@@ -116,8 +124,8 @@ public class I2b2PdoResultParser {
         String id = text(eventXml, "event_id");
         String patientId = text(eventXml, "patient_id");
         Event.Builder eb = new Event.Builder(id, this.patients.get(patientId))
-                .startDate(text(eventXml, "start_date")).endDate(
-                        text(eventXml, "end_date"));
+                .startDate(date(eventXml, "start_date")).endDate(
+                        date(eventXml, "end_date"));
         NodeList params = eventXml.getElementsByTagName("param");
         Map<String, String> pm = new CustomNullHashMap<String, String>("N/A");
         for (int i = 0; i < params.getLength(); i++) {
@@ -154,12 +162,12 @@ public class I2b2PdoResultParser {
         return new Observation.Builder(this.events.get(eventId))
                 .concept(text(obxXml, "concept_cd"))
                 .observer(text(obxXml, "observer_cd"))
-                .startDate(text(obxXml, "start_date"))
+                .startDate(date(obxXml, "start_date"))
                 .modifier(text(obxXml, "modifier_cd"))
                 .valuetype(text(obxXml, "valuetype_cd"))
                 .tval(text(obxXml, "tval_char")).nval(text(obxXml, "nval_num"))
                 .valueflag(text(obxXml, "valueflag_cd")).units(units)
-                .endDate(text(obxXml, "end_date"))
+                .endDate(date(obxXml, "end_date"))
                 .location(text(obxXml, "location_cd")).blob(description)
                 .build();
     }
@@ -173,6 +181,23 @@ public class I2b2PdoResultParser {
             return elt.getElementsByTagName(tagName).item(0).getTextContent();
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    private Date date(Element elt, String tagName) {
+        try {
+            String dtTxt = text(elt, tagName);
+            // remove the last colon (:)
+            // we have to do this because Java's SimpleDateFormat does not directly
+            // support the format i2b2 is using: 2001-07-04T12:08:56.235-07:00
+            // the closest Java has is: 2001-07-04T12:08:56.235-0700 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)
+            // the other alternative is write our own date parser
+            int colonIdx = dtTxt.lastIndexOf(':');
+            dtTxt = dtTxt.substring(0, colonIdx).concat(dtTxt.substring(colonIdx+1));
+            System.out.println(dtTxt);
+            return i2b2DateFormat.parse(dtTxt);
+        } catch (ParseException e) {
+            return null;
         }
     }
 }

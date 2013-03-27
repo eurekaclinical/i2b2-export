@@ -1,11 +1,13 @@
 package edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo;
 
+import java.util.Date;
+
 public class Observation {
     private final Event event;
     private final String concept;
     private final String observer;
-    private final String startDate;
-    private final String endDate;
+    private final Date startDate;
+    private final Date endDate;
     private final String modifier;
     private final String valuetype;
     private final String tval;
@@ -43,11 +45,11 @@ public class Observation {
         return observer;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
@@ -87,8 +89,8 @@ public class Observation {
         private final Event event;
         private String concept;
         private String observer;
-        private String startDate;
-        private String endDate;
+        private Date startDate;
+        private Date endDate;
         private String modifier;
         private String valuetype;
         private String tval;
@@ -112,12 +114,12 @@ public class Observation {
             return this;
         }
 
-        public Builder startDate(String startDate) {
+        public Builder startDate(Date startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public Builder endDate(String endDate) {
+        public Builder endDate(Date endDate) {
             this.endDate = endDate;
             return this;
         }
