@@ -47,7 +47,7 @@ public class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
         }
 
         for (int i = 0; i < getColumnConfig().getHowMany(); i++) {
-            if (i >= dataList.size()) {
+            if (dataList == null || dataList.isEmpty() || i >= dataList.size()) {
                 for (int j = 0; j < numCols; j++) {
                     result.add(getFormatOptions().getMissingData());
                 }
