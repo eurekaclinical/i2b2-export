@@ -26,6 +26,8 @@ public class HeaderRowOutputFormatter {
                 break;
             case VISIT:
                 result.add("Visit_id");
+                result.add("Visit_start");
+                result.add("Visit_end");
                 // fall through
             case PATIENT:
                 result.add(0, "Patient_id"); // patient ID always goes first
