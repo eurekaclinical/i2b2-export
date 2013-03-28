@@ -21,14 +21,14 @@ public class HeaderRowOutputFormatter {
     public String formatHeader() {
         List<String> result = new ArrayList<String>();
         switch (outputConfiguration.getRowDimension()) {
-            case PATIENT:
-                result.add("Patient_id");
+            case PROVIDER:
+                result.add("Provider_id");
                 break;
             case VISIT:
                 result.add("Visit_id");
-                break;
-            case PROVIDER:
-                result.add("Provider_id");
+                // fall through
+            case PATIENT:
+                result.add(0, "Patient_id"); // patient ID always goes first
                 break;
             default:
                 throw new RuntimeException("row dimension not provided: userId: " + outputConfiguration.getUserId() + ", name: " + outputConfiguration.getName());
