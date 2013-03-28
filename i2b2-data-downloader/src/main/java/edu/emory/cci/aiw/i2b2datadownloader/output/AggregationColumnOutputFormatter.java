@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatter {
+public final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatter {
 
 	public AggregationColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
