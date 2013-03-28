@@ -9,10 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- *
- */
-public class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
+public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 
     private final DateFormat i2b2DateFormat;
 
