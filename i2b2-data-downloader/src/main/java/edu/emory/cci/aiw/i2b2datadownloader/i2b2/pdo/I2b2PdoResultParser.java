@@ -26,33 +26,26 @@ public class I2b2PdoResultParser {
 
     private Document d;
 
-    public I2b2PdoResultParser(Document xmlDoc) throws DataDownloaderXmlException {
+    public I2b2PdoResultParser(Document xmlDoc) {
         d = xmlDoc;
         i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
         patients = new HashMap<String, Patient>();
         events = new HashMap<String, Event>();
         observers = new HashMap<String, Observer>();
         observations = new HashSet<Observation>();
+    }
 
+    public I2b2PdoResults parse() throws DataDownloaderXmlException {
         try {
-            parse();
+            parseAll();
         } catch (XPathExpressionException e) {
-            throw new DataDownloaderXmlException("Failed to parse PDO result XML", e);
+            throw new DataDownloaderXmlException("Unable to parse i2b2 PDO result XML", e);
         }
+
+        return new I2b2PdoResults(patients.values(), events.values(), observers.values(), observations);
     }
 
-    public List<Patient> getPatients() {
-        List<Patient> result = new ArrayList<Patient>(patients.values());
-        Collections.sort(result);
-        return Collections.unmodifiableList(result);
-    }
-
-    public Set<Observer> getObservers() {
-        Set<Observer> result = new HashSet<Observer>(observers.values());
-        return Collections.unmodifiableSet(result);
-    }
-
-    private void parse() throws XPathExpressionException {
+    private void parseAll() throws XPathExpressionException {
         parsePatients();
         parseEvents();
         parseObservers();
