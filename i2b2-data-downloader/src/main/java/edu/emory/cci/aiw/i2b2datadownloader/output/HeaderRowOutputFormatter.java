@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- *
- */
-public class HeaderRowOutputFormatter {
+final class HeaderRowOutputFormatter {
     private final OutputConfiguration outputConfiguration;
 
     HeaderRowOutputFormatter(OutputConfiguration outputConfiguration) {

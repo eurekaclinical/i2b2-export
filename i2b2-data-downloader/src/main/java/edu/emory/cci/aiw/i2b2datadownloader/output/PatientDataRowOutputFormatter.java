@@ -8,7 +8,7 @@ import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
+final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
     private final Patient patient;
 
     public PatientDataRowOutputFormatter(OutputConfiguration config, Patient patient) {

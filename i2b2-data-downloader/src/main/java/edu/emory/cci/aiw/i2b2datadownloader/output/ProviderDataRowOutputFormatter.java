@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
+final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
     private final Observer provider;
 
     public ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {

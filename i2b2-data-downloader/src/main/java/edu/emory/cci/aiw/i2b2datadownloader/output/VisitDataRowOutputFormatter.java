@@ -1,6 +1,5 @@
 package edu.emory.cci.aiw.i2b2datadownloader.output;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Event;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
+final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
     private final Event visit;
 
     public VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
