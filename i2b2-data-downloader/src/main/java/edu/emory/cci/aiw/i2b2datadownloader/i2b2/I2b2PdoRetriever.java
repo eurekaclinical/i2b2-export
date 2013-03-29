@@ -48,9 +48,8 @@ public final class I2b2PdoRetriever {
 
             tmpl.process(params, writer);
             Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PDO_URL, writer.toString());
-            List<Patient> patients = I2b2PdoResultParser.parse(respXml);
-
-            return patients;
+            I2b2PdoResultParser parser = new I2b2PdoResultParser(respXml);
+            return parser.getPatients();
         } catch (IOException e) {
             throw new DataDownloaderXmlException(e);
         } catch (TemplateException e) {
@@ -58,8 +57,6 @@ public final class I2b2PdoRetriever {
         } catch (SAXException e) {
             throw new DataDownloaderXmlException(e);
         } catch (ParserConfigurationException e) {
-            throw new DataDownloaderXmlException(e);
-        } catch (XPathExpressionException e) {
             throw new DataDownloaderXmlException(e);
         }
     }
