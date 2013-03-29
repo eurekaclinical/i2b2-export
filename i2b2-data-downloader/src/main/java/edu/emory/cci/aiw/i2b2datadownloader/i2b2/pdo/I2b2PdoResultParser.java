@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo;
 
+import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
 import org.w3c.dom.Document;
@@ -20,32 +21,46 @@ public class I2b2PdoResultParser {
 
     private Map<String, Patient> patients;
     private Map<String, Event> events;
+    private Map<String, Observer> observers;
     private Set<Observation> observations;
 
     private Document d;
 
-    private I2b2PdoResultParser() {
+    public I2b2PdoResultParser(Document xmlDoc) throws DataDownloaderXmlException {
+        d = xmlDoc;
         i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
         patients = new HashMap<String, Patient>();
         events = new HashMap<String, Event>();
+        observers = new HashMap<String, Observer>();
         observations = new HashSet<Observation>();
+
+        try {
+            parse();
+        } catch (XPathExpressionException e) {
+            throw new DataDownloaderXmlException("Failed to parse PDO result XML", e);
+        }
     }
 
-    public static List<Patient> parse(Document xmlDoc) throws XPathExpressionException {
-        I2b2PdoResultParser p = new I2b2PdoResultParser();
-        p.d = xmlDoc;
-
-        return p.parse();
+    public List<Patient> getPatients() {
+        List<Patient> result = new ArrayList<Patient>(patients.values());
+        Collections.sort(result);
+        return Collections.unmodifiableList(result);
     }
 
-    private List<Patient> parse() throws XPathExpressionException {
+    public Set<Observer> getObservers() {
+        Set<Observer> result = new HashSet<Observer>(observers.values());
+        return Collections.unmodifiableSet(result);
+    }
 
+    private void parse() throws XPathExpressionException {
         parsePatients();
         parseEvents();
+        parseObservers();
         parseObservations();
 
         for (Observation o : observations) {
             o.getEvent().addObservation(o);
+            observers.get(o.getObserver()).addObservation(o);
         }
         for (Event e : events.values()) {
             e.getPatient().addEvent(e);
@@ -53,11 +68,6 @@ public class I2b2PdoResultParser {
         for (Patient p : patients.values()) {
             p.sortEvents();
         }
-
-        List<Patient> result = new ArrayList<Patient>(patients.values());
-        Collections.sort(result);
-
-        return result;
     }
 
     private NodeList pdoElement(String dataName)
@@ -81,6 +91,15 @@ public class I2b2PdoResultParser {
             Node child = eventElts.item(i);
             Event e = parseEvent((Element) child);
             events.put(e.getEventId(), e);
+        }
+    }
+
+    private void parseObservers() throws XPathExpressionException {
+        NodeList observerElts = pdoElement("observer");
+        for (int i = 0; i < observerElts.getLength(); i++) {
+            Node child = observerElts.item(i);
+            Observer o = parseObserver((Element) child);
+            observers.put(o.getObserverCode(), o);
         }
     }
 
@@ -139,6 +158,14 @@ public class I2b2PdoResultParser {
         return eb.activeStatus(pm.get("active_status_cd"))
                 .inOut(pm.get("inout_cd")).location(pm.get("location_cd"))
                 .build();
+    }
+
+    private Observer parseObserver(Element observerXml) {
+        String path = observerXml.getElementsByTagName("observer_path").item(0).getTextContent();
+        String code = observerXml.getElementsByTagName("observer_cd").item(0).getTextContent();
+        String name = observerXml.getElementsByTagName("name_char").item(0).getTextContent();
+
+        return new Observer.Builder(path, code).name(name).build();
     }
 
     private Observation parseObservation(Element obxXml) {
