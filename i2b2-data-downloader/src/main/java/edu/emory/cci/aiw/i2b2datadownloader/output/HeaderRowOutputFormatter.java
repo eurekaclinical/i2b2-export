@@ -22,7 +22,7 @@ public class HeaderRowOutputFormatter {
         List<String> result = new ArrayList<String>();
         switch (outputConfiguration.getRowDimension()) {
             case PROVIDER:
-                result.add("Provider_id");
+                result.add("Provider_name");
                 break;
             case VISIT:
                 result.add("Visit_id");
