@@ -14,15 +14,21 @@ public final class DataOutputFormatter {
     }
 
     public String format() {
+        StringBuilder result = new StringBuilder(new HeaderRowOutputFormatter(config).formatHeader());
+        result.append("\n");
         switch (this.config.getRowDimension()) {
             case PATIENT:
-                return new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format();
+                result.append(new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+                break;
             case VISIT:
-                return new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format();
+                result.append(new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+                break;
             case PROVIDER:
-                return new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format();
+                result.append(new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format());
+                break;
             default:
                 throw new AssertionError("no row dimension provided");
         }
+        return result.toString();
     }
 }
