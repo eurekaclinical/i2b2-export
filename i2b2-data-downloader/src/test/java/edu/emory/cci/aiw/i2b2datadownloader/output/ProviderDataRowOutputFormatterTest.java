@@ -37,7 +37,7 @@ public class ProviderDataRowOutputFormatterTest {
         Event e2 = new Event.Builder("E2", patient).startDate(fmt.parse("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse("2013-02-02T14:00:00.000-0500")).build();
         Event e3 = new Event.Builder("E3", patient).startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T14:00:00.000-0500")).build();
 
-        provider = new Observer.Builder("\\i2b2INTERNAL|Provider\\i2b2INTERNAL|Provider|S\\i2b2INTERNAL|Provder:SMITH, JOHN\\", "i2b2INTERNAL|Provider:SMITH, JOHN").name("SMITH, JOHN").build();
+        provider = new Observer.Builder("\\i2b2INTERNAL|Provider\\i2b2INTERNAL|Provider|S\\i2b2INTERNAL|Provider:SMITH, JOHN\\", "i2b2INTERNAL|Provider:SMITH, JOHN").name("SMITH, JOHN").build();
 
         provider.addObservation(new Observation.Builder(e1).concept("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).tval("100").nval("100").units("U").build());
         provider.addObservation(new Observation.Builder(e2).concept("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-02-02T10:00:00.000-0500")).endDate(fmt.parse("2013-02-02T11:00:00.000-0500")).tval("200").nval("200").units("U").build());
