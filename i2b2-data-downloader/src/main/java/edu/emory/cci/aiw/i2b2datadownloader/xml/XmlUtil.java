@@ -16,12 +16,11 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public final class XmlUtil {
-    public static Object evalXPath(Document d, String expr, QName returnType)
+    public static Object evalXPath(Node d, String expr, QName returnType)
             throws XPathExpressionException {
         return XPathFactory.newInstance().newXPath().compile(expr)
                 .evaluate(d, returnType);
@@ -33,7 +32,7 @@ public final class XmlUtil {
         return evalXPath(xmlStringToDocument(xml), expr, returnType);
     }
 
-    public static String xmlDocumentToString(Document d)
+    public static String xmlDocumentToString(Node d)
             throws TransformerFactoryConfigurationError, TransformerException {
         StringWriter writer = new StringWriter();
         Transformer t = TransformerFactory.newInstance().newTransformer();
