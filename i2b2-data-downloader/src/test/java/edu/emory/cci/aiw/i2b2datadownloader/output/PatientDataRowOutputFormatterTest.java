@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.output;
 
+import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
@@ -53,14 +54,20 @@ public class PatientDataRowOutputFormatterTest {
 
         OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
         colConfig1.setOrder(1);
-        colConfig1.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept3");
+		I2b2Concept concept1 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
+						"MyConcept3", "N");
+        colConfig1.setI2b2Concept(concept1);
         colConfig1.setColumnName("MyConcept3");
         colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
         config.getColumnConfigs().add(colConfig1);
 
         OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
         colConfig2.setOrder(2);
-        colConfig2.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept2");
+		I2b2Concept concept2 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
+						"MyConcept2", "N");
+        colConfig2.setI2b2Concept(concept2);
         colConfig2.setColumnName("MyConcept2");
         colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
         colConfig2.setHowMany(5);
@@ -70,7 +77,10 @@ public class PatientDataRowOutputFormatterTest {
 
         OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
         colConfig3.setOrder(3);
-        colConfig3.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept1");
+		I2b2Concept concept3 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
+						"MyConcept1", "N");
+        colConfig3.setI2b2Concept(concept3);
         colConfig3.setColumnName("MyConcept1");
         colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
         colConfig3.setAggregation(OutputColumnConfiguration.AggregationType.MAX);

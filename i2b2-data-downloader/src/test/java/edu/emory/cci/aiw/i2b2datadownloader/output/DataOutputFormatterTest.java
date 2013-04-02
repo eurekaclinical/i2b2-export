@@ -1,9 +1,14 @@
 package edu.emory.cci.aiw.i2b2datadownloader.output;
 
+import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.*;
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Event;
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResults;
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observation;
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observer;
+import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Patient;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -148,13 +153,19 @@ public class DataOutputFormatterTest {
 
         OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
         colConfig1.setOrder(1);
-        colConfig1.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept3");
+		I2b2Concept concept1 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
+						"MyConcept3", "N");
+        colConfig1.setI2b2Concept(concept1);
         colConfig1.setColumnName("Concept 3");
         colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
 
         OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
         colConfig2.setOrder(2);
-        colConfig2.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept1");
+		I2b2Concept concept2 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
+						"MyConcept1", "N");
+        colConfig2.setI2b2Concept(concept2);
         colConfig2.setColumnName("Concept 1");
         colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
         colConfig2.setHowMany(3);
@@ -163,7 +174,10 @@ public class DataOutputFormatterTest {
 
         OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
         colConfig3.setOrder(3);
-        colConfig3.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept2");
+		I2b2Concept concept3 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
+						"MyConcept2", "N");
+        colConfig3.setI2b2Concept(concept3);
         colConfig3.setColumnName("Concept 2");
         colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
         colConfig3.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
@@ -171,7 +185,10 @@ public class DataOutputFormatterTest {
 
         OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
         colConfig4.setOrder(4);
-        colConfig4.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept4");
+		I2b2Concept concept4 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept4", 2, "concept_dimension",
+						"MyConcept4", "N");
+        colConfig4.setI2b2Concept(concept4);
         colConfig4.setColumnName("Systolic");
         colConfig4.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
         colConfig4.setIncludeTimeRange(true);
@@ -180,7 +197,10 @@ public class DataOutputFormatterTest {
 
         OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
         colConfig5.setOrder(5);
-        colConfig5.setI2b2ConceptPath("\\\\i2b2\\Concepts\\MyConcept5");
+		I2b2Concept concept5 = new I2b2Concept
+				("\\\\i2b2\\Concepts\\MyConcept5", 2, "concept_dimension",
+						"MyConcept5", "N");
+        colConfig5.setI2b2Concept(concept5);
         colConfig5.setColumnName("Diastolic");
         colConfig5.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
         colConfig5.setIncludeTimeRange(true);
