@@ -1,6 +1,7 @@
 package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResultParser;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResults;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Patient;
@@ -18,13 +19,12 @@ public final class I2b2PdoRetriever {
 
     private static final String I2B2_PDO_URL = "http://172.16.89.128/i2b2/rest/QueryToolService/pdorequest";
     private final Configuration config;
+    private final Integer patientSetCollId;
+    private final I2b2AuthMetadata i2b2AuthMetadata;
 
-    private String security = "<domain>i2b2demo</domain>\n" +
-			"<username>i2b2</username>\n" +
-			"<password token_ms_timeout=\"1800000\" is_token=\"true\">SessionKey:X9SDD4dSdOuWTv5gOCk0</password>";
-    private String projectId = "Demo2";
-
-    public I2b2PdoRetriever() {
+    public I2b2PdoRetriever(I2b2AuthMetadata i2b2AuthMetadata, Integer patientSetCollId) {
+        this.i2b2AuthMetadata = i2b2AuthMetadata;
+        this.patientSetCollId = patientSetCollId;
         this.config = new Configuration();
         this.config.setClassForTemplateLoading(this.getClass(), "/");
         this.config.setObjectWrapper(new DefaultObjectWrapper());
@@ -38,13 +38,15 @@ public final class I2b2PdoRetriever {
             String messageId = I2b2CommUtil.generateMessageId();
 
             Map<String, Object> params = new HashMap<String, Object>();
+            params.put("domain", i2b2AuthMetadata.getDomain());
+            params.put("username", i2b2AuthMetadata.getUsername());
+            params.put("passwordNode", i2b2AuthMetadata.getPasswordNode());
             params.put("messageId", messageId);
-            params.put("projectId", projectId);
-            params.put("securityNode", security);
+            params.put("projectId", i2b2AuthMetadata.getProjectId());
             params.put("patientSetLimit", "100");
             params.put("patientListMax", "1");
             params.put("patientListMin", "6");
-            params.put("patientSetCollId", "81");
+            params.put("patientSetCollId", patientSetCollId);
             params.put("items", concepts);
 
             tmpl.process(params, writer);
@@ -60,15 +62,5 @@ public final class I2b2PdoRetriever {
         } catch (ParserConfigurationException e) {
             throw new DataDownloaderXmlException(e);
         }
-    }
-
-    public static void main(String[] args) throws DataDownloaderXmlException {
-        I2b2PdoRetriever r = new I2b2PdoRetriever();
-        I2b2Concept c1 = new I2b2Concept("\\\\i2b2\\i2b2\\Diagnoses\\Circulatory system (390-459)\\", 2, "concept_dimension", "\\i2b2\\Diagnoses\\Circulatory system (390-459)\\", "N");
-        I2b2Concept c2 = new I2b2Concept("key2", 4, "table2", "dim2", "N");
-        Collection<I2b2Concept> concepts = new HashSet<I2b2Concept>();
-        concepts.add(c1);
-//        concepts.add(c2);
-        r.retrieve(concepts);
     }
 }
