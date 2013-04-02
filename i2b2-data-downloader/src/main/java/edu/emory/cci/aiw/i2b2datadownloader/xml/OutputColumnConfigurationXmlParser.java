@@ -32,7 +32,7 @@ public class OutputColumnConfigurationXmlParser {
         }
 
         String concept = (String) XmlUtil.evalXPath(colConfigNode, "//concept", XPathConstants.STRING);
-        colConfig.setI2b2ConceptPath(concept);
+        //colConfig.setI2b2Concept(concept);
 
         String colName = (String) XmlUtil.evalXPath(colConfigNode, "//columnName", XPathConstants.STRING);
         colConfig.setColumnName(colName);
