@@ -51,7 +51,8 @@ public abstract class DataRowOutputFormatter {
 
         result.add(rowPrefix());
         for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {
-            Collection<Observation> obxs = matchingObservations(colConfig.getI2b2ConceptPath());
+            Collection<Observation> obxs = matchingObservations(colConfig
+					.getI2b2Concept().getKey());
             switch (colConfig.getDisplayFormat()) {
                 case EXISTENCE:
                     result.add(new ExistenceColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
