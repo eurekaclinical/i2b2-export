@@ -2,6 +2,7 @@ package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;

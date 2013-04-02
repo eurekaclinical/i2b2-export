@@ -2,15 +2,14 @@ package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResultParser;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResults;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Patient;
 import freemarker.template.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
