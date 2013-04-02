@@ -6,7 +6,7 @@ package edu.emory.cci.aiw.i2b2datadownloader.entity;
 public class OutputColumnConfiguration implements
 		Comparable<OutputColumnConfiguration> {
 	private Integer order;
-	private String i2b2ConceptPath;
+	private I2b2Concept i2b2Concept;
 	private String columnName;
 
 	public static enum DisplayFormat {
@@ -32,12 +32,12 @@ public class OutputColumnConfiguration implements
 		this.order = order;
 	}
 
-	public String getI2b2ConceptPath() {
-		return i2b2ConceptPath;
+	public I2b2Concept getI2b2Concept() {
+		return i2b2Concept;
 	}
 
-	public void setI2b2ConceptPath(String i2b2ConceptPath) {
-		this.i2b2ConceptPath = i2b2ConceptPath;
+	public void setI2b2Concept(I2b2Concept i2b2Concept) {
+		this.i2b2Concept = i2b2Concept;
 	}
 
 	public String getColumnName() {
