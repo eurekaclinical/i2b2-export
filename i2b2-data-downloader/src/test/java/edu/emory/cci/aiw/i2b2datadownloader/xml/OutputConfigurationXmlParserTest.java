@@ -3,7 +3,6 @@ package edu.emory.cci.aiw.i2b2datadownloader.xml;
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import junit.framework.Assert;
-import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,7 +54,7 @@ public class OutputConfigurationXmlParserTest {
 
     private static final String FOOTER = "</datadownloader></message_body></i2b2:request>";
     
-    @Test
+
     public void testParse() throws ParserConfigurationException, SAXException, IOException, DataDownloaderXmlException {
         String configXml = "<outputConfiguration>" +
                 "<name>foo</name>" +

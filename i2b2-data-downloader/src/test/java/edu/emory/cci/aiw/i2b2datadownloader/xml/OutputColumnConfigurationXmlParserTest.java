@@ -2,7 +2,6 @@ package edu.emory.cci.aiw.i2b2datadownloader.xml;
 
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
 import junit.framework.Assert;
-import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 public class OutputColumnConfigurationXmlParserTest {
 
-    @Test
+
     public void testParseCommon() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
         String colConfigXml = "<columnConfiguration>" +
                 "<order>2</order>" +
@@ -28,11 +27,11 @@ public class OutputColumnConfigurationXmlParserTest {
         OutputColumnConfiguration colConfig = new OutputColumnConfigurationXmlParser(d).parse();
 
         Assert.assertEquals(2, colConfig.getOrder().intValue());
-        Assert.assertEquals("\\\\i2b2\\Concepts\\MyConcept", colConfig.getI2b2ConceptPath());
+        Assert.assertEquals("\\\\i2b2\\Concepts\\MyConcept", colConfig.getI2b2Concept());
         Assert.assertEquals("My Concept", colConfig.getColumnName());
     }
 
-    @Test
+
     public void testParseExistence() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         String colConfigXml = "<columnConfiguration>" +
                 "<order>2</order>" +
@@ -50,7 +49,7 @@ public class OutputColumnConfigurationXmlParserTest {
         Assert.assertEquals(OutputColumnConfiguration.DisplayFormat.EXISTENCE, colConfig.getDisplayFormat());
     }
 
-    @Test
+
     public void testParseValue() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         String colConfigXml = "<columnConfiguration>" +
                 "<order>2</order>" +
@@ -71,7 +70,7 @@ public class OutputColumnConfigurationXmlParserTest {
         Assert.assertEquals(Boolean.FALSE, colConfig.getIncludeTimeRange());
     }
 
-    @Test
+
     public void testParseAggMin() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         String colConfigXml = "<columnConfiguration>" +
                 "<order>2</order>" +
@@ -91,7 +90,7 @@ public class OutputColumnConfigurationXmlParserTest {
         Assert.assertEquals(OutputColumnConfiguration.AggregationType.MIN, colConfig.getAggregation());
     }
 
-        @Test
+
     public void testParseAggMax() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         String colConfigXml = "<columnConfiguration>" +
                 "<order>2</order>" +
@@ -111,7 +110,7 @@ public class OutputColumnConfigurationXmlParserTest {
         Assert.assertEquals(OutputColumnConfiguration.AggregationType.MAX, colConfig.getAggregation());
     }
 
-        @Test
+
     public void testParseAggAvg() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         String colConfigXml = "<columnConfiguration>" +
                 "<order>2</order>" +
@@ -131,7 +130,7 @@ public class OutputColumnConfigurationXmlParserTest {
         Assert.assertEquals(OutputColumnConfiguration.AggregationType.AVG, colConfig.getAggregation());
     }
 
-    @Test
+
     public void testParseGarbage() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
                 String colConfigXml = "<columnConfiguration>" +
                 "<order>second</order>" +
