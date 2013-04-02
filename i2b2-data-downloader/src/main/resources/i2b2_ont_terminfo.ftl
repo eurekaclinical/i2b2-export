@@ -19,7 +19,9 @@
 		</receiving_facility>
 		<datetime_of_message>${messageDatetime}</datetime_of_message>
 		<security>
-			${securityNode}
+			<domain>${domain}</domain>
+            <username>${username}</username>
+            ${passwordNode}
 		</security>
 		<message_control_id>
 			<message_num>${messageId}</message_num>

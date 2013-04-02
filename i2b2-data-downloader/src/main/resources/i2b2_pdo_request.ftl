@@ -26,7 +26,9 @@
 			<event_type>EQQ</event_type>
 		</message_type>
 		<security>
-			${securityNode}
+			<domain>${domain}</domain>
+            <username>${username}</username>
+            ${passwordNode}
 		</security>
 		<message_control_id>
 			<message_num>${messageId}</message_num>
