@@ -1,5 +1,9 @@
 <i2b2:request xmlns:i2b2="http://www.i2b2.org/xsd/hive/msg/1.1/" xmlns:pm="http://www.i2b2.org/xsd/cell/pm/1.1/">
 	<message_header>
+        <proxy>
+			<redirect_url>http://192.168.86.129/i2b2/rest/PMService/getServices
+			</redirect_url>
+		</proxy>
 		<i2b2_version_compatible>1.1</i2b2_version_compatible>
 		<hl7_version_compatible>2.4</hl7_version_compatible>
 		<sending_application>
