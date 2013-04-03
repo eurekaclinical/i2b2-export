@@ -23,70 +23,69 @@ import java.util.Map;
 
 public final class I2b2UserAuthenticator {
 
-    private static final String I2B2_PM_URL = "http://localhost:9090/i2b2/rest/PMService/getServices";
+	private static final String I2B2_PM_URL = "http://192.168.86.129/i2b2/rest/PMService/getServices";
 
-    private final Configuration config;
+	private final Configuration config;
 
-    private final I2b2AuthMetadata authMetadata;
+	private final I2b2AuthMetadata authMetadata;
 
-    /**
-     * Creates a new I2b2UserAuthenticator instance based on the given XML.
-     *
-     * @param authMetadata the metadata used to authenticate to i2b2
-     */
-    public I2b2UserAuthenticator(I2b2AuthMetadata authMetadata) {
-        this.authMetadata = authMetadata;
-        this.config = new Configuration();
-        this.config.setClassForTemplateLoading(this.getClass(), "/");
-        this.config.setObjectWrapper(new DefaultObjectWrapper());
-    }
-    
-    /**
-     * Authenticates an i2b2 user.
-     * 
-     * @return <code>true</code> if the user was authenticated,
-     *         <code>false</code> otherwise
-     * @throws DataDownloaderXmlException
-     *             if an error occurred in the parsing of the incoming or
-     *             response XML
-     */
-    public boolean authenticateUser() throws DataDownloaderXmlException {
-        try {
-            Template tmpl = this.config.getTemplate("i2b2_user_auth.ftl");
-            StringWriter writer = new StringWriter();
+	/**
+	 * Creates a new I2b2UserAuthenticator instance based on the given XML.
+	 *
+	 * @param authMetadata the metadata used to authenticate to i2b2
+	 */
+	public I2b2UserAuthenticator(I2b2AuthMetadata authMetadata) {
+		this.authMetadata = authMetadata;
+		this.config = new Configuration();
+		this.config.setClassForTemplateLoading(this.getClass(), "/");
+		this.config.setObjectWrapper(new DefaultObjectWrapper());
+	}
 
-            DateFormat sdf = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
-            Date now = new Date();
-            String messageId = I2b2CommUtil.generateMessageId();
+	/**
+	 * Authenticates an i2b2 user.
+	 *
+	 * @return <code>true</code> if the user was authenticated,
+	 *         <code>false</code> otherwise
+	 * @throws DataDownloaderXmlException if an error occurred in the parsing of the incoming or
+	 *                                    response XML
+	 */
+	public boolean authenticateUser() throws DataDownloaderXmlException {
+		try {
+			Template tmpl = this.config.getTemplate("i2b2_user_auth.ftl");
+			StringWriter writer = new StringWriter();
 
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("domain", this.authMetadata.getDomain());
-            params.put("username", this.authMetadata.getUsername());
-            params.put("passwordNode", this.authMetadata.getPasswordNode());
-            params.put("messageId", messageId);
-            params.put("messageDatetime", sdf.format(now));
-            params.put("projectId", this.authMetadata.getProjectId());
+			DateFormat sdf = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
+			Date now = new Date();
+			String messageId = I2b2CommUtil.generateMessageId();
 
-            tmpl.process(params, writer);
-            Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PM_URL,
-                    writer.toString());
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("domain", this.authMetadata.getDomain());
+			params.put("username", this.authMetadata.getUsername());
+			params.put("passwordNode", this.authMetadata.getPasswordNode());
+			params.put("messageId", messageId);
+			params.put("messageDatetime", sdf.format(now));
+			params.put("projectId", this.authMetadata.getProjectId());
 
-            String status = (String) XmlUtil.evalXPath(respXml,
-                    "//response_header/result_status/status/@type",
-                    XPathConstants.STRING);
+			tmpl.process(params, writer);
+			Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PM_URL,
+					writer.toString());
 
-            return "DONE".equalsIgnoreCase(status);
-        } catch (IOException e) {
-            throw new DataDownloaderXmlException(e);
-        } catch (XPathExpressionException e) {
-            throw new DataDownloaderXmlException(e);
-        } catch (SAXException e) {
-            throw new DataDownloaderXmlException(e);
-        } catch (ParserConfigurationException e) {
-            throw new DataDownloaderXmlException(e);
-        } catch (TemplateException e) {
-            throw new DataDownloaderXmlException(e);
-        }
+			String status = (String) XmlUtil.evalXPath(respXml,
+					"//response_header/result_status/status/@type",
+					XPathConstants.STRING);
 
-    }
+			return "DONE".equalsIgnoreCase(status);
+		} catch (IOException e) {
+			throw new DataDownloaderXmlException(e);
+		} catch (XPathExpressionException e) {
+			throw new DataDownloaderXmlException(e);
+		} catch (SAXException e) {
+			throw new DataDownloaderXmlException(e);
+		} catch (ParserConfigurationException e) {
+			throw new DataDownloaderXmlException(e);
+		} catch (TemplateException e) {
+			throw new DataDownloaderXmlException(e);
+		}
+
+	}
 }

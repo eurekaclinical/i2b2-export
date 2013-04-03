@@ -10,21 +10,21 @@ import java.util.List;
 
 final class ProviderDataOutputFormatter {
 
-    private final OutputConfiguration config;
-    private final Collection<Observer> providers;
+	private final OutputConfiguration config;
+	private final Collection<Observer> providers;
 
-    public ProviderDataOutputFormatter(OutputConfiguration config, Collection<Observer> providers) {
-        this.config = config;
-        this.providers = providers;
-    }
+	public ProviderDataOutputFormatter(OutputConfiguration config, Collection<Observer> providers) {
+		this.config = config;
+		this.providers = providers;
+	}
 
-    public String format() {
-        List<String> result = new ArrayList<String>();
+	public String format() {
+		List<String> result = new ArrayList<String>();
 
-        for (Observer provider : this.providers) {
-            result.add(new ProviderDataRowOutputFormatter(this.config, provider).format());
-        }
+		for (Observer provider : this.providers) {
+			result.add(new ProviderDataRowOutputFormatter(this.config, provider).format());
+		}
 
-        return StringUtils.join(result, "\n");
-    }
+		return StringUtils.join(result, "\n");
+	}
 }

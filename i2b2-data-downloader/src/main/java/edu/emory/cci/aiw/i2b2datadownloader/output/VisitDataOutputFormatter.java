@@ -10,24 +10,24 @@ import java.util.Collection;
 import java.util.List;
 
 final class VisitDataOutputFormatter {
-    private final OutputConfiguration config;
-    private final Collection<Patient> patients;
+	private final OutputConfiguration config;
+	private final Collection<Patient> patients;
 
-    public VisitDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
-        this.config = config;
-        this.patients = patients;
-    }
+	public VisitDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
+		this.config = config;
+		this.patients = patients;
+	}
 
-    public String format() {
-        List<String> result = new ArrayList<String>();
-        FormatOptions formatOptions = new FormatOptions(this.config);
+	public String format() {
+		List<String> result = new ArrayList<String>();
+		FormatOptions formatOptions = new FormatOptions(this.config);
 
-        for (Patient patient : this.patients) {
-            for (Event visit : patient.getEvents()) {
-                result.add(new VisitDataRowOutputFormatter(this.config, visit).format());
-            }
-        }
+		for (Patient patient : this.patients) {
+			for (Event visit : patient.getEvents()) {
+				result.add(new VisitDataRowOutputFormatter(this.config, visit).format());
+			}
+		}
 
-        return StringUtils.join(result, "\n");
-    }
+		return StringUtils.join(result, "\n");
+	}
 }

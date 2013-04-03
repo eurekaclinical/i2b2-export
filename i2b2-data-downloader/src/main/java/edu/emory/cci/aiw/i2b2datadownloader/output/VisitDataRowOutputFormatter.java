@@ -13,37 +13,37 @@ import java.util.Collection;
 import java.util.List;
 
 final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
-    private final Event visit;
+	private final Event visit;
 
-    public VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
-        super(config);
-        this.visit = visit;
+	public VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
+		super(config);
+		this.visit = visit;
 
-    }
+	}
 
-    @Override
-    public String rowPrefix() {
-        List<String> result = new ArrayList<String>();
-        DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
+	@Override
+	public String rowPrefix() {
+		List<String> result = new ArrayList<String>();
+		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
-        result.add(visit.getPatient().getPatientId());
-        result.add(visit.getEventId());
-        result.add(fmt.format(visit.getStartDate()));
-        result.add(fmt.format(visit.getEndDate()));
+		result.add(visit.getPatient().getPatientId());
+		result.add(visit.getEventId());
+		result.add(fmt.format(visit.getStartDate()));
+		result.add(fmt.format(visit.getEndDate()));
 
-        return StringUtils.join(result, getConfig().getSeparator());
-    }
+		return StringUtils.join(result, getConfig().getSeparator());
+	}
 
-    @Override
-    protected Collection<Observation> matchingObservations(String i2b2Concept) {
-        Collection<Observation> result = new ArrayList<Observation>();
+	@Override
+	protected Collection<Observation> matchingObservations(String i2b2Concept) {
+		Collection<Observation> result = new ArrayList<Observation>();
 
-        for (Observation o : visit.getObservations()) {
-            if (o.getConcept().equals(i2b2Concept)) {
-                result.add(o);
-            }
-        }
+		for (Observation o : visit.getObservations()) {
+			if (o.getConcept().equals(i2b2Concept)) {
+				result.add(o);
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

@@ -9,30 +9,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
-    private final Patient patient;
+	private final Patient patient;
 
-    public PatientDataRowOutputFormatter(OutputConfiguration config, Patient patient) {
-        super(config);
-        this.patient = patient;
-    }
+	public PatientDataRowOutputFormatter(OutputConfiguration config, Patient patient) {
+		super(config);
+		this.patient = patient;
+	}
 
-    @Override
-    protected String rowPrefix() {
-        return patient.getPatientId();
-    }
+	@Override
+	protected String rowPrefix() {
+		return patient.getPatientId();
+	}
 
-    @Override
-    protected Collection<Observation> matchingObservations(String i2b2Concept) {
-        Collection<Observation> result = new ArrayList<Observation>();
+	@Override
+	protected Collection<Observation> matchingObservations(String i2b2Concept) {
+		Collection<Observation> result = new ArrayList<Observation>();
 
-        for (Event e : patient.getEvents()) {
-            for (Observation o : e.getObservations()) {
-                if (o.getConcept().equals(i2b2Concept)) {
-                    result.add(o);
-                }
-            }
-        }
+		for (Event e : patient.getEvents()) {
+			for (Observation o : e.getObservations()) {
+				if (o.getConcept().equals(i2b2Concept)) {
+					result.add(o);
+				}
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

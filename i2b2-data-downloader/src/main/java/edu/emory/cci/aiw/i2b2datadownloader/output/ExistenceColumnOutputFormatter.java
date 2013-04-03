@@ -17,10 +17,10 @@ public final class ExistenceColumnOutputFormatter extends
 
 	@Override
 	public String format(Collection<Observation> data) {
-        if (null == data || data.isEmpty()) {
-            return "false";
-        } else {
-            return "true";
-        }
+		if (null == data || data.isEmpty()) {
+			return "false";
+		} else {
+			return "true";
+		}
 	}
 }

@@ -10,30 +10,30 @@ import java.util.Collection;
 import java.util.List;
 
 final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
-    private final Observer provider;
+	private final Observer provider;
 
-    public ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {
-        super(config);
-        this.provider = provider;
-    }
+	public ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {
+		super(config);
+		this.provider = provider;
+	}
 
-    @Override
-    protected String rowPrefix() {
-        List<String> result = new ArrayList<String>();
-        result.add(provider.getName());
-        return StringUtils.join(result, getConfig().getSeparator());
-    }
+	@Override
+	protected String rowPrefix() {
+		List<String> result = new ArrayList<String>();
+		result.add(provider.getName());
+		return StringUtils.join(result, getConfig().getSeparator());
+	}
 
-    @Override
-    protected Collection<Observation> matchingObservations(String i2b2ConceptPath) {
-        Collection<Observation> result = new ArrayList<Observation>();
+	@Override
+	protected Collection<Observation> matchingObservations(String i2b2ConceptPath) {
+		Collection<Observation> result = new ArrayList<Observation>();
 
-        for (Observation o : provider.getObservations()) {
-            if (o.getConcept().equals(i2b2ConceptPath)) {
-                result.add(o);
-            }
-        }
+		for (Observation o : provider.getObservations()) {
+			if (o.getConcept().equals(i2b2ConceptPath)) {
+				result.add(o);
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

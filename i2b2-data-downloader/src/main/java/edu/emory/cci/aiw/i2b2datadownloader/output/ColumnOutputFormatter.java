@@ -9,12 +9,11 @@ import java.util.Collection;
  */
 public interface ColumnOutputFormatter {
 
-    /**
-     * Generates output for patient data based on a column configuration.
-     *
-     * @param data The observations to format. This collection should include all of the observations matching a particular i2b2 concept.
-     *
-     * @return The formatted output
-     */
-    public String format(Collection<Observation> data);
+	/**
+	 * Generates output for patient data based on a column configuration.
+	 *
+	 * @param data The observations to format. This collection should include all of the observations matching a particular i2b2 concept.
+	 * @return The formatted output
+	 */
+	public String format(Collection<Observation> data);
 }
