@@ -1,12 +1,33 @@
 package edu.emory.cci.aiw.i2b2datadownloader.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  *
  */
+@Entity
+@Table(name = "output_column_configurations")
 public class OutputColumnConfiguration implements
 		Comparable<OutputColumnConfiguration> {
+
+	@Id
+		@SequenceGenerator(name = "OUTPUT_COL_CONFIG_SEQ_GENERATOR",
+			sequenceName = "OUTPUT_COL_CONFIG_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+			generator = "OUTPUT_COL_CONFIG_SEQ_GENERATOR")
+	private Long id;
+
 	private Integer order;
+
+	@ManyToOne
 	private I2b2Concept i2b2Concept;
+
 	private String columnName;
 
 	public static enum DisplayFormat {
