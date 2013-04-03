@@ -38,15 +38,17 @@ public final class DataResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response generateOutputFromConfigId(I2b2AuthMetadata authMetadata,
-											   SummarizedRequest request) throws DataDownloaderXmlException {
+											   SummarizedRequest request) throws DataDownloaderException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
 		try {
 			if (ua.authenticateUser()) {
-
+                return Response.ok().build();
 			} else {
 				return Response.status(300).build();
 			}
-		}
+		} catch (DataDownloaderXmlException e) {
+            throw new DataDownloaderException(e);
+        }
 	}
 
     /**
