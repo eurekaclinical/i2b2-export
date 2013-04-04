@@ -8,6 +8,7 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.apache.http.client.ClientProtocolException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -39,7 +40,43 @@ public final class I2b2ConceptRetriever {
 		this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	}
 
-	public I2b2Concept retrieveConcept(String conceptPath) throws DataDownloaderXmlException {
+    public I2b2Concept retrieveConceptByCode(String code) throws DataDownloaderXmlException {
+        try {
+            Template tmpl = this.config.getTemplate("i2b2_ont_codeinfo.ftl");
+            StringWriter writer = new StringWriter();
+
+            Date now = new Date();
+            String messageId = I2b2CommUtil.generateMessageId();
+
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("domain", this.authMetadata.getDomain());
+            params.put("username", this.authMetadata.getUsername());
+            params.put("passwordNode", this.authMetadata.getPasswordNode());
+            params.put("messageId", messageId);
+            params.put("messageDatetime", sdf.format(now));
+            params.put("projectId", this.authMetadata.getProjectId());
+            params.put("conceptCode", code);
+
+            tmpl.process(params, writer);
+            Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_ONT_URL, writer.toString());
+
+            return extractConcept(respXml);
+        } catch (SAXException e) {
+            throw new DataDownloaderXmlException(e);
+        } catch (TemplateException e) {
+            throw new DataDownloaderXmlException(e);
+        } catch (ParserConfigurationException e) {
+            throw new DataDownloaderXmlException(e);
+        } catch (XPathExpressionException e) {
+            throw new DataDownloaderXmlException(e);
+        } catch (ClientProtocolException e) {
+            throw new DataDownloaderXmlException(e);
+        } catch (IOException e) {
+            throw new DataDownloaderXmlException(e);
+        }
+    }
+
+	public I2b2Concept retrieveConceptByPath(String conceptPath) throws DataDownloaderXmlException {
 		try {
 			Template tmpl = this.config.getTemplate("i2b2_ont_terminfo.ftl");
 			StringWriter writer = new StringWriter();

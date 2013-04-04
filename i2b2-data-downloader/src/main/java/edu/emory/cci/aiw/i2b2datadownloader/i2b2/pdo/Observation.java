@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Observation {
 	private final Event event;
-	private final String concept;
+	private final String conceptCode;
+    private final String conceptPath;
 	private final String observer;
 	private final Date startDate;
 	private final Date endDate;
@@ -19,7 +20,8 @@ public class Observation {
 
 	Observation(Builder builder) {
 		this.event = builder.event;
-		this.concept = builder.concept;
+		this.conceptCode = builder.conceptCode;
+        this.conceptPath = builder.conceptPath;
 		this.observer = builder.observer;
 		this.startDate = builder.startDate;
 		this.endDate = builder.endDate;
@@ -37,9 +39,13 @@ public class Observation {
 		return event;
 	}
 
-	public String getConcept() {
-		return concept;
+	public String getConceptCode() {
+		return conceptCode;
 	}
+
+    public String getConceptPath() {
+        return conceptPath;
+    }
 
 	public String getObserver() {
 		return observer;
@@ -87,7 +93,8 @@ public class Observation {
 
 	public static class Builder {
 		private final Event event;
-		private String concept;
+		private String conceptCode;
+        private String conceptPath;
 		private String observer;
 		private Date startDate;
 		private Date endDate;
@@ -104,10 +111,15 @@ public class Observation {
 			this.event = event;
 		}
 
-		public Builder concept(String concept) {
-			this.concept = concept;
+		public Builder conceptCode(String conceptCode) {
+			this.conceptCode = conceptCode;
 			return this;
 		}
+
+        public Builder conceptPath(String conceptPath) {
+            this.conceptPath = conceptPath;
+            return this;
+        }
 
 		public Builder observer(String observer) {
 			this.observer = observer;

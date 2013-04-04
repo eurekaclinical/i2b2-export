@@ -170,6 +170,7 @@ public class I2b2PdoResultParser {
 	private Observation parseObservation(Element obxXml) {
 		String eventId = obxXml.getElementsByTagName("event_id").item(0)
 				.getTextContent();
+        String conceptPath = obxXml.getParentNode().getAttributes().getNamedItem("panel_name").getNodeValue();
 		String blobStr = text(obxXml, "observation_blob");
 		String units = "", description = "";
 		if (validBlob(blobStr)) {
@@ -186,7 +187,8 @@ public class I2b2PdoResultParser {
 		}
 
 		return new Observation.Builder(this.events.get(eventId))
-				.concept(text(obxXml, "concept_cd"))
+				.conceptCode(text(obxXml, "concept_cd"))
+                .conceptPath(conceptPath)
 				.observer(text(obxXml, "observer_cd"))
 				.startDate(date(obxXml, "start_date"))
 				.modifier(text(obxXml, "modifier_cd"))
