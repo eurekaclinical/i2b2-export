@@ -1,0 +1,11 @@
+<jboss-app>
+
+    <loader-repository>
+        edu.emory.cci.aiw.i2b2datadownloader:loader=I2b2DataDownloaderClassLoader
+        <loader-repository-config>
+            java2ParentDelegation=false
+        </loader-repository-config>
+    </loader-repository>
+
+
+</jboss-app>
