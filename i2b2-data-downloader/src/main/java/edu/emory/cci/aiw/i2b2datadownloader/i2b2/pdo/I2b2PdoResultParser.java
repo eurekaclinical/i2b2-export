@@ -57,7 +57,9 @@ public class I2b2PdoResultParser {
 
 		for (Observation o : observations) {
 			o.getEvent().addObservation(o);
-			observers.get(o.getObserver()).addObservation(o);
+            if (observers.containsKey(o.getObserver())) {
+                observers.get(o.getObserver()).addObservation(o);
+            }
 		}
 		for (Event e : events.values()) {
 			e.getPatient().addEvent(e);
