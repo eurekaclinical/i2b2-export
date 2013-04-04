@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.output;
 
+import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observation;
@@ -30,10 +31,10 @@ public abstract class DataRowOutputFormatter {
 	/**
 	 * Finds the observations that match the given i2b2 concept path.
 	 *
-	 * @param i2b2ConceptPath the i2b2 concept path to match
+	 * @param i2b2Concept the i2b2 concept to match
 	 * @return a {@link Collection} of {@link Observation}s that match the given concept path
 	 */
-	protected abstract Collection<Observation> matchingObservations(String i2b2ConceptPath);
+	protected abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept);
 
 	/**
 	 * Generates the first fields of the row that depend on the row dimension rather than the data,
@@ -51,7 +52,7 @@ public abstract class DataRowOutputFormatter {
 		result.add(rowPrefix());
 		for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {
 			Collection<Observation> obxs = matchingObservations(colConfig
-					.getI2b2Concept().getKey());
+					.getI2b2Concept());
 			switch (colConfig.getDisplayFormat()) {
 				case EXISTENCE:
 					result.add(new ExistenceColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));

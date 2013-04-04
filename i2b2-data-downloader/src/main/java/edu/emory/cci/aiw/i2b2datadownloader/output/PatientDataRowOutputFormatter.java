@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.output;
 
+import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Event;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observation;
@@ -22,12 +23,12 @@ final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	}
 
 	@Override
-	protected Collection<Observation> matchingObservations(String i2b2Concept) {
+	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
 		Collection<Observation> result = new ArrayList<Observation>();
 
 		for (Event e : patient.getEvents()) {
 			for (Observation o : e.getObservations()) {
-				if (o.getConcept().equals(i2b2Concept)) {
+				if (o.getConceptPath().equals(i2b2Concept.getKey())) {
 					result.add(o);
 				}
 			}
