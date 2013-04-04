@@ -73,8 +73,8 @@ public final class I2b2Concept {
 		this.dimensionCode = dimensionCode;
 	}
 
-	public void setSynonym(String synonym) {
-		isSynonym = synonym;
+	public void setIsSynonym(String isSynonym) {
+		this.isSynonym = isSynonym;
 	}
 
 	public int hashCode() {
