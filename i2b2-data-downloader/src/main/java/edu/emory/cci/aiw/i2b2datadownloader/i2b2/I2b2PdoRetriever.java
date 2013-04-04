@@ -22,7 +22,7 @@ import java.util.Map;
 public final class I2b2PdoRetriever {
 
 	private static final String I2B2_PDO_URL =
-			"http://192.168.86.129/i2b2/rest/QueryToolService/pdorequest";
+			I2b2CommUtil.I2B2_BASE_URL + "/rest/QueryToolService/pdorequest";
 	private final Configuration config;
 	private final Integer patientSetCollId;
 	private final I2b2AuthMetadata i2b2AuthMetadata;
@@ -49,8 +49,8 @@ public final class I2b2PdoRetriever {
 			params.put("messageId", messageId);
 			params.put("projectId", i2b2AuthMetadata.getProjectId());
 			params.put("patientSetLimit", "100");
-			params.put("patientListMax", "1");
-			params.put("patientListMin", "6");
+			params.put("patientListMax", "6");
+			params.put("patientListMin", "1");
 			params.put("patientSetCollId", patientSetCollId);
 			params.put("items", concepts);
 

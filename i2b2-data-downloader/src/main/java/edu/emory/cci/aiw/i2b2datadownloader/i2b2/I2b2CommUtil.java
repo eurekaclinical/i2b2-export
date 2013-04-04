@@ -20,6 +20,8 @@ import java.io.StringWriter;
 
 public final class I2b2CommUtil {
 
+    static final String I2B2_BASE_URL = "http://192.168.232.128/i2b2/";
+
 	/*
 	 * The i2b2 date format. The colon (:) must be stripped out of the timezone portion first.
 	 */

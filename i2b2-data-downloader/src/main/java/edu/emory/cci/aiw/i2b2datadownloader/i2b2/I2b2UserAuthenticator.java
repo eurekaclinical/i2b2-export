@@ -23,7 +23,7 @@ import java.util.Map;
 
 public final class I2b2UserAuthenticator {
 
-	private static final String I2B2_PM_URL = "http://192.168.86.129/i2b2/rest/PMService/getServices";
+	private static final String I2B2_PM_URL = I2b2CommUtil.I2B2_BASE_URL + "rest/PMService/getServices";
 
 	private final Configuration config;
 

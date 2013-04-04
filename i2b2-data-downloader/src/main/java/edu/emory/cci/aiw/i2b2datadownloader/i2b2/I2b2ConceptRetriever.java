@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class I2b2ConceptRetriever {
-	private static final String I2B2_ONT_URL = "http://192.168.86.129/i2b2/rest/OntologyService/getTermInfo";
+	private static final String I2B2_ONT_URL = I2b2CommUtil.I2B2_BASE_URL + "rest/OntologyService/getTermInfo";
 	private static final String CONCEPT_XPATH_PREFIX = "//message_body/concepts/concept/";
 
 	private final Configuration config;
