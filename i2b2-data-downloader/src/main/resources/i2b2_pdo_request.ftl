@@ -74,9 +74,10 @@
 				</#list>
 			</filter_list>
 			<output_option>
-				<patient_set select="using_input_list" onlykeys="false"></patient_set>
-				<event_set select="using_input_list" onlykeys="false"></event_set>
-				<observation_set blob="false" onlykeys="false"></observation_set>
+				<patient_set select="using_input_list" onlykeys="false" />
+				<event_set select="using_input_list" onlykeys="false" />
+				<observation_set blob="false" onlykeys="false" />
+				<observer_set_using_filter_list onlykeys="false" />
 			</output_option>
 		</ns3:request>
 	</message_body>
