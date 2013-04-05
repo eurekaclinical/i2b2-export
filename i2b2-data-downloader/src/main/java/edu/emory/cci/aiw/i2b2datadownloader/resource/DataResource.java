@@ -75,7 +75,7 @@ public final class DataResource {
 	@POST
 	@Path("/configDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces({"text/csv"})
 	public Response generateOutputFromConfigDetails(DetailedRequest request) throws DataDownloaderException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
@@ -83,9 +83,12 @@ public final class DataResource {
 				String output = new DataOutputFormatter(request.getOutputConfiguration(),
 						new I2b2PdoRetriever(request.getI2b2AuthMetadata(), request.getPatientSetCollId()).
 								retrieve(extractConcepts(request.getOutputConfiguration()))).format();
-				return Response.ok().entity(output).build();
+				return Response.ok(output, "text/csv").header
+						("Content-Disposition",	"attachment;" +
+								"filename=i2b2PatientData.csv")
+						.build();
 			} else {
-				return Response.status(300).build();
+				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (DataDownloaderXmlException e) {
 			throw new DataDownloaderException(e);
