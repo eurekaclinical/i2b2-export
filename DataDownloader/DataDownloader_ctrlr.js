@@ -87,7 +87,7 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 	$("DataDownloader-dispfmt-select-1").addEventListener("change", i2b2.DataDownloader.onDispFmtChange);
 	$("DataDownloader-addColumnBtn").addEventListener("click", i2b2.DataDownloader.addColumnConfig);
 	$("DataDownloader-previewBtn").addEventListener("click", i2b2.DataDownloader.generatePreview);
-	$("DataDownloader-saveonly").addEventListener("click", i2b2.DataDownloader.getResults);
+	$("DataDownloader-saveonly").addEventListener("click", i2b2.DataDownloader.saveConfiguration);
 
 	
 	// manage YUI tabs
@@ -549,144 +549,48 @@ i2b2.DataDownloader.prsDropped = function(sdxData) {
 	i2b2.DataDownloader.model.dirtyResultsData = true;		
 };
 
-i2b2.DataDownloader.buildMsg = function(params, noescparams){
-	var tag_values = {};
-	var self = i2b2.DataDownloader.model;
-	var sUrl;
-	var tmpl;
-	var message;
-	var proxyUrl;
-	var tags = [];
-	var syntax = /(^|.|\r|\n)(\{{{\s*(\w+)\s*}}})/; //matches symbols like '{{{ field }}}'
-	var commObj = eval("(i2b2.CRC.ajax)");
-	var commFunc = "getPDO_fromInputList";
-	var commMsg = commObj._commData[commFunc];
-
-	tmpl = new Template(commMsg.url, syntax);
-	sUrl = i2b2.h.Escape(i2b2[commObj.ParentCell].cfg.cellURL,syntax);
-	sUrl = tmpl.evaluate({URL: sUrl});
-
-	params.funcURL = sUrl;
-	params.proxy_info = '';
-	proxyUrl = i2b2.h.getProxy();
-
-	if (proxyUrl) {
-		params.proxy_info = '<proxy>\n            <redirect_url>' + sUrl + '</redirect_url>\n        </proxy>\n';
-	} else {
-		proxyUrl = sUrl;
-	}
-	params.proxyURL = proxyUrl;
-
-	noescparams = noescparams.concat(commMsg.dont_escape_params);
-
-	// apply message values to message template
-	i2b2.h.EscapeTemplateVars(params, noescparams);
-	tmpl = new Template(commMsg.msg, syntax);
-	message = tmpl.evaluate(params);
-	return message;
-};
-
-
-i2b2.DataDownloader.getResults = function() {
+i2b2.DataDownloader.saveConfiguration = function() {
+	i2b2.DataDownloader.assembleConfig();
+	var rawConfig = i2b2.DataDownloader.model.configuration;
+	var request = {};
+	request.i2b2AuthMetadata = {domain: i2b2.h.getDomain(), username: i2b2.h.getUser(), passwordNode: i2b2.h.getPass(), projectId: i2b2.h.getProject()};
+	var config = {};
+	config.name = $("DataDownloader-saveas").value;
+	config.rowDimension = rawConfig.rowDimension.toUpperCase();
+	config.whitespaceReplacement = rawConfig.whitespace;
+	config.separator = rawConfig.delimiter;
+	config.missingValue = rawConfig.missing;
+	config.columnConfigs = [];
 	
-	//if (i2b2.DataDownloader.model.dirtyResultsData) {
-
-		patientLimit = i2b2.DataDownloader.model.prsRecord.origData.size;
-		var filterList = '';
-		// translate the concept XML for injection as PDO item XML
-		/*for (var i1=0; i1<i2b2.DataDownloader.model.concepts.length; i1++) {
-			var t = i2b2.DataDownloader.model.concepts[i1].origData.xmlOrig;
-			var cdata = {};
-			cdata.level = i2b2.h.getXNodeVal(t, "level");
-			cdata.key = i2b2.h.getXNodeVal(t, "key");
-			cdata.tablename = i2b2.h.getXNodeVal(t, "tablename");
-			cdata.dimcode = i2b2.h.getXNodeVal(t, "dimcode");
-			cdata.synonym = i2b2.h.getXNodeVal(t, "synonym_cd");
-		
-			filterList += 
-			'	<panel name="'+cdata.key+'">\n'+
-			'		<panel_number>0</panel_number>\n'+
-			'		<panel_accuracy_scale>0</panel_accuracy_scale>\n'+
-			'		<invert>0</invert>\n'+
-			'		<item>\n'+
-			'			<hlevel>'+cdata.level+'</hlevel>\n'+
-			'			<item_key>'+cdata.key+'</item_key>\n'+
-			'			<dim_tablename>'+cdata.tablename+'</dim_tablename>\n'+
-			'			<dim_dimcode>'+cdata.dimcode+'</dim_dimcode>\n'+
-			'			<item_is_synonym>'+cdata.synonym+'</item_is_synonym>\n'+
-			'		</item>\n'+
-			'	</panel>\n';			
-		}*/
-		var msg_filter = '<input_list>\n' +
-			'	<patient_list max="' + patientLimit + '" min="1">\n'+   // <--- only the first $patientLimit records
-			'		<patient_set_coll_id>'+i2b2.DataDownloader.model.prsRecord.sdxInfo.sdxKeyValue+'</patient_set_coll_id>\n'+
-			'	</patient_list>\n'+
-			'</input_list>\n'+
-			'<filter_list>\n'+
-				filterList+
-			'</filter_list>\n'+
-			'<output_option>\n'+
-			'	<patient_set select="using_input_list" onlykeys="false"/>\n'+
-			'	<event_set select="using_input_list" onlykeys="false"/>\n'+
-			'	<observation_set blob="true" onlykeys="false"/>\n'+
-			'</output_option>\n';
-
-		
-		// AJAX CALL USING THE EXISTING CRC CELL COMMUNICATOR
-		//i2b2.CRC.ajax.getPDO_fromInputList("Plugin:DataDownloader", {patient_limit:5, PDO_Request: msg_filter}, scopedCallback);
-
-		var params = {
-			sec_user: i2b2.h.getUser(),
-			sec_domain: i2b2.h.getDomain(),
-			sec_pass_node: i2b2.h.getPass(),
-			sec_project: i2b2.h.getProject(),
-			header_msg_id: i2b2.h.GenerateAlphaNumId(20),
-			msg_datetime: i2b2.h.GenerateISO8601DateTime(),
-			result_wait_time: 120,
-			patient_limit: patientLimit,
-			PDO_Request: msg_filter
-		};
-		var xml = i2b2.DataDownloader.buildMsg(params, []);
-		var cbFunc = function (transport) {
-			console.log('status: ' + transport.status);
-			if (transport.status == 200) {
-				// optimization - only requery when the input data is changed
-				i2b2.DataDownloader.model.dirtyResultsData = false;
-			} else if (transport.status == 204 || (Prototype.Browser.IE && transport.status == 1223)) {
-				// a bug in IE causes it to report 204 as 1223
-			} else {
-				alert("An error occurred while processing your request. If this continues to happen, please report it to the AIW team.");
-				//alert(transport.status);
+	var order = 1;
+	rawConfig.columnConfigs.forEach(function(colConfigRaw) {
+		if (colConfigRaw.conceptRecord) {
+			var columnConfig = {};
+			columnConfig.order = order;
+			order += 1;
+			columnConfig.columnName = colConfigRaw.columnName;
+			columnConfig.displayFormat = colConfigRaw.displayFormat.toUpperCase();
+			if (colConfigRaw.displayFormat === 'value') {
+				var howMany = colConfigRaw.howMany;
+				if (!howMany || howMany < 1) {
+					howMany = 1;
+				}
+				columnConfig.howMany = howMany;
+				columnConfig.includeTimeRange = colConfigRaw.includeTimeRange === "on";
+				columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
+			} else if (colConfigRaw.displayFormat === 'aggregation') {
+				columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
+				columnConfig.aggregation = colConfigRaw.aggregation.toUpperCase();
 			}
+			columnConfig.i2b2Concept = {key: colConfigRaw.conceptRecord.origData.key,
+					level: parseInt(colConfigRaw.conceptRecord.origData.level),
+					tableName: colConfigRaw.conceptRecord.origData.table_name,
+					dimensionCode: colConfigRaw.conceptRecord.origData.dim_code,
+					isSynonym: "N"};
+			
+			config.columnConfigs.push(columnConfig);	
+		}
+	});	
 
-		};
-
-		var commOpts = {
-			contentType: 'application/x-www-form-urlencoded',
-			method: 'post',
-			asynchronous: true,
-			evalJS: false,
-			evalJSON: false,
-			parameters: { "requestXml": xml, "initialReq": i2b2.DataDownloader.initialReq },
-			//postBody: xml,
-			onSuccess: cbFunc,
-			onFailure: cbFunc
-			//onFailure: function (transport) { alert("Call Failed!"); }
-		};
-
-		//var req = new Ajax.Request("http://aiwdev02.eushc.org/i2b2/index.php", commOpts);
-		//if (format) {
-			var url = i2b2.DataDownloader.proxyUrl;// + "?format=" + format + "&initialReq=" + i2b2.DataDownloader.initialReq;
-			var form = $$("FORM#DataDownloader-Form")[0];
-			form.action = url;
-			form.method = "POST";
-			form.elements["requestXml"].value = xml;
-			alert("submitting the form");
-			form.submit();
-			//var req = new Ajax.Request(i2b2.DataDownloader.proxyUrl + "?format=" + format, commOpts);
-			//iframe.location = url;
-		//} else {
-		//	var req = new Ajax.Request(i2b2.DataDownloader.proxyUrl, commOpts);
-		//}
-	//}
+	request.config = config;
 };
