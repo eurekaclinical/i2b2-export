@@ -76,7 +76,7 @@ public final class DataResource {
 	@Path("/configDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response generateOutput(DetailedRequest request) throws DataDownloaderException {
+	public Response generateOutputFromConfigDetails(DetailedRequest request) throws DataDownloaderException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
