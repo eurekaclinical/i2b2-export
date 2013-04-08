@@ -18,7 +18,7 @@ public final class I2b2Concept {
 			generator = "I2B2_CONCEPT_SEQ_GENERATOR")
 	private Long id;
 
-	private String key;
+	private String i2b2Key;
 	private Integer level;
 	private String tableName;
 	private String dimensionCode;
@@ -30,15 +30,19 @@ public final class I2b2Concept {
 
 	public I2b2Concept(String key, Integer level, String tableName,
 					   String dimensionCode, String isSynonym) {
-		this.key = key;
+		this.i2b2Key = key;
 		this.level = level;
 		this.tableName = tableName;
 		this.dimensionCode = dimensionCode;
 		this.isSynonym = isSynonym;
 	}
 
-	public String getKey() {
-		return key;
+	public Long getId() {
+		return id;
+	}
+
+	public String getI2b2Key() {
+		return i2b2Key;
 	}
 
 	public int getLevel() {
@@ -57,8 +61,8 @@ public final class I2b2Concept {
 		return isSynonym;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setI2b2Key(String i2b2Key) {
+		this.i2b2Key = i2b2Key;
 	}
 
 	public void setLevel(Integer level) {
@@ -78,21 +82,21 @@ public final class I2b2Concept {
 	}
 
 	public int hashCode() {
-		return key.hashCode();
+		return i2b2Key.hashCode();
 	}
 
 	public boolean equals(Object o) {
 		if (o instanceof I2b2Concept) {
 			I2b2Concept c = (I2b2Concept) o;
-			return c.getKey().equals(this.getKey());
+			return c.getI2b2Key().equals(this.getI2b2Key());
 		}
 		return false;
 	}
 
 	public String toString() {
 		StringBuilder result = new StringBuilder("{");
-		result.append("key: ");
-		result.append(getKey());
+		result.append("i2b2Key: ");
+		result.append(getI2b2Key());
 		result.append(", level: ");
 		result.append(getLevel());
 		result.append(", tableName: ");
