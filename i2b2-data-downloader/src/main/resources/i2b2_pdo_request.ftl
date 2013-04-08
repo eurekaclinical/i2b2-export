@@ -59,12 +59,12 @@
 			</input_list>
 			<filter_list>
 				<#list items as item>
-				<panel name="${item.key}">
+				<panel name="${item.i2b2Key}">
 					<panel_number>0</panel_number>
 					<panel_accuracy_scale>0</panel_accuracy_scale>
 					<invert>0</invert>
 					<item>
-						<item_key>${item.key}</item_key>
+						<item_key>${item.i2b2Key}</item_key>
 						<hlevel>${item.level}</hlevel>
 						<dim_tablename>${item.tableName}</dim_tablename>
 						<dim_dimcode>${item.dimensionCode}</dim_dimcode>
