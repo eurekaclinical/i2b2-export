@@ -2,8 +2,8 @@ package edu.emory.cci.aiw.i2b2datadownloader.comm;
 
 public final class SummarizedRequest {
 
+	private Long configId;
 	private I2b2AuthMetadata i2b2AuthMetadata;
-	private String configName;
 	private Integer patientSetCollId;
 
 	public I2b2AuthMetadata getI2b2AuthMetadata() {
@@ -14,12 +14,12 @@ public final class SummarizedRequest {
 		this.i2b2AuthMetadata = i2b2AuthMetadata;
 	}
 
-	public String getConfigName() {
-		return configName;
+	public Long getConfigId() {
+		return configId;
 	}
 
-	public void setConfigName(String configName) {
-		this.configName = configName;
+	public void setConfigId(Long configId) {
+		this.configId = configId;
 	}
 
 	public Integer getPatientSetCollId() {
