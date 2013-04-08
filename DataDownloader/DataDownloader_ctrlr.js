@@ -88,6 +88,7 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 	$("DataDownloader-addColumnBtn").addEventListener("click", i2b2.DataDownloader.addColumnConfig);
 	$("DataDownloader-previewBtn").addEventListener("click", i2b2.DataDownloader.generatePreview);
 	$("DataDownloader-saveonly").addEventListener("click", i2b2.DataDownloader.saveConfiguration);
+	$("DataDownloader-export").addEventListener("click", i2b2.DataDownloader.exportData);
 
 	
 	// manage YUI tabs
@@ -107,6 +108,29 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 	});
 
 	YAHOO.util.Event.addListener(window, 'resize', i2b2.DataDownloader.resizeDataTable);
+};
+
+i2b2.DataDownloader.populateConfigList = function() {
+	var select = $("DataDownloader-loadConfig");
+	new Ajax.Request("http://192.168.86.128/DataDownloader/rest/config/getAll", {
+		method: 'POST',
+		contentType: 'application/json',
+		postBody: Object.toJSON(i2b2.DataDownloader.createI2b2AuthRequestObject()),
+		requestHeaders: {"Accept": "application/json"},
+		asynchronous: true,
+		onSuccess: function(response) {
+			var configSummaries = response.responseJSON;
+			for (var i = 0; i < select.children.length; i++) {
+				select.removeChild(sel.children[i]);
+			}
+			configSummaries.forEach(function(config) {
+				var opt = document.createElement("option");
+				opt.value = config.configurationId;
+				opt.text = config.configurationName;
+				select.appendChild(opt);
+			});
+		}	
+	});
 };
 
 i2b2.DataDownloader.setSaveConfigName = function(evt) {
@@ -484,13 +508,16 @@ i2b2.DataDownloader.generatePreview = function() {
 	var previewStr = '';
 	switch (i2b2.DataDownloader.model.configuration.rowDimension) {
 		case "patient":
-			previewStr += 'PatientID';
+			previewStr += 'Patient_id';
 			break;
 		case "visit":
-			previewStr += 'VisitID';
+		    previewStr += 'Patient_id'
+			previewStr += 'Visit_id';
+			previewStr += 'Visit_start';
+			previewStr += 'Visit_end';
 			break;
 		case "provider":
-			previewStr += 'ProviderID';
+			previewStr += 'Provider_name';
 			break;
 	}
 	i2b2.DataDownloader.model.configuration.columnConfigs.forEach(function(config) {
@@ -549,48 +576,134 @@ i2b2.DataDownloader.prsDropped = function(sdxData) {
 	i2b2.DataDownloader.model.dirtyResultsData = true;		
 };
 
-i2b2.DataDownloader.saveConfiguration = function() {
-	i2b2.DataDownloader.assembleConfig();
-	var rawConfig = i2b2.DataDownloader.model.configuration;
-	var request = {};
-	request.i2b2AuthMetadata = {domain: i2b2.h.getDomain(), username: i2b2.h.getUser(), passwordNode: i2b2.h.getPass(), projectId: i2b2.h.getProject()};
-	var config = {};
-	config.name = $("DataDownloader-saveas").value;
-	config.rowDimension = rawConfig.rowDimension.toUpperCase();
-	config.whitespaceReplacement = rawConfig.whitespace;
-	config.separator = rawConfig.delimiter;
-	config.missingValue = rawConfig.missing;
-	config.columnConfigs = [];
-	
-	var order = 1;
-	rawConfig.columnConfigs.forEach(function(colConfigRaw) {
-		if (colConfigRaw.conceptRecord) {
-			var columnConfig = {};
-			columnConfig.order = order;
-			order += 1;
-			columnConfig.columnName = colConfigRaw.columnName;
-			columnConfig.displayFormat = colConfigRaw.displayFormat.toUpperCase();
-			if (colConfigRaw.displayFormat === 'value') {
-				var howMany = colConfigRaw.howMany;
-				if (!howMany || howMany < 1) {
-					howMany = 1;
-				}
-				columnConfig.howMany = howMany;
-				columnConfig.includeTimeRange = colConfigRaw.includeTimeRange === "on";
-				columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
-			} else if (colConfigRaw.displayFormat === 'aggregation') {
-				columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
-				columnConfig.aggregation = colConfigRaw.aggregation.toUpperCase();
-			}
-			columnConfig.i2b2Concept = {key: colConfigRaw.conceptRecord.origData.key,
-					level: parseInt(colConfigRaw.conceptRecord.origData.level),
-					tableName: colConfigRaw.conceptRecord.origData.table_name,
-					dimensionCode: colConfigRaw.conceptRecord.origData.dim_code,
-					isSynonym: "N"};
-			
-			config.columnConfigs.push(columnConfig);	
-		}
-	});	
+i2b2.DataDownloader.createI2b2AuthRequestObject = function() {
+	return {
+		domain: i2b2.h.getDomain(), 
+		username: i2b2.h.getUser(), 
+		passwordNode: i2b2.h.getPass(), 
+		projectId: i2b2.h.getProject()
+		};
+};
 
-	request.config = config;
+i2b2.DataDownloader.createConfigRequestObject = function() {
+	i2b2.DataDownloader.assembleConfig();
+        var rawConfig = i2b2.DataDownloader.model.configuration;
+        var request = {};
+        request.i2b2AuthMetadata = i2b2.DataDownloader.createI2b2AuthRequestObject();
+        var config = {};
+        config.name = $("DataDownloader-saveas").value;
+        config.rowDimension = rawConfig.rowDimension.toUpperCase();
+        config.whitespaceReplacement = rawConfig.whitespace;
+        config.separator = rawConfig.delimiter;
+        config.missingValue = rawConfig.missing;
+        config.columnConfigs = [];
+
+        var order = 1;
+        rawConfig.columnConfigs.forEach(function(colConfigRaw) {
+                if (colConfigRaw.conceptRecord) {
+                        var columnConfig = {};
+                        columnConfig.columnOrder = order;
+                        order += 1;
+                        columnConfig.columnName = colConfigRaw.columnName;
+                        columnConfig.displayFormat = colConfigRaw.displayFormat.toUpperCase();
+                        if (colConfigRaw.displayFormat === 'value') {
+                                var howMany = colConfigRaw.howMany;
+                                if (!howMany || howMany < 1) {
+                                        howMany = 1;
+                                }
+                                columnConfig.howMany = howMany;
+                                columnConfig.includeTimeRange = colConfigRaw.includeTimeRange === "on";
+                                columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
+                        } else if (colConfigRaw.displayFormat === 'aggregation') {
+                                columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
+                                columnConfig.aggregation = colConfigRaw.aggregation.toUpperCase();
+                        }                                                       
+                        columnConfig.i2b2Concept = {i2b2Key: colConfigRaw.conceptRecord.origData.key,
+                                        level: parseInt(colConfigRaw.conceptRecord.origData.level),
+                                        tableName: colConfigRaw.conceptRecord.origData.table_name,
+                                        dimensionCode: colConfigRaw.conceptRecord.origData.dim_code,
+                                        isSynonym: "N"};         
+                                                                     
+                        config.columnConfigs.push(columnConfig);        
+                }
+        });
+
+        request.outputConfiguration = config;
+
+	return request;
+}
+
+i2b2.DataDownloader.saveConfiguration = function() {
+	new Ajax.Request('http://192.168.86.128/DataDownloader/rest/config/save', {
+		method: 'POST',
+		contentType: 'application/json',
+		postBody: Object.toJSON(i2b2.DataDownloader.createConfigRequestObject()),
+		requestHeaders: {"Accept": "application/json"},
+		asynchronous: true,
+		onSuccess: function(response) {
+			alert("Saved!");
+		}
+	});
+};
+
+i2b2.DataDownloader.exportData = function() {
+	new Ajax.Request('http://192.168.86.128/DataDownloader/rest/download/configDetails', {
+		method: 'POST',
+		contentType: 'application/json',
+		postBody: Object.toJSON(i2b2.DataDownloader.createConfigRequestObject()),
+		requestHeaders: {"Accept": "application/json"},
+		asynchronous: true,
+		onSuccess: function (response) {
+			var downloadForm = document.createElement("form");
+			downloadForm.id = "DataDownloader-downloadForm";
+			downloadForm.display = "none";
+
+			var i2b2Domain = document.createElement("input");
+			i2b2Domain.type = "hidden";
+			i2b2Domain.name = "i2b2-domain";
+			i2b2Domain.value = i2b2.h.getDomain();
+			downloadForm.appendChild(i2b2Domain);
+
+			var i2b2User = document.createElement("input");
+			i2b2User.type = "hidden";
+			i2b2User.name = "i2b2-user";
+			i2b2User.value = i2b2.h.getUser();
+			downloadForm.appendChild(i2b2User);
+	
+			var i2b2Pass = document.createElement("input");
+			i2b2Pass.type = "hidden";
+			i2b2Pass.name = "i2b2-pass";
+			i2b2Pass.value = i2b2.h.getPass();
+			downloadForm.appendChild(i2b2Pass);
+
+			var i2b2Project = document.createElement("input");
+			i2b2Project.type = "hidden";
+			i2b2Project.name = "i2b2-project";
+			i2b2Project.value = i2b2.h.getProject();
+			downloadForm.appendChild(i2b2Project);
+
+			var configId = document.createElement("input");
+			configId.type = "hidden";
+			configId.name = "config-id";
+			configId.value = response.responseJSON;
+			downloadForm.appendChild(configId);
+
+			var patientSetCollId = document.createElement("input");
+			patientSetCollId.type = "hidden";
+			patientSetCollId.name = "patient-set-coll-id";
+			patientSetCollId.value = parseInt(i2b2.DataDownloader.model.prsRecord.origData.PRS_id); 
+			downloadForm.appendChild(patientSetCollId);
+
+			document.getElementById("DataDownloader-saveRunPanel").appendChild(downloadForm);
+			var f = $$("FORM#DataDownloader-downloadForm")[0];
+			f.action = "http://192.168.86.128/DataDownloader/rest/download/configId"
+			f.method = "POST";			
+			f.submit();
+			
+		}
+	});
+};
+
+i2b2.DataDownloader.loadConfig = function() {
+
 };
