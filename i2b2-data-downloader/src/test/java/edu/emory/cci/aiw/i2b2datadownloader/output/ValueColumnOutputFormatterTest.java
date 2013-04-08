@@ -26,12 +26,12 @@ public class ValueColumnOutputFormatterTest {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
 		colConfig = new OutputColumnConfiguration();
-		colConfig.setOrder(0);
+		colConfig.setColumnOrder(0);
 		colConfig.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
 
 		config = new OutputConfiguration();
 		config.setName("foo");
-		config.setUserId(1L);
+		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setSeparator(",");
 		config.setMissingValue("(NULL)");

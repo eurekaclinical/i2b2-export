@@ -25,7 +25,7 @@ public class ProviderDataRowOutputFormatterTest {
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
 		config = new OutputConfiguration();
-		config.setUserId(1L);
+		config.setUsername("i2b2");
 		config.setName("foo");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setMissingValue("(NULL)");
@@ -58,7 +58,7 @@ public class ProviderDataRowOutputFormatterTest {
 		patient.addEvent(e3);
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
-		colConfig1.setOrder(1);
+		colConfig1.setColumnOrder(1);
 		I2b2Concept concept1 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
 						"MyConcept3", "N");
@@ -68,7 +68,7 @@ public class ProviderDataRowOutputFormatterTest {
 		config.getColumnConfigs().add(colConfig1);
 
 		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
-		colConfig2.setOrder(2);
+		colConfig2.setColumnOrder(2);
 		I2b2Concept concept2 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
 						"MyConcept2", "N");
@@ -81,7 +81,7 @@ public class ProviderDataRowOutputFormatterTest {
 		config.getColumnConfigs().add(colConfig2);
 
 		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
-		colConfig3.setOrder(3);
+		colConfig3.setColumnOrder(3);
 		I2b2Concept concept3 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
 						"MyConcept1", "N");
