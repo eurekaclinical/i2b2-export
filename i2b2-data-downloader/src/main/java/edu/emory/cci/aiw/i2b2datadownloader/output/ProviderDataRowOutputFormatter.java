@@ -30,7 +30,7 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 		Collection<Observation> result = new ArrayList<Observation>();
 
 		for (Observation o : provider.getObservations()) {
-			if (o.getConceptPath().equals(i2b2Concept.getKey())) {
+			if (o.getConceptPath().equals(i2b2Concept.getI2b2Key())) {
 				result.add(o);
 			}
 		}

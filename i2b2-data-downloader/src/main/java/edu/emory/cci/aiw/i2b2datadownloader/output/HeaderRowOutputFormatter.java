@@ -30,7 +30,9 @@ final class HeaderRowOutputFormatter {
 				result.add(0, "Patient_id"); // patient ID always goes first
 				break;
 			default:
-				throw new RuntimeException("row dimension not provided: userId: " + outputConfiguration.getUserId() + ", name: " + outputConfiguration.getName());
+				throw new RuntimeException("row dimension not provided: user:" +
+						" " + outputConfiguration.getUsername() + ", " +
+						"name: " + outputConfiguration.getName());
 		}
 		Collections.sort(outputConfiguration.getColumnConfigs());
 		for (int i = 0; i < outputConfiguration.getColumnConfigs().size(); i++) {
