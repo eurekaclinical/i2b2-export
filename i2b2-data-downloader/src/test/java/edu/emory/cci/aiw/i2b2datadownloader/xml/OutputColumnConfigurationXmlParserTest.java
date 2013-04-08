@@ -26,7 +26,7 @@ public class OutputColumnConfigurationXmlParserTest {
 		Document d = XmlUtil.xmlStringToDocument(colConfigXml);
 		OutputColumnConfiguration colConfig = new OutputColumnConfigurationXmlParser(d).parse();
 
-		Assert.assertEquals(2, colConfig.getOrder().intValue());
+		Assert.assertEquals(2, colConfig.getColumnOrder().intValue());
 		Assert.assertEquals("\\\\i2b2\\Concepts\\MyConcept", colConfig.getI2b2Concept());
 		Assert.assertEquals("My Concept", colConfig.getColumnName());
 	}
@@ -145,7 +145,7 @@ public class OutputColumnConfigurationXmlParserTest {
 		Document d = XmlUtil.xmlStringToDocument(colConfigXml);
 		OutputColumnConfiguration colConfig = new OutputColumnConfigurationXmlParser(d).parse();
 
-		Assert.assertEquals(Integer.MAX_VALUE, colConfig.getOrder().intValue());
+		Assert.assertEquals(Integer.MAX_VALUE, colConfig.getColumnOrder().intValue());
 		Assert.assertEquals(1, colConfig.getHowMany().intValue());
 		Assert.assertEquals(Boolean.FALSE, colConfig.getIncludeUnits());
 		Assert.assertEquals(Boolean.FALSE, colConfig.getIncludeTimeRange());
