@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,13 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.List;
 
 /**
  *
  */
 @Entity
-@Table(name = "output_configurations")
+@Table(name = "output_configurations", uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"username", "name"})})
 public class OutputConfiguration {
 
 	@Id
@@ -23,7 +26,7 @@ public class OutputConfiguration {
 			generator = "OUTPUT_CONFIG_SEQ_GENERATOR")
 	private Long id;
 
-	private Long userId;
+	private String username;
 	private String name;
 
 	public static enum RowDimension {
@@ -35,15 +38,29 @@ public class OutputConfiguration {
 	private String separator;
 	private String missingValue;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OutputColumnConfiguration> columnConfigs;
 
-	public Long getUserId() {
-		return userId;
+	/*
+	 * for configurations not explicitly saved by the user
+	 * these should not be retrieved by a "get-all" query
+	 */
+	private Boolean isTemporary;
+
+	public Long getId() {
+		return id;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -93,5 +110,13 @@ public class OutputConfiguration {
 	public void setColumnConfigs(
 			List<OutputColumnConfiguration> columnConfigs) {
 		this.columnConfigs = columnConfigs;
+	}
+
+	public Boolean isTemporary() {
+		return isTemporary;
+	}
+
+	public void setTemporary(Boolean isTemporary) {
+		this.isTemporary = isTemporary;
 	}
 }
