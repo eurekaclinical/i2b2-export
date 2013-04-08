@@ -3,17 +3,24 @@ package edu.emory.cci.aiw.i2b2datadownloader.resource;
 import com.google.inject.Inject;
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException;
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.OutputConfigurationSummary;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.DeleteRequest;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.LoadRequest;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.SaveRequest;
 import edu.emory.cci.aiw.i2b2datadownloader.dao.OutputConfigurationDao;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2UserAuthenticator;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/config")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,25 +35,36 @@ public class OutputConfigurationResource {
 	}
 
 	/**
-	 * Saves the output configuration as specified in the given XML.
+	 * Saves the output configuration as specified in the given request.
 	 *
-	 * @param authMetadata the authentication data i2b2 needs
-	 * @param config       the output configuration to save
+	 * @param request the save request, containing the configuration to save
+	 *                   along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
 	 * @throws edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException
 	 *
 	 */
 	@POST
 	@Path("/save")
-	public Response saveConfiguration(I2b2AuthMetadata authMetadata,
-									  OutputConfiguration config) throws
+	public Response saveConfiguration(SaveRequest request) throws
 			DataDownloaderException {
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
+		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
-				return Response.status(200).build();
+				request.getOutputConfiguration().setUsername(request
+						.getI2b2AuthMetadata().getUsername());
+				request.getOutputConfiguration().setTemporary(Boolean.FALSE);
+				OutputConfiguration config = this.dao
+						.getByUsernameAndConfigName(request
+								.getI2b2AuthMetadata().getUsername(),
+								request.getOutputConfiguration().getName());
+				if (config != null) {
+					request.getOutputConfiguration().setId(config.getId());
+				}
+				this.dao.save(request.getOutputConfiguration());
+
+				return Response.ok().build();
 			} else {
-				return Response.status(300).build();
+				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (DataDownloaderXmlException e) {
 			throw new DataDownloaderException(e);
@@ -54,26 +72,84 @@ public class OutputConfigurationResource {
 	}
 
 	/**
-	 * Loads the output configuration with the name given n the specified XML.
+	 * Loads the output configuration specified in the given request.
 	 *
-	 * @param authMetadata the authentication data i2b2 needs
-	 * @param configId     the id of the output configuration to load
-	 *                     *
+	 * @param request contains the information needed to complete the load
+	 *                   operation, including the configuration ID and the
+	 *                   i2b2 authentication tokens
+	 *
 	 * @return the output configuration or a status code indicating failure
 	 * @throws DataDownloaderException
 	 */
 	@POST
 	@Path("/load")
-	public Response loadConfiguration(I2b2AuthMetadata authMetadata,
-									  String configId)
+	public Response loadConfiguration(LoadRequest request)
 			throws
 			DataDownloaderException {
+		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getAuthMetadata());
+		try {
+			if (ua.authenticateUser()) {
+				OutputConfiguration config = this.dao
+						.getByUsernameAndConfigName(request.getAuthMetadata()
+								.getUsername(),
+								request.getOutputConfigurationName());
+				return Response.ok().entity(config).build();
+			} else {
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			}
+		} catch (DataDownloaderXmlException e) {
+			throw new DataDownloaderException(e);
+		}
+	}
+
+	@POST
+	@Path("/getAll")
+	public Response getConfigurationsByUser(I2b2AuthMetadata
+															authMetadata) throws DataDownloaderException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
 		try {
 			if (ua.authenticateUser()) {
-				return Response.status(200).build();
+				List<OutputConfigurationSummary> result = new ArrayList<OutputConfigurationSummary>();
+				List<OutputConfiguration> configs = this.dao.getAllByUsername
+						(authMetadata.getUsername());
+				for (OutputConfiguration config : configs) {
+					result.add(new OutputConfigurationSummary(config.getId(),
+							config.getName()));
+				}
+
+				return Response.ok().entity(result).build();
 			} else {
-				return Response.status(300).build();
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			}
+		} catch (DataDownloaderXmlException e) {
+			throw new DataDownloaderException(e);
+		}
+	}
+
+	/**
+	 * Deletes the output configurations specified in the given request.
+	 *
+	 * @param request contains the information needed to complete the delete
+	 *                   operation, including the configuration ID and the
+	 *                   i2b2 authentication tokens
+	 * @return a status code indicating success or failure
+	 * @throws DataDownloaderException
+	 */
+	@DELETE
+	@Path("/delete")
+	public Response deleteConfiguration(DeleteRequest request) throws DataDownloaderException {
+		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request
+				.getAuthMetadata());
+		try {
+			if (ua.authenticateUser()) {
+				OutputConfiguration config = this.dao
+						.getByUsernameAndConfigName(
+								request.getAuthMetadata().getUsername(),
+								request.getOutputConfigurationName());
+				this.dao.delete(config);
+				return Response.ok().build();
+			} else {
+				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (DataDownloaderXmlException e) {
 			throw new DataDownloaderException(e);

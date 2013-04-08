@@ -5,7 +5,6 @@ import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException;
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.DetailedRequest;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.SummarizedRequest;
 import edu.emory.cci.aiw.i2b2datadownloader.dao.OutputConfigurationDao;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
@@ -17,6 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -41,19 +41,52 @@ public final class DataResource {
 	 * Fetches the requested data from i2b2 and sends an output file back to the
 	 * client formatted according to the configuration indicated by the configuration ID in the request.
 	 *
-	 * @param request the request object, containing the i2b2 authentication tokens, configuration ID, and i2b2 patient set
+	 * @param i2b2Domain
+	 * @param i2b2Username
+	 * @param i2b2PasswordNode
+	 * @param i2b2ProjectId
+	 * @param outputConfigId
+	 * @param i2b2PatientSetCollId
 	 * @return the formatted output or a status code indicating failure
 	 * @throws DataDownloaderException if something goes wrong
 	 */
 	@POST
 	@Path("/configId")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response generateOutputFromConfigId(SummarizedRequest request) throws DataDownloaderException {
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
+	@Produces("text/csv")
+	public Response generateOutputFromConfigId(@FormParam("i2b2-domain")
+											   String i2b2Domain,
+											   @FormParam("i2b2-user") String
+													   i2b2Username,
+											   @FormParam("i2b2-pass") String
+													   i2b2PasswordNode,
+											   @FormParam("i2b2-project")
+											   String i2b2ProjectId,
+											   @FormParam("config-id")
+											   Long outputConfigId,
+											   @FormParam
+													   ("patient-set-coll-id") Integer i2b2PatientSetCollId)
+			throws
+			DataDownloaderException {
+		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
+		authMetadata.setDomain(i2b2Domain);
+		authMetadata.setUsername(i2b2Username);
+		authMetadata.setPasswordNode(i2b2PasswordNode);
+		authMetadata.setProjectId(i2b2ProjectId);
+		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
 		try {
 			if (ua.authenticateUser()) {
-				return Response.ok().build();
+				OutputConfiguration outputConfig = this.dao.getById
+						(outputConfigId);
+				String output = new DataOutputFormatter(outputConfig,
+						new I2b2PdoRetriever(authMetadata, i2b2PatientSetCollId).
+								retrieve(extractConcepts(outputConfig))).format();
+				if (outputConfig.isTemporary()) {
+					this.dao.delete(outputConfig);
+				}
+				return Response.ok(output, "text/csv").header
+						("Content-Disposition",	"attachment;" +
+								"filename=i2b2PatientData.csv")
+						.build();
 			} else {
 				return Response.status(300).build();
 			}
@@ -75,18 +108,18 @@ public final class DataResource {
 	@POST
 	@Path("/configDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({"text/csv"})
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response generateOutputFromConfigDetails(DetailedRequest request) throws DataDownloaderException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
-				String output = new DataOutputFormatter(request.getOutputConfiguration(),
-						new I2b2PdoRetriever(request.getI2b2AuthMetadata(), request.getPatientSetCollId()).
-								retrieve(extractConcepts(request.getOutputConfiguration()))).format();
-				return Response.ok(output, "text/csv").header
-						("Content-Disposition",	"attachment;" +
-								"filename=i2b2PatientData.csv")
-						.build();
+				request.getOutputConfiguration().setUsername(request
+						.getI2b2AuthMetadata().getUsername());
+				request.getOutputConfiguration().setTemporary(Boolean.TRUE);
+				this.dao.save(request.getOutputConfiguration());
+				return Response.ok().entity(request.getOutputConfiguration()
+						.getId()).build();
+
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
@@ -117,7 +150,7 @@ public final class DataResource {
 		authMetadata.setProjectId("Demo2");
 
 		OutputConfiguration config = new OutputConfiguration();
-		config.setUserId(1L);
+		config.setUsername("i2b2");
 		config.setName("foo");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setMissingValue("(NULL)");
@@ -126,7 +159,7 @@ public final class DataResource {
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
-		colConfig1.setOrder(1);
+		colConfig1.setColumnOrder(1);
 		I2b2Concept concept1 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
 						"MyConcept3", "N");
@@ -135,7 +168,7 @@ public final class DataResource {
 		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
 
 		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
-		colConfig2.setOrder(2);
+		colConfig2.setColumnOrder(2);
 		I2b2Concept concept2 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
 						"MyConcept1", "N");
@@ -147,7 +180,7 @@ public final class DataResource {
 		colConfig2.setIncludeTimeRange(false);
 
 		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
-		colConfig3.setOrder(3);
+		colConfig3.setColumnOrder(3);
 		I2b2Concept concept3 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
 						"MyConcept2", "N");
@@ -158,7 +191,7 @@ public final class DataResource {
 		colConfig3.setIncludeUnits(true);
 
 		OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
-		colConfig4.setOrder(4);
+		colConfig4.setColumnOrder(4);
 		I2b2Concept concept4 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept4", 2, "concept_dimension",
 						"MyConcept4", "N");
@@ -170,7 +203,7 @@ public final class DataResource {
 		colConfig4.setHowMany(2);
 
 		OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
-		colConfig5.setOrder(5);
+		colConfig5.setColumnOrder(5);
 		I2b2Concept concept5 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept5", 2, "concept_dimension",
 						"MyConcept5", "N");
