@@ -8,8 +8,7 @@
  * updated 11-06-08: 	Initial Launch [Nick Benik] 
  */
 
-i2b2.DataDownloader.proxyUrl = '/HelloI2b2Rest/rest/hello';
-i2b2.DataDownloader.initialReq = 150;
+i2b2.DataDownloader.SERVICE_URL = 'http://192.168.232.128/DataDownloader/rest';
 
 i2b2.DataDownloader.Init = function(loadedDiv) {
 	// register DIV as valid DragDrop target for Patient Record Sets (PRS) objects
@@ -81,7 +80,7 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 	// initialize the first configuration
 	i2b2.DataDownloader.initColumnConfig('1');
 
-	$("DataDownloader-loadConfig").addEventListener("change", i2b2.DataDownloader.setSaveConfigName);
+	$("DataDownloader-userConfigsList").addEventListener("change", i2b2.DataDownloader.userConfigSelected);
 	$("DataDownloader-upBtn-1").addEventListener("click", i2b2.DataDownloader.moveUp);
 	$("DataDownloader-dnBtn-1").addEventListener("click", i2b2.DataDownloader.moveDown);
 	$("DataDownloader-dispfmt-select-1").addEventListener("change", i2b2.DataDownloader.onDispFmtChange);
@@ -89,8 +88,11 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 	$("DataDownloader-previewBtn").addEventListener("click", i2b2.DataDownloader.generatePreview);
 	$("DataDownloader-saveonly").addEventListener("click", i2b2.DataDownloader.saveConfiguration);
 	$("DataDownloader-export").addEventListener("click", i2b2.DataDownloader.exportData);
+	$("DataDownloader-deleteConfigBtn").addEventListener("click", i2b2.DataDownloader.deleteConfig);
 
-	
+	// populate the list of configurations
+	i2b2.DataDownloader.populateConfigList();
+
 	// manage YUI tabs
 	this.yuiTabs = new YAHOO.widget.TabView("DataDownloader-TABS", {activeIndex:0});
 	this.yuiTabs.on('activeTabChange', function(ev) { 
@@ -111,17 +113,17 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 };
 
 i2b2.DataDownloader.populateConfigList = function() {
-	var select = $("DataDownloader-loadConfig");
-	new Ajax.Request("http://192.168.86.128/DataDownloader/rest/config/getAll", {
+	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + "/config/getAll", {
 		method: 'POST',
 		contentType: 'application/json',
 		postBody: Object.toJSON(i2b2.DataDownloader.createI2b2AuthRequestObject()),
 		requestHeaders: {"Accept": "application/json"},
 		asynchronous: true,
 		onSuccess: function(response) {
+			var select = $("DataDownloader-userConfigsList");
 			var configSummaries = response.responseJSON;
-			for (var i = 0; i < select.children.length; i++) {
-				select.removeChild(sel.children[i]);
+			while (select.hasChildNodes()) {
+				select.removeChild(select.firstChild);
 			}
 			configSummaries.forEach(function(config) {
 				var opt = document.createElement("option");
@@ -133,8 +135,15 @@ i2b2.DataDownloader.populateConfigList = function() {
 	});
 };
 
-i2b2.DataDownloader.setSaveConfigName = function(evt) {
-	$("DataDownloader-saveas").value = evt.target.value;
+i2b2.DataDownloader.userConfigSelected = function(evt) {
+	$("DataDownloader-loadConfigBtn").disabled = false;
+	$("DataDownloader-deleteConfigBtn").disabled = false;
+	for (var i = 0; i < evt.target.options.length; i++) {
+		if (evt.target.options[i].selected === true) {
+			$("DataDownloader-saveas").value = evt.target.options[i].text;
+			return;
+		}
+	}	
 };
 
 i2b2.DataDownloader.initColumnConfig = function(index) {
@@ -634,20 +643,24 @@ i2b2.DataDownloader.createConfigRequestObject = function() {
 }
 
 i2b2.DataDownloader.saveConfiguration = function() {
-	new Ajax.Request('http://192.168.86.128/DataDownloader/rest/config/save', {
-		method: 'POST',
-		contentType: 'application/json',
-		postBody: Object.toJSON(i2b2.DataDownloader.createConfigRequestObject()),
-		requestHeaders: {"Accept": "application/json"},
-		asynchronous: true,
-		onSuccess: function(response) {
-			alert("Saved!");
-		}
-	});
+	if ($("DataDownloader-saveas").value.length <= 0) {
+		alert("Please name this configuration");
+	} else {
+		new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/save', {
+			method: 'POST',
+			contentType: 'application/json',
+			postBody: Object.toJSON(i2b2.DataDownloader.createConfigRequestObject()),
+			requestHeaders: {"Accept": "application/json"},
+			asynchronous: true,
+			onSuccess: function(response) {
+				i2b2.DataDownloader.populateConfigList();
+			}
+		});
+	}
 };
 
 i2b2.DataDownloader.exportData = function() {
-	new Ajax.Request('http://192.168.86.128/DataDownloader/rest/download/configDetails', {
+	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/download/configDetails', {
 		method: 'POST',
 		contentType: 'application/json',
 		postBody: Object.toJSON(i2b2.DataDownloader.createConfigRequestObject()),
@@ -696,7 +709,7 @@ i2b2.DataDownloader.exportData = function() {
 
 			document.getElementById("DataDownloader-saveRunPanel").appendChild(downloadForm);
 			var f = $$("FORM#DataDownloader-downloadForm")[0];
-			f.action = "http://192.168.86.128/DataDownloader/rest/download/configId"
+			f.action = i2b2.DataDownloader.SERVICE_URL + "/download/configId"
 			f.method = "POST";			
 			f.submit();
 			
@@ -706,4 +719,17 @@ i2b2.DataDownloader.exportData = function() {
 
 i2b2.DataDownloader.loadConfig = function() {
 
+};
+
+i2b2.DataDownloader.deleteConfig = function() {
+	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
+		method: 'DELETE',
+		contentType: 'application/json',
+		postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
+		requestHeaders: {"Accept": "application/json"},
+		asynchronous: true,
+		onSuccess: function(response) {
+			i2b2.DataDownloader.populateConfigList();
+		}
+	});
 };

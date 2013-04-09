@@ -17,12 +17,12 @@
 							<div class="DataDownloader-stepContent" style="margin-bottom: 20px;">
 							     <h1>Step 1: Configure Export Format</h1>
 								<div>
-									<label for="DataDownloader-loadConfig">Use an existing configuration:</label>
-									<select id="DataDownloader-loadConfig" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;">
+									<label for="DataDownloader-userConfigsList">Use an existing configuration:</label>
+									<select id="DataDownloader-userConfigsList" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;">
 									</select>
 									<div id="DataDownloader-loadDelBtnPanel" style="display: inline;">
-										<button id="DataDownloader-loadConfig">Load</button>
-										<button id="DataDownloader-deleteConfig">Delete</button>
+										<button id="DataDownloader-loadConfigBtn" disabled>Load</button>
+										<button id="DataDownloader-deleteConfigBtn" disabled>Delete</button>
 									</div>
 								</div>
 								<p>Or define a new configuration using the table below. You can also edit an existing configuration.</p>
@@ -121,7 +121,7 @@
 					<div style="margin-bottom: 10px;">
 						<div class="droptrgtlbl">Patient Set:</div>
 						<div class="droptrgt SDX-PRS" id="DataDownloader-PRSDROP">Drop a Patient Set here</div>
-						<button id="DataDownloader-export">Export Patient Set</button>
+						<button id="DataDownloader-export" disabled>Export Patient Set</button>
 					</div>
 				</div>
 			</div>
