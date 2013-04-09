@@ -135,19 +135,23 @@ public class OutputConfigurationResource {
 	 * @return a status code indicating success or failure
 	 * @throws DataDownloaderException
 	 */
-	@DELETE
+    @POST
 	@Path("/delete")
 	public Response deleteConfiguration(DeleteRequest request) throws DataDownloaderException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request
 				.getAuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
-				OutputConfiguration config = this.dao
-						.getByUsernameAndConfigName(
-								request.getAuthMetadata().getUsername(),
-								request.getOutputConfigurationName());
-				this.dao.delete(config);
-				return Response.ok().build();
+				OutputConfiguration config = this.dao.getById(request.getOutputConfigurationId());
+                if (config != null) {
+                    if (config.getUsername().equals(request.getAuthMetadata().getUsername())) {
+                        this.dao.delete(config);
+                        return Response.ok().build();
+                    } else {
+                        return Response.status(Response.Status.UNAUTHORIZED).build();
+                    }
+                }
+                return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
