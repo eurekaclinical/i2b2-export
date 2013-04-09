@@ -13,7 +13,6 @@ import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2UserAuthenticator;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -90,10 +89,16 @@ public class OutputConfigurationResource {
 		try {
 			if (ua.authenticateUser()) {
 				OutputConfiguration config = this.dao
-						.getByUsernameAndConfigName(request.getAuthMetadata()
-								.getUsername(),
-								request.getOutputConfigurationName());
-				return Response.ok().entity(config).build();
+						.getById(request.getOutputConfigurationId());
+                if (config != null) {
+                    if (config.getUsername().equals(request.getAuthMetadata().getUsername())) {
+                        return Response.ok().entity(config).build();
+                    } else {
+                        return Response.status(Response.Status.UNAUTHORIZED).build();
+                    }
+                } else {
+                    return Response.status(Response.Status.NOT_FOUND).build();
+                }
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
@@ -113,8 +118,10 @@ public class OutputConfigurationResource {
 				List<OutputConfiguration> configs = this.dao.getAllByUsername
 						(authMetadata.getUsername());
 				for (OutputConfiguration config : configs) {
-					result.add(new OutputConfigurationSummary(config.getId(),
-							config.getName()));
+                    if (config.getUsername().equals(authMetadata.getUsername())) {
+                        result.add(new OutputConfigurationSummary(config.getId(),
+                                config.getName()));
+                    }
 				}
 
 				return Response.ok().entity(result).build();
