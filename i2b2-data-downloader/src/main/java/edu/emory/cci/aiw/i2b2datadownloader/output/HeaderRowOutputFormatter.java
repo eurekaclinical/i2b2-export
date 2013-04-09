@@ -38,8 +38,11 @@ final class HeaderRowOutputFormatter {
 		for (int i = 0; i < outputConfiguration.getColumnConfigs().size(); i++) {
 			OutputColumnConfiguration colConfig = outputConfiguration
 					.getColumnConfigs().get(i);
-			String baseColName = colConfig.getColumnName().replaceAll("\\s",
-					outputConfiguration.getWhitespaceReplacement());
+            String baseColName = colConfig.getColumnName();
+            if (outputConfiguration.getWhitespaceReplacement() != null && !outputConfiguration.getWhitespaceReplacement().equals("")) {
+                baseColName = colConfig.getColumnName().replaceAll("\\s",
+                        outputConfiguration.getWhitespaceReplacement());
+            }
 			switch (colConfig.getDisplayFormat()) {
 				case EXISTENCE:
 					result.add(baseColName);
