@@ -3,7 +3,7 @@ package edu.emory.cci.aiw.i2b2datadownloader.comm;
 public class DeleteRequest {
 
 	private I2b2AuthMetadata authMetadata;
-	private String outputConfigurationName;
+	private Long outputConfigurationId;
 
 	public I2b2AuthMetadata getAuthMetadata() {
 		return authMetadata;
@@ -13,11 +13,11 @@ public class DeleteRequest {
 		this.authMetadata = authMetadata;
 	}
 
-	public String getOutputConfigurationName() {
-		return outputConfigurationName;
+	public Long getOutputConfigurationId() {
+		return outputConfigurationId;
 	}
 
-	public void setOutputConfigurationName(String outputConfigurationName) {
-		this.outputConfigurationName = outputConfigurationName;
+	public void setOutputConfigurationId(Long outputConfigurationId) {
+		this.outputConfigurationId = outputConfigurationId;
 	}
 }
