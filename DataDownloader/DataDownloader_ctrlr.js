@@ -30,37 +30,8 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 			// populate the column name field with the name of the concept
 			$("DataDownloader-columnName-1").value = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
 
-			// populate the display format dropdown based on the type of concept dropped	
-			var dispFmtSel = $("DataDownloader-dispfmt-select-1");
-			while (dispFmtSel.hasChildNodes()) {
-				dispFmtSel.removeChild(dispFmtSel.lastChild);
-			}
-
-			var selectOpt = document.createElement("option");
-			selectOpt.disabled = true;
-			selectOpt.selected = true;
-			selectOpt.text = "Select one:";
-			dispFmtSel.appendChild(selectOpt);
-
-			var existOpt = document.createElement("option");
-			existOpt.value = "existence";
-			existOpt.text = "Existence";
-			
-			var valOpt = document.createElement("option");
-			valOpt.value = "value";
-			valOpt.text = "Value";
-			
-			dispFmtSel.appendChild(existOpt);
-			dispFmtSel.appendChild(valOpt);
-			
-			var lvMetaDatas = i2b2.h.XPath(sdxData.origData.xmlOrig, 'metadataxml/ValueMetadata');
-			if (lvMetaDatas.length > 0) {
-				var aggOpt = document.createElement("option");
-				aggOpt.value = "aggregation";
-				aggOpt.text = "Aggregation";
-
-				dispFmtSel.appendChild(aggOpt);
-			}
+			// populate the display format dropdown based on the type of concept dropped    
+			i2b2.DataDownloader.populateDispFmtSelect('1', sdxData);
 
 			// clear out the display format specific options
 		        $("DataDownloader-timerange-container-1").style.display = "none";
@@ -89,6 +60,7 @@ i2b2.DataDownloader.Init = function(loadedDiv) {
 	$("DataDownloader-saveonly").addEventListener("click", i2b2.DataDownloader.saveConfiguration);
 	$("DataDownloader-export").addEventListener("click", i2b2.DataDownloader.exportData);
 	$("DataDownloader-deleteConfigBtn").addEventListener("click", i2b2.DataDownloader.deleteConfig);
+	$("DataDownloader-loadConfigBtn").addEventListener("click", i2b2.DataDownloader.loadConfig);
 
 	// populate the list of configurations
 	i2b2.DataDownloader.populateConfigList();
@@ -157,15 +129,52 @@ i2b2.DataDownloader.initColumnConfig = function(index) {
 	i2b2.DataDownloader.model.configuration.columnConfigs[index].aggregation = '';
 };
 
+i2b2.DataDownloader.populateDispFmtSelect = function(index, sdxData) {
+        var dispFmtSel = $("DataDownloader-dispfmt-select-" + index);
+        while (dispFmtSel.hasChildNodes()) {
+        	dispFmtSel.removeChild(dispFmtSel.lastChild);
+        }
+
+        var selectOpt = document.createElement("option");
+        selectOpt.disabled = true;
+        selectOpt.selected = true;
+        selectOpt.text = "Select one:";
+        dispFmtSel.appendChild(selectOpt);
+
+        var existOpt = document.createElement("option");
+        existOpt.value = "existence";
+        existOpt.text = "Existence";
+
+        var valOpt = document.createElement("option");
+        valOpt.value = "value";
+        valOpt.text = "Value";
+
+        dispFmtSel.appendChild(existOpt);
+        dispFmtSel.appendChild(valOpt);
+
+        var lvMetaDatas = i2b2.h.XPath(sdxData.origData.xmlOrig, 'metadataxml/ValueMetadata');
+        if (lvMetaDatas.length > 0) {
+	        var aggOpt = document.createElement("option");
+                aggOpt.value = "aggregation";
+                aggOpt.text = "Aggregation";
+
+                dispFmtSel.appendChild(aggOpt);
+        }
+};
+
 i2b2.DataDownloader.onDispFmtChange = function(evt) {
-	var value = evt.target.value;
+	var dispFmt = evt.target.value;
 	var index = evt.target.id.split('-')[3];
-	if (value === "existence") {
+	i2b2.DataDownloader.showHideDispFmt(index, dispFmt);
+};
+
+i2b2.DataDownloader.showHideDispFmt = function(index, dispFmt) {
+	if (dispFmt === "existence") {
 		$("DataDownloader-timerange-container-" + index).style.display = "none";
 		$("DataDownloader-howmany-container-" + index).style.display = "none";
 		$("DataDownloader-units-container-" + index).style.display = "none";
 		$("DataDownloader-aggregation-container-" + index).style.display = "none";
-	} else if (value === "value") {
+	} else if (dispFmt === "value") {
 		$("DataDownloader-timerange-container-" + index).style.display = "block";
 		$("DataDownloader-timerange-container-" + index).style.marginBottom = "5px";
 		$("DataDownloader-howmany-container-" + index).style.display = "block";
@@ -176,7 +185,7 @@ i2b2.DataDownloader.onDispFmtChange = function(evt) {
 			$("DataDownloader-units-container-" + index).style.display = "none";
 		}
 		$("DataDownloader-aggregation-container-" + index).style.display = "none";
-	} else if (value === "aggregation") {
+	} else if (dispFmt === "aggregation") {
 		$("DataDownloader-timerange-container-" + index).style.display = "none";
 		$("DataDownloader-howmany-container-" + index).style.display = "none";
 		$("DataDownloader-units-container-" + index).style.display = "block";
@@ -208,8 +217,10 @@ i2b2.DataDownloader.updateColumnConfigFirstRow = function() {
 
 i2b2.DataDownloader.addColumnConfig = function() {
 	var table = $("DataDownloader-configTable");
-	i2b2.DataDownloader.addColumnConfigRow(table);
+	var newIndex = i2b2.DataDownloader.addColumnConfigRow(table);
 	i2b2.DataDownloader.updateColumnConfigFirstRow();
+	
+	return newIndex;
 };
 
 i2b2.DataDownloader.deleteBtnClickListener = function(evt) {
@@ -243,7 +254,10 @@ i2b2.DataDownloader.moveUp = function(evt) {
 };
 
 i2b2.DataDownloader.addColumnConfigRow = function(table) {
-	var index = 1 + parseInt(table.rows[table.rows.length - 1].id.split('-')[2]);
+	var index = 1;
+	if (table.rows.length > 1) {
+		index += parseInt(table.rows[table.rows.length - 1].id.split('-')[2]);
+	}
 	i2b2.DataDownloader.initColumnConfig(index);
 	var tr = table.insertRow(-1);
 	tr.id = "DataDownloader-columnConfig-" + index;
@@ -306,37 +320,8 @@ i2b2.DataDownloader.addColumnConfigRow = function(table) {
 			$("DataDownloader-columnName-" + index).value = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
 
 			// populate the display format dropdown based on the type of concept dropped	
-			var dispFmtSel = $("DataDownloader-dispfmt-select-" + index);
-			while (dispFmtSel.hasChildNodes()) {
-				dispFmtSel.removeChild(dispFmtSel.lastChild);
-			}
-
-			var selectOpt = document.createElement("option");
-			selectOpt.disabled = true;
-			selectOpt.selected = true;
-			selectOpt.text = "Select one:";
-			dispFmtSel.appendChild(selectOpt);
-
-			var existOpt = document.createElement("option");
-			existOpt.value = "existence";
-			existOpt.text = "Existence";
-			
-			var valOpt = document.createElement("option");
-			valOpt.value = "value";
-			valOpt.text = "Value";
-
-			dispFmtSel.appendChild(existOpt);
-			dispFmtSel.appendChild(valOpt);
-			
-			var lvMetaDatas = i2b2.h.XPath(sdxData.origData.xmlOrig, 'metadataxml/ValueMetadata');
-			if (lvMetaDatas.length > 0) {
-				var aggOpt = document.createElement("option");
-				aggOpt.value = "aggregation";
-				aggOpt.text = "Aggregation";
-
-				dispFmtSel.appendChild(aggOpt);
-			}
-
+			i2b2.DataDownloader.populateDispFmtSelect(index, sdxData);		
+	
 			// clear out the display format specific options
 		        $("DataDownloader-timerange-container-" + index).style.display = "none";
 			$("DataDownloader-units-container-" + index).style.display = "none";
@@ -470,7 +455,8 @@ i2b2.DataDownloader.addColumnConfigRow = function(table) {
 	optionsCell.appendChild(showTimeDiv);
 
 	tr.appendChild(optionsCell);
-	
+
+	return index;	
 };
 
 i2b2.DataDownloader.assembleColumnConfig = function(index) {
@@ -481,8 +467,8 @@ i2b2.DataDownloader.assembleColumnConfig = function(index) {
 	switch (config.displayFormat) {
 		case "value":
 			config.howMany = parseInt($("DataDownloader-howmany-" + index).value);
-			config.includeTimeRange = $("DataDownloader-timerange-" + index).value;
-			config.includeUnits = $("DataDownloader-units-" + index).value;
+			config.includeTimeRange = $("DataDownloader-timerange-" + index).checked;
+			config.includeUnits = $("DataDownloader-units-" + index).checked;
 			break;
 		case "aggregation":
 			var aggs = document.getElementsByName("aggregation-" + index);
@@ -491,7 +477,7 @@ i2b2.DataDownloader.assembleColumnConfig = function(index) {
 					config.aggregation = aggs[i].value;
 				}
 			}
-			config.includeUnits = $("DataDownloader-units-" + index).value;
+			config.includeUnits = $("DataDownloader-units-" + index).checked;
 			break;
 		default:
 			break;
@@ -621,17 +607,28 @@ i2b2.DataDownloader.createConfigRequestObject = function() {
                                         howMany = 1;
                                 }
                                 columnConfig.howMany = howMany;
-                                columnConfig.includeTimeRange = colConfigRaw.includeTimeRange === "on";
-                                columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
+                                columnConfig.includeTimeRange = colConfigRaw.includeTimeRange;
+                                columnConfig.includeUnits = colConfigRaw.includeUnits;
                         } else if (colConfigRaw.displayFormat === 'aggregation') {
-                                columnConfig.includeUnits = colConfigRaw.includeUnits === "on";
+                                columnConfig.includeUnits = colConfigRaw.includeUnits;
                                 columnConfig.aggregation = colConfigRaw.aggregation.toUpperCase();
-                        }                                                       
-                        columnConfig.i2b2Concept = {i2b2Key: colConfigRaw.conceptRecord.origData.key,
-                                        level: parseInt(colConfigRaw.conceptRecord.origData.level),
-                                        tableName: colConfigRaw.conceptRecord.origData.table_name,
-                                        dimensionCode: colConfigRaw.conceptRecord.origData.dim_code,
-                                        isSynonym: "N"};         
+                        }                            
+			var conceptData = colConfigRaw.conceptRecord.origData;                           
+                        columnConfig.i2b2Concept = {
+					i2b2Key: conceptData.key,
+                                        level: parseInt(conceptData.level),
+                                        tableName: conceptData.table_name,
+					columnName: conceptData.column_name,
+                                        dimensionCode: conceptData.dim_code,
+                                        isSynonym: "N",
+					hasChildren: conceptData.hasChildren,
+					icd9: conceptData.icd9,
+					name: conceptData.name,
+					operator: conceptData.operator,
+					displayName: colConfigRaw.conceptRecord.sdxInfo.sdxDisplayName,
+					tooltip: conceptData.tooltip,
+					xmlOrig: i2b2.h.Xml2String(conceptData.xmlOrig)
+			};         
                                                                      
                         config.columnConfigs.push(columnConfig);        
                 }
@@ -718,12 +715,90 @@ i2b2.DataDownloader.exportData = function() {
 };
 
 i2b2.DataDownloader.loadConfig = function() {
+	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/load', {
+		method: 'POST',
+		contentType: 'application/json',
+		postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
+		requestHeaders: {"Accept": "application/json"},
+		asynchronous: true,
+		onSuccess: function(response) {
+			var config = response.responseJSON;
+			$("DataDownloader-whitespace").value = config.whitespaceReplacement;
+			$("DataDownloader-delimiter").value = config.separator;
+			$("DataDownloader-missing").value = config.missingValue;
+			var rowDimOptions = $("DataDownloader-rowdim").options;
+			for (var i = 0; i < rowDimOptions.length; i++) {
+				var option = rowDimOptions.item(i);
+				if (option.value === config.rowDimension.toLowerCase()) {
+					option.selected = true;
+				}
+			}
 
+			// remove all existing table rows
+			var table = $("DataDownloader-configTable");
+			var rowHolder = table.rows[0].parentNode;
+			while (rowHolder.children.length > 1) {
+				// we want to keep the header row
+				rowHolder.removeChild(rowHolder.lastChild);
+			}
+
+			config.columnConfigs.forEach(function(colConfig) {
+				var index = i2b2.DataDownloader.addColumnConfig();
+
+				// repopulate the concept record for this column
+				var c = colConfig.i2b2Concept;
+				var crOrigData = {
+					key: c.i2b2Key,
+					level: c.level,
+					dim_code: c.dimensionCode,
+					table_name: c.tableName,
+					column_name: c.columnName,
+					hasChildren: c.hasChildren,
+					icd9: c.icd9,
+					name: c.name,
+					operator: c.operator,
+					tooltip: c.tooltip,
+					xmlOrig: i2b2.h.parseXml(c.xmlOrig).getElementsByTagName('concept')[0]
+				};
+				var crSdxInfo = {
+					sdxControlCell: "ONT",
+					sdxDisplayName: c.displayName,
+					sdxKeyName: "key",
+					sdxKeyValue: c.i2b2Key,
+					sdxType: "CONCPT"
+				};
+				var cr = { origData: crOrigData, sdxInfo: crSdxInfo, renderData: {}};
+				i2b2.DataDownloader.model.configuration.columnConfigs[index].conceptRecord = cr;
+				// let the user know that the drop was successful by displaying the name of the concept
+	                        $("DataDownloader-CONCPTDROP-" + index).innerHTML = i2b2.h.Escape(cr.sdxInfo.sdxDisplayName);
+	                        $("DataDownloader-CONCPTDROP-" + index).className = "droptrgt SDX-CONCPT";
+	
+				$("DataDownloader-columnName-" + index).value = colConfig.columnName;
+				i2b2.DataDownloader.populateDispFmtSelect(index, cr);
+				var dispFmtOptions = $("DataDownloader-dispfmt-select-" + index).options;
+				for (var i = 0; i < dispFmtOptions.length; i++) {
+					var option = dispFmtOptions.item(i);
+					if (option.value === colConfig.displayFormat.toLowerCase()) {
+						option.selected = true;
+					}
+				}
+				i2b2.DataDownloader.showHideDispFmt(index, colConfig.displayFormat.toLowerCase());
+				if (colConfig.displayFormat === "VALUE") {
+					$("DataDownloader-howmany-" + index).value = colConfig.howMany;
+					$("DataDownloader-timerange-" + index).checked = colConfig.includeTimeRange;
+					$("DataDownloader-units-" + index).checked = colConfig.includeUnits;
+				} else if (colConfig.displayFormat === "AGGREGATION") {
+					$("DataDownloader-" + colConfig.aggregation.toLowerCase() + "-" + index).selected = true;	
+					$("DataDownloader-units-" + index).checked = colConfig.includeUnits;
+				}
+			});
+		}
+	});
 };
 
 i2b2.DataDownloader.deleteConfig = function() {
 	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
-		method: 'DELETE',
+		method: 'POST',
 		contentType: 'application/json',
 		postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
 		requestHeaders: {"Accept": "application/json"},
