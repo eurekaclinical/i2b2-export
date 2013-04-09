@@ -1,11 +1,6 @@
 package edu.emory.cci.aiw.i2b2datadownloader.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "i2b2_concepts")
@@ -19,10 +14,21 @@ public final class I2b2Concept {
 	private Long id;
 
 	private String i2b2Key;
+    private String name;
 	private Integer level;
-	private String tableName;
 	private String dimensionCode;
+	private String tableName;
+    private String columnName;
+    private String operator;
+    private String displayName;
+    private String tooltip;
+    private String hasChildren;
 	private String isSynonym;
+    private String icd9;
+
+    @Column(columnDefinition = "CLOB")
+    @Lob
+    private String xmlOrig;
 
 	public I2b2Concept() {
 		this(null, null, null, null, null);
@@ -81,7 +87,79 @@ public final class I2b2Concept {
 		this.isSynonym = isSynonym;
 	}
 
-	public int hashCode() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    public void setTooltip(String tooltip) {
+        this.tooltip = tooltip;
+    }
+
+    public String getHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(String hasChildren) {
+        this.hasChildren = hasChildren;
+    }
+
+    public String getSynonym() {
+        return isSynonym;
+    }
+
+    public void setSynonym(String synonym) {
+        isSynonym = synonym;
+    }
+
+    public String getIcd9() {
+        return icd9;
+    }
+
+    public void setIcd9(String icd9) {
+        this.icd9 = icd9;
+    }
+
+    public String getXmlOrig() {
+        return xmlOrig;
+    }
+
+    public void setXmlOrig(String xmlOrig) {
+        this.xmlOrig = xmlOrig;
+    }
+
+    public int hashCode() {
 		return i2b2Key.hashCode();
 	}
 
