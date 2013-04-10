@@ -36,7 +36,7 @@ public class OutputConfigurationResource {
 	/**
 	 * Saves the output configuration as specified in the given request.
 	 *
-	 * @param request the save request, containing the configuration to save
+	 * @param request the create request, containing the configuration to create
 	 *                   along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
 	 * @throws edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException
@@ -49,17 +49,15 @@ public class OutputConfigurationResource {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
-				request.getOutputConfiguration().setUsername(request
-						.getI2b2AuthMetadata().getUsername());
-				request.getOutputConfiguration().setTemporary(Boolean.FALSE);
 				OutputConfiguration config = this.dao
 						.getByUsernameAndConfigName(request
 								.getI2b2AuthMetadata().getUsername(),
 								request.getOutputConfiguration().getName());
 				if (config != null) {
-					request.getOutputConfiguration().setId(config.getId());
-				}
-				this.dao.save(request.getOutputConfiguration());
+                    this.dao.update(config, request.getOutputConfiguration());
+				} else {
+                    this.dao.create(request.getOutputConfiguration());
+                }
 
 				return Response.ok().build();
 			} else {
