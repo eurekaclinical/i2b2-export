@@ -3,6 +3,7 @@ package edu.emory.cci.aiw.i2b2datadownloader.dao;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
+import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration_;
 
@@ -17,10 +18,12 @@ import java.util.List;
 public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 
 	private final Provider<EntityManager> provider;
+    private final OutputColumnConfigurationDao colConfigDao;
 
 	@Inject
-	public JpaOutputConfigurationDao(Provider<EntityManager> provider) {
+	public JpaOutputConfigurationDao(Provider<EntityManager> provider, OutputColumnConfigurationDao colConfigDao) {
 		this.provider = provider;
+        this.colConfigDao = colConfigDao;
 	}
 
 	private EntityManager getEntityManager() {
@@ -73,9 +76,25 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 	}
 
 	@Transactional
-	public void save(OutputConfiguration config) {
-		this.getEntityManager().persist(config);
+	public void create(OutputConfiguration config) {
+        this.getEntityManager().persist(config);
 	}
+
+    @Transactional
+    public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig) {
+        for (OutputColumnConfiguration colConfig : oldConfig.getColumnConfigs()) {
+            this.colConfigDao.delete(colConfig);
+        }
+        oldConfig.setWhitespaceReplacement(newConfig.getWhitespaceReplacement());
+        oldConfig.setSeparator(newConfig.getSeparator());
+        oldConfig.setMissingValue(newConfig.getMissingValue());
+        oldConfig.getColumnConfigs().clear();
+        for (OutputColumnConfiguration colConfig : newConfig.getColumnConfigs()) {
+            oldConfig.getColumnConfigs().add(colConfig);
+        }
+
+        this.getEntityManager().merge(oldConfig);
+    }
 
 	@Transactional
 	public void delete(OutputConfiguration config) {

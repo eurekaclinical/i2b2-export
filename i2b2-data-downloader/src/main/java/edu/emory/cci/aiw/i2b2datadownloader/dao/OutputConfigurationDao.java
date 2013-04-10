@@ -13,7 +13,9 @@ public interface OutputConfigurationDao {
 	public OutputConfiguration getByUsernameAndConfigName(String username,
 														  String configName);
 
-	public void save(OutputConfiguration config);
+	public void create(OutputConfiguration config);
+
+    public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig);
 
 	public void delete(OutputConfiguration config);
 }
