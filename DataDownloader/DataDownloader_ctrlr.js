@@ -8,7 +8,7 @@
  * updated 11-06-08: 	Initial Launch [Nick Benik] 
  */
 
-i2b2.DataDownloader.SERVICE_URL = 'http://192.168.86.128/DataDownloader/rest';
+i2b2.DataDownloader.SERVICE_URL = 'http://{host}/DataDownloader/rest';
 // global row index counter because the concept drop handlers
 // seem to fail if a handler is applied to the same object twice in the same session
 i2b2.DataDownloader.ROW_INDEX = 1;
