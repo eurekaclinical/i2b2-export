@@ -8,7 +8,7 @@
  * updated 11-06-08: 	Initial Launch [Nick Benik] 
  */
 
-i2b2.DataDownloader.SERVICE_URL = 'http://192.168.232.128/DataDownloader/rest';
+i2b2.DataDownloader.SERVICE_URL = 'http://192.168.86.128/DataDownloader/rest';
 // global row index counter because the concept drop handlers
 // seem to fail if a handler is applied to the same object twice in the same session
 i2b2.DataDownloader.ROW_INDEX = 1;
@@ -205,6 +205,8 @@ i2b2.DataDownloader.updateColumnConfigFirstRow = function() {
 		delCell.removeChild(delCell.lastChild);
 	}
 	var img = document.createElement('img');
+
+	// if only one config row is left, we don't want to allow deletion of it
 	if (table.rows.length === 2) {
 		img.src = "http://placehold.it/35/dbe8ff";
 		delCell.appendChild(img);
@@ -278,6 +280,7 @@ i2b2.DataDownloader.addColumnConfigRow = function(table) {
 	tr.appendChild(delCell);
 
 	var reorderCell = document.createElement('td');
+	reorderCell.className = "deleteBtn";
 	var upImg = document.createElement('img');
 	upImg.src = "http://placehold.it/20/dbe8ff/00ff00&text=UP";
 	upImg.addEventListener("click", i2b2.DataDownloader.moveUp);
@@ -810,15 +813,17 @@ i2b2.DataDownloader.deleteConfig = function() {
 	if (!selectedConfigId) {
 		alert("Please select a configuration to delete.");
 	} else {
-		new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
-			method: 'POST',
-			contentType: 'application/json',
-			postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
-			requestHeaders: {"Accept": "application/json"},
-			asynchronous: true,
-			onSuccess: function(response) {
-				i2b2.DataDownloader.populateConfigList();
-			}
-		});
+		if (confirm("Are you sure want to delete this configuration: '" + $("DataDownloader-userConfigsList").textContent + "'?")) {
+			new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
+				method: 'POST',
+				contentType: 'application/json',
+				postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': selectedConfigId}),
+				requestHeaders: {"Accept": "application/json"},
+				asynchronous: true,
+				onSuccess: function(response) {
+					i2b2.DataDownloader.populateConfigList();
+				}
+			});
+		}
 	}
 };
