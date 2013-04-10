@@ -85,6 +85,7 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
         for (OutputColumnConfiguration colConfig : oldConfig.getColumnConfigs()) {
             this.colConfigDao.delete(colConfig);
         }
+		oldConfig.setRowDimension(newConfig.getRowDimension());
         oldConfig.setWhitespaceReplacement(newConfig.getWhitespaceReplacement());
         oldConfig.setSeparator(newConfig.getSeparator());
         oldConfig.setMissingValue(newConfig.getMissingValue());
@@ -92,8 +93,6 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
         for (OutputColumnConfiguration colConfig : newConfig.getColumnConfigs()) {
             oldConfig.getColumnConfigs().add(colConfig);
         }
-
-        this.getEntityManager().merge(oldConfig);
     }
 
 	@Transactional
