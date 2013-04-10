@@ -481,6 +481,7 @@ i2b2.DataDownloader.assembleColumnConfig = function(index) {
 			for (var i = 0; i < aggs.length; i++) {
 				if (aggs[i].checked) {
 					config.aggregation = aggs[i].value;
+					break;
 				}
 			}
 			config.includeUnits = $("DataDownloader-units-" + index).checked;
@@ -496,6 +497,7 @@ i2b2.DataDownloader.assembleConfig = function() {
 		var index = table.rows[i].id.split('-')[2];
 		if (i2b2.DataDownloader.model.configuration.columnConfigs[index].conceptRecord) {
 			i2b2.DataDownloader.assembleColumnConfig(index);
+			i2b2.DataDownloader.model.configuration.columnConfigs[index].order = i;
 		}
 	}
 	i2b2.DataDownloader.model.configuration.rowDimension = $("DataDownloader-rowdim").value;
@@ -586,6 +588,10 @@ i2b2.DataDownloader.createI2b2AuthRequestObject = function() {
 		};
 };
 
+i2b2.DataDownloader.colConfigComp = function(a, b) { 
+	return a.columnOrder - b.columnOrder; 
+}
+
 i2b2.DataDownloader.createConfigRequestObject = function() {
 	i2b2.DataDownloader.assembleConfig();
         var rawConfig = i2b2.DataDownloader.model.configuration;
@@ -599,12 +605,10 @@ i2b2.DataDownloader.createConfigRequestObject = function() {
         config.missingValue = rawConfig.missing;
         config.columnConfigs = [];
 
-        var order = 1;
         rawConfig.columnConfigs.forEach(function(colConfigRaw) {
                 if (colConfigRaw.conceptRecord) {
                         var columnConfig = {};
-                        columnConfig.columnOrder = order;
-                        order += 1;
+                        columnConfig.columnOrder = colConfigRaw.order;
                         columnConfig.columnName = colConfigRaw.columnName;
                         columnConfig.displayFormat = colConfigRaw.displayFormat.toUpperCase();
                         if (colConfigRaw.displayFormat === 'value') {
@@ -640,13 +644,16 @@ i2b2.DataDownloader.createConfigRequestObject = function() {
                 }
         });
 
+	// ensure we save the column configs in the correct order
+	config.columnConfigs.sort(i2b2.DataDownloader.colConfigComp);
         request.outputConfiguration = config;
 
 	return request;
 }
 
 i2b2.DataDownloader.saveConfiguration = function() {
-	if ($("DataDownloader-saveas").value.length <= 0) {
+	var saveAs = $("DataDownloader-saveas").value;
+	if (saveAs.length <= 0) {
 		alert("Please name this configuration");
 	} else {
 		new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/save', {
@@ -657,6 +664,7 @@ i2b2.DataDownloader.saveConfiguration = function() {
 			asynchronous: true,
 			onSuccess: function(response) {
 				i2b2.DataDownloader.populateConfigList();
+				alert("Saved configuration: '" + saveAs + "'");
 			}
 		});
 	}
@@ -741,6 +749,7 @@ i2b2.DataDownloader.loadConfig = function() {
 				var option = rowDimOptions.item(i);
 				if (option.value === config.rowDimension.toLowerCase()) {
 					option.selected = true;
+					break;
 				}
 			}
 
@@ -753,6 +762,8 @@ i2b2.DataDownloader.loadConfig = function() {
 			}
 
 			i2b2.DataDownloader.model.configuration.columnConfigs = [];
+			// ensure we are looping over the column configs in the correct order
+			config.columnConfigs.sort(i2b2.DataDownloader.colConfigComp);
 			config.columnConfigs.forEach(function(colConfig) {
 				var index = i2b2.DataDownloader.addColumnConfig();
 
@@ -791,6 +802,7 @@ i2b2.DataDownloader.loadConfig = function() {
 					var option = dispFmtOptions.item(i);
 					if (option.value === colConfig.displayFormat.toLowerCase()) {
 						option.selected = true;
+						break;
 					}
 				}
 				i2b2.DataDownloader.showHideDispFmt(index, colConfig.displayFormat.toLowerCase());
@@ -813,7 +825,15 @@ i2b2.DataDownloader.deleteConfig = function() {
 	if (!selectedConfigId) {
 		alert("Please select a configuration to delete.");
 	} else {
-		if (confirm("Are you sure want to delete this configuration: '" + $("DataDownloader-userConfigsList").textContent + "'?")) {
+		var configsList = $("DataDownloader-userConfigsList");
+		var configName = '';
+		for (var i = 0; i < configsList.options.length; i++) {
+			if (configsList.options[i].selected) {
+				configName = configsList.options[i].text;
+				break;
+			}
+		}
+		if (confirm("Are you sure want to delete this configuration: '" + configName + "'?")) {
 			new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
 				method: 'POST',
 				contentType: 'application/json',
@@ -822,6 +842,7 @@ i2b2.DataDownloader.deleteConfig = function() {
 				asynchronous: true,
 				onSuccess: function(response) {
 					i2b2.DataDownloader.populateConfigList();
+					alert("Successfully deleted configuration: '" + configName + "'");
 				}
 			});
 		}
