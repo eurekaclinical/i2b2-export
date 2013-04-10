@@ -84,8 +84,8 @@ public final class DataResource {
 					this.dao.delete(outputConfig);
 				}
 				return Response.ok(output, "text/csv").header
-						("Content-Disposition",	"attachment;" +
-								"filename=i2b2PatientData.csv")
+                        ("Content-Disposition", "attachment;" +
+                                "filename=i2b2PatientData.csv")
 						.build();
 			} else {
 				return Response.status(300).build();
@@ -116,7 +116,7 @@ public final class DataResource {
 				request.getOutputConfiguration().setUsername(request
 						.getI2b2AuthMetadata().getUsername());
 				request.getOutputConfiguration().setTemporary(Boolean.TRUE);
-				this.dao.save(request.getOutputConfiguration());
+				this.dao.create(request.getOutputConfiguration());
 				return Response.ok().entity(request.getOutputConfiguration()
 						.getId()).build();
 
