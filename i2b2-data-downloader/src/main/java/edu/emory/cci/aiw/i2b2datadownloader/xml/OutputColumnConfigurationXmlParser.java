@@ -26,9 +26,9 @@ public class OutputColumnConfigurationXmlParser {
 		try {
 			String orderStr = (String) XmlUtil.evalXPath(colConfigNode, "//order", XPathConstants.STRING);
 			Integer order = Integer.parseInt(orderStr);
-			colConfig.setOrder(order);
+			colConfig.setColumnOrder(order);
 		} catch (NumberFormatException e) {
-			colConfig.setOrder(Integer.MAX_VALUE);
+			colConfig.setColumnOrder(Integer.MAX_VALUE);
 		}
 
 		String concept = (String) XmlUtil.evalXPath(colConfigNode, "//concept", XPathConstants.STRING);
