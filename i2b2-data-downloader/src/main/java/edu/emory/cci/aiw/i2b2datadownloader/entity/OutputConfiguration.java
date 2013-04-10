@@ -1,6 +1,7 @@
 package edu.emory.cci.aiw.i2b2datadownloader.entity;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class OutputConfiguration {
 			generator = "OUTPUT_CONFIG_SEQ_GENERATOR")
 	private Long id;
 
+	@Column(nullable = false)
 	private String username;
 	private String name;
 
