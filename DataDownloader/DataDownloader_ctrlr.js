@@ -9,6 +9,9 @@
  */
 
 i2b2.DataDownloader.SERVICE_URL = 'http://192.168.232.128/DataDownloader/rest';
+// global row index counter because the concept drop handlers
+// seem to fail if a handler is applied to the same object twice in the same session
+i2b2.DataDownloader.ROW_INDEX = 1;
 
 i2b2.DataDownloader.Init = function(loadedDiv) {
 	// register DIV as valid DragDrop target for Patient Record Sets (PRS) objects
@@ -254,10 +257,8 @@ i2b2.DataDownloader.moveUp = function(evt) {
 };
 
 i2b2.DataDownloader.addColumnConfigRow = function(table) {
-	var index = 1;
-	if (table.rows.length > 1) {
-		index += parseInt(table.rows[table.rows.length - 1].id.split('-')[2]);
-	}
+	i2b2.DataDownloader.ROW_INDEX += 1; // increment the global row index counter
+	var index = i2b2.DataDownloader.ROW_INDEX;
 	i2b2.DataDownloader.initColumnConfig(index);
 	var tr = table.insertRow(-1);
 	tr.id = "DataDownloader-columnConfig-" + index;
