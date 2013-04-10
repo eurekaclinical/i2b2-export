@@ -106,6 +106,8 @@ i2b2.DataDownloader.populateConfigList = function() {
 				opt.text = config.configurationName;
 				select.appendChild(opt);
 			});
+			$("DataDownloader-loadConfigBtn").disabled = true;
+			$("DataDownloader-deleteConfigBtn").disabled = true;
 		}	
 	});
 };
@@ -716,10 +718,14 @@ i2b2.DataDownloader.exportData = function() {
 };
 
 i2b2.DataDownloader.loadConfig = function() {
-	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/load', {
+	var selectedConfigId = parseInt($("DataDownloader-userConfigsList").value);
+	if (!selectedConfigId) {
+		alert("Please select a configuration to load.");
+	} else {
+		new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/load', {
 		method: 'POST',
 		contentType: 'application/json',
-		postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
+		postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': selectedConfigId}),
 		requestHeaders: {"Accept": "application/json"},
 		asynchronous: true,
 		onSuccess: function(response) {
@@ -743,6 +749,7 @@ i2b2.DataDownloader.loadConfig = function() {
 				rowHolder.removeChild(rowHolder.lastChild);
 			}
 
+			i2b2.DataDownloader.model.configuration.columnConfigs = [];
 			config.columnConfigs.forEach(function(colConfig) {
 				var index = i2b2.DataDownloader.addColumnConfig();
 
@@ -789,23 +796,29 @@ i2b2.DataDownloader.loadConfig = function() {
 					$("DataDownloader-timerange-" + index).checked = colConfig.includeTimeRange;
 					$("DataDownloader-units-" + index).checked = colConfig.includeUnits;
 				} else if (colConfig.displayFormat === "AGGREGATION") {
-					$("DataDownloader-" + colConfig.aggregation.toLowerCase() + "-" + index).selected = true;	
+					$("DataDownloader-" + colConfig.aggregation.toLowerCase() + "-" + index).checked = true;	
 					$("DataDownloader-units-" + index).checked = colConfig.includeUnits;
 				}
 			});
 		}
-	});
+		}); // end AJAX request
+	}
 };
 
 i2b2.DataDownloader.deleteConfig = function() {
-	new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
-		method: 'POST',
-		contentType: 'application/json',
-		postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
-		requestHeaders: {"Accept": "application/json"},
-		asynchronous: true,
-		onSuccess: function(response) {
-			i2b2.DataDownloader.populateConfigList();
-		}
-	});
+	var selectedConfigId = parseInt($("DataDownloader-userConfigsList").value);
+	if (!selectedConfigId) {
+		alert("Please select a configuration to delete.");
+	} else {
+		new Ajax.Request(i2b2.DataDownloader.SERVICE_URL + '/config/delete', {
+			method: 'POST',
+			contentType: 'application/json',
+			postBody: Object.toJSON({'authMetadata': i2b2.DataDownloader.createI2b2AuthRequestObject(), 'outputConfigurationId': parseInt($("DataDownloader-userConfigsList").value)}),
+			requestHeaders: {"Accept": "application/json"},
+			asynchronous: true,
+			onSuccess: function(response) {
+				i2b2.DataDownloader.populateConfigList();
+			}
+		});
+	}
 };
