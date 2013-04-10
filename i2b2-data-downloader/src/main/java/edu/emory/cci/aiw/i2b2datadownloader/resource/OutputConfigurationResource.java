@@ -54,8 +54,17 @@ public class OutputConfigurationResource {
 								.getI2b2AuthMetadata().getUsername(),
 								request.getOutputConfiguration().getName());
 				if (config != null) {
-                    this.dao.update(config, request.getOutputConfiguration());
+					if (config.getUsername().equals(request
+							.getI2b2AuthMetadata().getUsername())) {
+						this.dao.update(config, request.getOutputConfiguration());
+					} else {
+						return Response.status(Response.Status.UNAUTHORIZED)
+								.build();
+					}
 				} else {
+					request.getOutputConfiguration().setUsername(request
+							.getI2b2AuthMetadata().getUsername());
+					request.getOutputConfiguration().setTemporary(Boolean.FALSE);
                     this.dao.create(request.getOutputConfiguration());
                 }
 
