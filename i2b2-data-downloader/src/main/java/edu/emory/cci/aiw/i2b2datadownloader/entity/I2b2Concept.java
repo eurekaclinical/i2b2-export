@@ -13,18 +13,28 @@ public final class I2b2Concept {
 			generator = "I2B2_CONCEPT_SEQ_GENERATOR")
 	private Long id;
 
+	@Column(nullable = false)
 	private String i2b2Key;
-    private String name;
+
+	@Column(nullable = false)
 	private Integer level;
+
+	@Column(nullable = false)
 	private String dimensionCode;
+
+	@Column(nullable = false)
 	private String tableName;
-    private String columnName;
-    private String operator;
-    private String displayName;
-    private String tooltip;
-    private String hasChildren;
+
+	@Column(nullable = false)
 	private String isSynonym;
-    private String icd9;
+
+	private String name;
+	private String columnName;
+	private String operator;
+	private String displayName;
+	private String tooltip;
+	private String hasChildren;
+	private String icd9;
 
     @Column(columnDefinition = "CLOB")
     @Lob

@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "output_configurations", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"username", "name"})})
+		@UniqueConstraint(columnNames = {"username", "name", "isTemporary"})})
 public class OutputConfiguration {
 
 	@Id
@@ -29,13 +29,16 @@ public class OutputConfiguration {
 
 	@Column(nullable = false)
 	private String username;
+
 	private String name;
 
 	public static enum RowDimension {
 		PATIENT, VISIT, PROVIDER;
 	}
 
+	@Column(nullable = false)
 	private RowDimension rowDimension;
+
 	private String whitespaceReplacement;
 	private String separator;
 	private String missingValue;
@@ -47,6 +50,7 @@ public class OutputConfiguration {
 	 * for configurations not explicitly saved by the user
 	 * these should not be retrieved by a "get-all" query
 	 */
+	@Column(nullable = false)
 	private Boolean isTemporary;
 
 	public Long getId() {

@@ -1,6 +1,7 @@
 package edu.emory.cci.aiw.i2b2datadownloader.entity;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,18 +22,22 @@ public class OutputColumnConfiguration implements
 			generator = "OUTPUT_COL_CONFIG_SEQ_GENERATOR")
 	private Long id;
 
+	@Column(nullable = false)
 	private Integer columnOrder;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private I2b2Concept i2b2Concept;
 
+	@Column(nullable = false)
 	private String columnName;
 
 	public static enum DisplayFormat {
 		EXISTENCE, VALUE, AGGREGATION;
 	}
 
+	@Column(nullable = false)
 	private DisplayFormat displayFormat;
+
 	private Integer howMany;
 	private Boolean includeUnits;
 	private Boolean includeTimeRange;
