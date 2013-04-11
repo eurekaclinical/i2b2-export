@@ -35,15 +35,59 @@ public class VisitDataRowOutputFormatterTest {
 		Patient patient = new Patient.Builder("P1").build();
 		visit = new Event.Builder("visit", patient).startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T14:00:00.000-0500")).build();
 
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).tval("100").nval("100").units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-02-02T10:00:00.000-0500")).endDate(fmt.parse("2013-02-02T11:00:00.000-0500")).tval("200").nval("200").units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-03-03T11:00:00.000-0500")).endDate(fmt.parse("2013-03-03T12:00:00.000-0500")).tval("300").nval("300").units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-01-01T12:00:00.000-0500")).endDate(fmt.parse("2013-04-04T13:00:00.000-0500")).tval("400").nval("400").units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-02-02T13:00:00.000-0500")).endDate(fmt.parse("2013-05-05T14:00:00.000-0500")).tval("500").nval("500").units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T09:05:00.000-0500")).tval("1.0").nval("1.0").units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T09:05:00.000-0500")).tval("1.5").nval("1.5").units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse("2013-02-02T09:05:00.000-0500")).tval("1.8").nval("1.8").units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T09:05:00.000-0500")).tval("1.75").nval("1.75").units("X").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
+				("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse
+				("2013-01-01T10:00:00.000-0500")).tval("100").nval("100")
+				.valuetype("N")
+				.units("U").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
+				("2013-02-02T10:00:00.000-0500")).endDate(fmt.parse
+				("2013-02-02T11:00:00.000-0500")).tval("200").nval("200")
+				.valuetype("N")
+				.units("U").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
+				("2013-03-03T11:00:00.000-0500")).endDate(fmt.parse
+				("2013-03-03T12:00:00.000-0500")).tval("300").nval("300")
+				.valuetype("N")
+				.units("U").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
+				("2013-01-01T12:00:00.000-0500")).endDate(fmt.parse
+				("2013-04-04T13:00:00.000-0500")).tval("400").nval("400")
+				.valuetype("N")
+				.units("U").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
+				("2013-02-02T13:00:00.000-0500")).endDate(fmt.parse
+				("2013-05-05T14:00:00.000-0500")).tval("500").nval("500")
+				.valuetype("N")
+				.units("U").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
+				("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse
+				("2013-03-03T09:05:00.000-0500")).tval("1.0").nval("1.0")
+				.valuetype("N")
+				.units("X").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
+				("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse
+				("2013-01-01T09:05:00.000-0500")).tval("1.5").nval("1.5")
+				.valuetype("N")
+				.units("X").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
+				("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse
+				("2013-02-02T09:05:00.000-0500")).tval("1.8").nval("1.8")
+				.valuetype("N")
+				.units("X").build());
+		visit.addObservation(new Observation.Builder(visit).conceptPath
+				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
+				("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse
+				("2013-03-03T09:05:00.000-0500")).tval("1.75").nval("1.75")
+				.valuetype("N").units("X").build());
 		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept3").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).build());
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
