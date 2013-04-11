@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class I2b2ConceptRetriever {
-	private static final String I2B2_ONT_URL = I2b2CommUtil.I2B2_BASE_URL + "rest/OntologyService/getTermInfo";
+
 	private static final String CONCEPT_XPATH_PREFIX = "//message_body/concepts/concept/";
 
 	private final Configuration config;
@@ -49,6 +49,7 @@ public final class I2b2ConceptRetriever {
             String messageId = I2b2CommUtil.generateMessageId();
 
             Map<String, Object> params = new HashMap<String, Object>();
+            params.put("redirectHost", I2b2CommUtil.I2B2_SERVICE_HOST_URL);
             params.put("domain", this.authMetadata.getDomain());
             params.put("username", this.authMetadata.getUsername());
             params.put("passwordNode", this.authMetadata.getPasswordNode());
@@ -58,7 +59,7 @@ public final class I2b2ConceptRetriever {
             params.put("conceptCode", code);
 
             tmpl.process(params, writer);
-            Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_ONT_URL, writer.toString());
+            Document respXml = I2b2CommUtil.postXmlToI2b2(writer.toString());
 
             return extractConcept(respXml);
         } catch (SAXException e) {
@@ -85,6 +86,7 @@ public final class I2b2ConceptRetriever {
 			String messageId = I2b2CommUtil.generateMessageId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
+            params.put("redirectHost", I2b2CommUtil.I2B2_SERVICE_HOST_URL);
 			params.put("domain", this.authMetadata.getDomain());
 			params.put("username", this.authMetadata.getUsername());
 			params.put("passwordNode", this.authMetadata.getPasswordNode());
@@ -94,8 +96,7 @@ public final class I2b2ConceptRetriever {
 			params.put("conceptPath", conceptPath);
 
 			tmpl.process(params, writer);
-			Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_ONT_URL,
-					writer.toString());
+			Document respXml = I2b2CommUtil.postXmlToI2b2(writer.toString());
 
 			return extractConcept(respXml);
 		} catch (IOException e) {

@@ -21,8 +21,6 @@ import java.util.Map;
 
 public final class I2b2PdoRetriever {
 
-	private static final String I2B2_PDO_URL =
-			I2b2CommUtil.I2B2_BASE_URL + "/rest/QueryToolService/pdorequest";
 	private final Configuration config;
 	private final Integer patientSetCollId;
 	private final I2b2AuthMetadata i2b2AuthMetadata;
@@ -43,6 +41,7 @@ public final class I2b2PdoRetriever {
 			String messageId = I2b2CommUtil.generateMessageId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
+            params.put("redirectHost", I2b2CommUtil.I2B2_SERVICE_HOST_URL);
 			params.put("domain", i2b2AuthMetadata.getDomain());
 			params.put("username", i2b2AuthMetadata.getUsername());
 			params.put("passwordNode", i2b2AuthMetadata.getPasswordNode());
@@ -55,7 +54,7 @@ public final class I2b2PdoRetriever {
 			params.put("items", concepts);
 
 			tmpl.process(params, writer);
-			Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PDO_URL, writer.toString());
+			Document respXml = I2b2CommUtil.postXmlToI2b2(writer.toString());
 			I2b2PdoResultParser parser = new I2b2PdoResultParser(respXml);
 			return parser.parse();
 		} catch (IOException e) {

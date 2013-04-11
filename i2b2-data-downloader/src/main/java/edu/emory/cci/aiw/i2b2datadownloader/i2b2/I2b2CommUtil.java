@@ -7,6 +7,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -15,12 +17,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 
 public final class I2b2CommUtil {
 
-    static final String I2B2_BASE_URL = "http://192.168.232.128/i2b2/";
+    private static final Logger LOGGER = LoggerFactory.getLogger(I2b2CommUtil.class);
+
+    private static final String I2B2_PROXY_URL = "https://eureka-dev.cci.emory.edu/i2b2/index.php";
+    static final String I2B2_SERVICE_HOST_URL = "http://localhost:9090";
 
 	/*
 	 * The i2b2 date format. The colon (:) must be stripped out of the timezone portion first.
@@ -28,10 +32,11 @@ public final class I2b2CommUtil {
 	public static final String I2B2_DATE_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
 	/**
-	 * Performs an HTTP POST of an XML request to an i2b2 service
+	 * Performs an HTTP POST of an XML request to the i2b2 proxy cell. Request XML must contain
+     * the redirect_url node with the address of the actual service endpoint to call
+     * in order for the request to be properly routed.
 	 *
-	 * @param url the address of the i2b2 service to POST to
-	 * @param xml the XML request to send
+     * @param xml the XML request to send
 	 * @return the XML response from i2b2 as a {@link Document}
 	 * @throws ClientProtocolException      if an error occurs
 	 * @throws IOException                  if an error occurs
@@ -39,67 +44,29 @@ public final class I2b2CommUtil {
 	 * @throws SAXException
 	 * @throws IllegalStateException
 	 */
-	public static Document postXmlToI2b2(String url, String xml)
+	public static Document postXmlToI2b2(String xml)
 			throws ClientProtocolException, IOException, IllegalStateException,
 			SAXException, ParserConfigurationException {
+        LOGGER.debug("POSTing XML: " + xml);
 		HttpClient http = new DefaultHttpClient();
-		HttpPost i2b2Post = new HttpPost(url);
+		HttpPost i2b2Post = new HttpPost(I2B2_PROXY_URL);
 		StringEntity xmlEntity = new StringEntity(xml);
 		xmlEntity.setContentType("text/xml");
 		i2b2Post.setEntity(xmlEntity);
 		HttpResponse resp = http.execute(i2b2Post);
 
-		return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(resp.getEntity().getContent());
-	}
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+        StringBuilder respXml = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            respXml.append(line);
+        }
+        LOGGER.debug("Response XML: " + respXml.toString());
 
-	public static String extractProjectId(String xml) throws XPathExpressionException,
-			SAXException, IOException, ParserConfigurationException {
-		return (String) XmlUtil.evalXPath(xml, "//message_header/project_id",
-				XPathConstants.STRING);
-	}
+        return XmlUtil.xmlStringToDocument(respXml.toString());
 
-	public static String extractDomain(String xml) throws XPathExpressionException,
-			SAXException, IOException, ParserConfigurationException {
-		return (String) XmlUtil.evalXPath(xml,
-				"//message_header/security/domain", XPathConstants.STRING);
-	}
-
-	public static String extractUsername(String xml) throws XPathExpressionException,
-			SAXException, IOException, ParserConfigurationException {
-		return (String) XmlUtil.evalXPath(xml,
-				"//message_header/security/username", XPathConstants.STRING);
-	}
-
-	public static String extractPasswordNode(String xml)
-			throws XPathExpressionException, SAXException, IOException,
-			ParserConfigurationException {
-		Node passwordNode = (Node) XmlUtil.evalXPath(xml,
-				"//message_header/security/password", XPathConstants.NODE);
-		StringBuilder password = new StringBuilder("<password");
-		if (passwordNode.hasAttributes()) {
-			for (int i = 0; i < passwordNode.getAttributes().getLength(); i++) {
-				Node attr = passwordNode.getAttributes().item(i);
-				password.append(" ");
-				password.append(attr.getNodeName());
-				password.append("=\"");
-				password.append(attr.getNodeValue());
-				password.append("\"");
-			}
-		}
-		password.append(">");
-		password.append(passwordNode.getTextContent());
-		password.append("</password>");
-
-		return password.toString();
-	}
-
-	public static String extractSecurityNode(String xml)
-			throws XPathExpressionException, SAXException, IOException,
-			ParserConfigurationException {
-		return "<domain>" + extractDomain(xml) + "</domain>\n" + "<username>"
-				+ extractUsername(xml) + "</username>\n"
-				+ extractPasswordNode(xml);
+//		return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+//				.parse(resp.getEntity().getContent());
 	}
 
 	/**

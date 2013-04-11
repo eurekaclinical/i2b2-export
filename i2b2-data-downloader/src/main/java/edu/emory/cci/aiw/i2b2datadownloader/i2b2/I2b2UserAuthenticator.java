@@ -23,10 +23,7 @@ import java.util.Map;
 
 public final class I2b2UserAuthenticator {
 
-	private static final String I2B2_PM_URL = I2b2CommUtil.I2B2_BASE_URL + "rest/PMService/getServices";
-
 	private final Configuration config;
-
 	private final I2b2AuthMetadata authMetadata;
 
 	/**
@@ -59,6 +56,7 @@ public final class I2b2UserAuthenticator {
 			String messageId = I2b2CommUtil.generateMessageId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
+            params.put("redirectHost", I2b2CommUtil.I2B2_SERVICE_HOST_URL);
 			params.put("domain", this.authMetadata.getDomain());
 			params.put("username", this.authMetadata.getUsername());
 			params.put("passwordNode", this.authMetadata.getPasswordNode());
@@ -67,8 +65,7 @@ public final class I2b2UserAuthenticator {
 			params.put("projectId", this.authMetadata.getProjectId());
 
 			tmpl.process(params, writer);
-			Document respXml = I2b2CommUtil.postXmlToI2b2(I2B2_PM_URL,
-					writer.toString());
+			Document respXml = I2b2CommUtil.postXmlToI2b2(writer.toString());
 
 			String status = (String) XmlUtil.evalXPath(respXml,
 					"//response_header/result_status/status/@type",
