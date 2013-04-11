@@ -1,6 +1,7 @@
 <ns3:request xmlns:ns3="http://www.i2b2.org/xsd/hive/msg/1.1/"
              xmlns:ns4="http://www.i2b2.org/xsd/cell/ont/1.1/" xmlns:ns2="http://www.i2b2.org/xsd/hive/plugin/">
     <message_header>
+        <redirect_url>${redirectHost}/i2b2/rest/OntologyService/getTermInfo</redirect_url>
         <i2b2_version_compatible>1.1</i2b2_version_compatible>
         <hl7_version_compatible>2.4</hl7_version_compatible>
         <sending_application>
