@@ -680,7 +680,12 @@ i2b2.DataDownloader.exportData = function() {
 		requestHeaders: {"Accept": "application/json"},
 		asynchronous: true,
 		onSuccess: function (response) {
-			var downloadForm = document.createElement("form");
+			var downloadForm = $("DataDownloader-downloadForm");
+			if (downloadForm) {
+				$("DataDownloader-saveRunPanel").removeChild(downloadForm);
+			}
+
+			downloadForm = document.createElement("form");
 			downloadForm.id = "DataDownloader-downloadForm";
 			downloadForm.display = "none";
 
