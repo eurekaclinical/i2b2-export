@@ -49,12 +49,22 @@ public final class AggregationColumnOutputFormatter extends AbstractColumnOutput
 					break;
 				case AVG:
 					BigDecimal sum = new BigDecimal(0.0);
+					int scale = 0;
 					for (Observation obx : data) {
 						BigDecimal value = new BigDecimal(obx.getNval());
 						sum = sum.add(value);
 						units = obx.getUnits();
+						int dotIdx = obx.getNval().indexOf('.');
+						if (dotIdx > -1) {
+							int tempScale = obx.getNval().length() - obx.getNval()
+									.indexOf('.');
+							if (tempScale > scale) {
+								scale = tempScale;
+							}
+						}
 					}
-					BigDecimal avg = sum.divide(new BigDecimal(data.size()));
+					BigDecimal avg = sum.divide(new BigDecimal(data.size()),
+							scale);
 					result.add(avg.toString());
 					break;
 				default:
