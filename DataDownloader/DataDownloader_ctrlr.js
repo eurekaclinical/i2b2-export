@@ -8,7 +8,7 @@
  * updated 11-06-08: 	Initial Launch [Nick Benik] 
  */
 
-i2b2.DataDownloader.SERVICE_URL = 'http://{host}/DataDownloader/rest';
+i2b2.DataDownloader.SERVICE_URL = 'http://192.168.86.128/DataDownloader/rest';
 // global row index counter because the concept drop handlers
 // seem to fail if a handler is applied to the same object twice in the same session
 i2b2.DataDownloader.ROW_INDEX = 1;
@@ -719,6 +719,12 @@ i2b2.DataDownloader.exportData = function() {
 			patientSetCollId.name = "patient-set-coll-id";
 			patientSetCollId.value = parseInt(i2b2.DataDownloader.model.prsRecord.origData.PRS_id); 
 			downloadForm.appendChild(patientSetCollId);
+
+			var patientSetSize = document.createElement("input");
+			patientSetSize.type = "hidden";
+			patientSetSize.name = "patient-set-size";
+			patientSetSize.value = parseInt(i2b2.DataDownloader.model.prsRecord.origData.size);
+			downloadForm.appendChild(patientSetSize);
 
 			document.getElementById("DataDownloader-saveRunPanel").appendChild(downloadForm);
 			var f = $$("FORM#DataDownloader-downloadForm")[0];
