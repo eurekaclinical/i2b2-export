@@ -54,7 +54,12 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 				}
 			} else {
 				final Observation obx = dataList.get(i);
-				result.add(obx.getTval());
+				if (null != obx.getValuetype() && obx.getValuetype().equals
+						("N")) {
+					result.add(obx.getNval());
+				} else {
+					result.add(obx.getTval());
+				}
 				if (getColumnConfig().getIncludeUnits()) {
 					result.add(obx.getUnits());
 				}
