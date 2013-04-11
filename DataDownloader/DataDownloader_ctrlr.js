@@ -577,6 +577,8 @@ i2b2.DataDownloader.prsDropped = function(sdxData) {
 	setTimeout("$('DataDownloader-PRSDROP').style.background='#DEEBEF'", 250);	
 	// optimization to prevent requerying the hive for new results if the input dataset has not changed
 	i2b2.DataDownloader.model.dirtyResultsData = true;		
+
+	$("DataDownloader-export").disabled = false;
 };
 
 i2b2.DataDownloader.createI2b2AuthRequestObject = function() {
