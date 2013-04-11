@@ -2,6 +2,7 @@ package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
 
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2PatientSet;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResultParser;
 import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResults;
@@ -22,12 +23,13 @@ import java.util.Map;
 public final class I2b2PdoRetriever {
 
 	private final Configuration config;
-	private final Integer patientSetCollId;
+	private final I2b2PatientSet i2b2PatientSet;
 	private final I2b2AuthMetadata i2b2AuthMetadata;
 
-	public I2b2PdoRetriever(I2b2AuthMetadata i2b2AuthMetadata, Integer patientSetCollId) {
+	public I2b2PdoRetriever(I2b2AuthMetadata i2b2AuthMetadata,
+							I2b2PatientSet i2b2PatientSet) {
 		this.i2b2AuthMetadata = i2b2AuthMetadata;
-		this.patientSetCollId = patientSetCollId;
+		this.i2b2PatientSet = i2b2PatientSet;
 		this.config = new Configuration();
 		this.config.setClassForTemplateLoading(this.getClass(), "/");
 		this.config.setObjectWrapper(new DefaultObjectWrapper());
@@ -47,10 +49,9 @@ public final class I2b2PdoRetriever {
 			params.put("passwordNode", i2b2AuthMetadata.getPasswordNode());
 			params.put("messageId", messageId);
 			params.put("projectId", i2b2AuthMetadata.getProjectId());
-			params.put("patientSetLimit", "100");
-			params.put("patientListMax", "6");
+			params.put("patientListMax", i2b2PatientSet.getPatientSetSize());
 			params.put("patientListMin", "1");
-			params.put("patientSetCollId", patientSetCollId);
+			params.put("patientSetCollId", i2b2PatientSet.getPatientSetCollId());
 			params.put("items", concepts);
 
 			tmpl.process(params, writer);
