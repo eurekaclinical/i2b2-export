@@ -46,7 +46,6 @@
 	</request_header>
 	<message_body>
 		<ns3:pdoheader>
-			<patient_set_limit>${patientSetLimit}</patient_set_limit>
 			<estimated_time>180000</estimated_time>
 			<request_type>getPDO_fromInputList</request_type>
 		</ns3:pdoheader>
