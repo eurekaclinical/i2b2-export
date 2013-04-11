@@ -5,6 +5,7 @@ import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException;
 import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.DetailedRequest;
 import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2PatientSet;
 import edu.emory.cci.aiw.i2b2datadownloader.dao.OutputConfigurationDao;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
@@ -64,9 +65,15 @@ public final class DataResource {
 											   @FormParam("config-id")
 											   Long outputConfigId,
 											   @FormParam
-													   ("patient-set-coll-id") Integer i2b2PatientSetCollId)
+													   ("patient-set-coll-id") Integer i2b2PatientSetCollId,
+											   @FormParam("patient-set-size")
+											   Integer i2b2PatientSetSize)
 			throws
 			DataDownloaderException {
+		I2b2PatientSet patientSet = new I2b2PatientSet();
+		patientSet.setPatientSetCollId(i2b2PatientSetCollId);
+		patientSet.setPatientSetSize(i2b2PatientSetSize);
+
 		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
 		authMetadata.setDomain(i2b2Domain);
 		authMetadata.setUsername(i2b2Username);
@@ -78,7 +85,7 @@ public final class DataResource {
 				OutputConfiguration outputConfig = this.dao.getById
 						(outputConfigId);
 				String output = new DataOutputFormatter(outputConfig,
-						new I2b2PdoRetriever(authMetadata, i2b2PatientSetCollId).
+						new I2b2PdoRetriever(authMetadata, patientSet).
 								retrieve(extractConcepts(outputConfig))).format();
 				if (outputConfig.isTemporary()) {
 					this.dao.delete(outputConfig);
@@ -223,7 +230,12 @@ public final class DataResource {
 		DetailedRequest request = new DetailedRequest();
 		request.setI2b2AuthMetadata(authMetadata);
 		request.setOutputConfiguration(config);
-		request.setPatientSetCollId(82);
+
+		I2b2PatientSet patientSet = new I2b2PatientSet();
+		patientSet.setPatientSetCollId(82);
+		patientSet.setPatientSetSize(133);
+
+		request.setI2b2PatientSet(patientSet);
 
 		String reqJson = ow.writeValueAsString(request);
 		System.out.println(reqJson);
