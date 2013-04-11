@@ -4,7 +4,7 @@ import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
 
 public final class DetailedRequest {
 	private I2b2AuthMetadata i2b2AuthMetadata;
-	private Integer patientSetCollId;
+	private I2b2PatientSet i2b2PatientSet;
 	private OutputConfiguration outputConfiguration;
 
 	public I2b2AuthMetadata getI2b2AuthMetadata() {
@@ -15,12 +15,12 @@ public final class DetailedRequest {
 		this.i2b2AuthMetadata = i2b2AuthMetadata;
 	}
 
-	public Integer getPatientSetCollId() {
-		return patientSetCollId;
+	public I2b2PatientSet getI2b2PatientSet() {
+		return i2b2PatientSet;
 	}
 
-	public void setPatientSetCollId(Integer patientSetCollId) {
-		this.patientSetCollId = patientSetCollId;
+	public void setI2b2PatientSet(I2b2PatientSet i2b2PatientSet) {
+		this.i2b2PatientSet = i2b2PatientSet;
 	}
 
 	public OutputConfiguration getOutputConfiguration() {

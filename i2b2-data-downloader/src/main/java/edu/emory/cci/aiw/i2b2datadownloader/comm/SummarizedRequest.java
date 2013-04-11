@@ -4,7 +4,7 @@ public final class SummarizedRequest {
 
 	private Long configId;
 	private I2b2AuthMetadata i2b2AuthMetadata;
-	private Integer patientSetCollId;
+	private I2b2PatientSet i2b2PatientSet;
 
 	public I2b2AuthMetadata getI2b2AuthMetadata() {
 		return i2b2AuthMetadata;
@@ -22,11 +22,11 @@ public final class SummarizedRequest {
 		this.configId = configId;
 	}
 
-	public Integer getPatientSetCollId() {
-		return patientSetCollId;
+	public I2b2PatientSet getI2b2PatientSet() {
+		return i2b2PatientSet;
 	}
 
-	public void setPatientSetCollId(Integer patientSetCollId) {
-		this.patientSetCollId = patientSetCollId;
+	public void setI2b2PatientSet(I2b2PatientSet i2b2PatientSet) {
+		this.i2b2PatientSet = i2b2PatientSet;
 	}
 }
