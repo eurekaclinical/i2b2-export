@@ -1,8 +1,8 @@
-package edu.emory.cci.aiw.i2b2datadownloader.dao;
+package edu.emory.cci.aiw.i2b2patientdataexport.dao;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 
 import javax.persistence.EntityManager;
 

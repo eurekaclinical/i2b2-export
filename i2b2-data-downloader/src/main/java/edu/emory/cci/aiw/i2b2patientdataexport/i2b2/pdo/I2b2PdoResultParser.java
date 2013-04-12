@@ -1,8 +1,8 @@
-package edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo;
+package edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo;
 
-import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
-import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
+import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

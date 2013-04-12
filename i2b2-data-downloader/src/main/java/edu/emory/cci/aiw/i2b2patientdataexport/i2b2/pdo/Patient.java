@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo;
+package edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo;
 
 import java.util.ArrayList;
 import java.util.Collections;

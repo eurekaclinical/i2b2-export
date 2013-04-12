@@ -1,6 +1,6 @@
-package edu.emory.cci.aiw.i2b2datadownloader.output;
+package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 
 /**
  *

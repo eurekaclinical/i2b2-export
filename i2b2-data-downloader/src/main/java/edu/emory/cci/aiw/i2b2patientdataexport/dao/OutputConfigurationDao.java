@@ -1,6 +1,6 @@
-package edu.emory.cci.aiw.i2b2datadownloader.dao;
+package edu.emory.cci.aiw.i2b2patientdataexport.dao;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 
 import java.util.List;
 

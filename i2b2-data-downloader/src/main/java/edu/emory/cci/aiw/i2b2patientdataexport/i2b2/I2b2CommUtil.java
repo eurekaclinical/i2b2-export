@@ -1,6 +1,6 @@
-package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
+package edu.emory.cci.aiw.i2b2patientdataexport.i2b2;
 
-import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -10,14 +10,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 
 public final class I2b2CommUtil {
 

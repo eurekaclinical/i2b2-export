@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2datadownloader.comm;
+package edu.emory.cci.aiw.i2b2patientdataexport.comm;
 
 public final class I2b2AuthMetadata {
 

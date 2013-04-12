@@ -1,18 +1,18 @@
-package edu.emory.cci.aiw.i2b2datadownloader.resource;
+package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException;
-import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.DetailedRequest;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2PatientSet;
-import edu.emory.cci.aiw.i2b2datadownloader.dao.OutputConfigurationDao;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2PdoRetriever;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2UserAuthenticator;
-import edu.emory.cci.aiw.i2b2datadownloader.output.DataOutputFormatter;
+import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException;
+import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.DetailedRequest;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2PatientSet;
+import edu.emory.cci.aiw.i2b2patientdataexport.dao.OutputConfigurationDao;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2PdoRetriever;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
+import edu.emory.cci.aiw.i2b2patientdataexport.output.DataOutputFormatter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 
@@ -109,7 +109,7 @@ public final class DataResource {
 	 * @param request contains the request details, including i2b2 authentication tokens, configuration specification and i2b2 patient set ID
 	 * @return either the formatted output as a CSV file or a status code
 	 *         indicating an error
-	 * @throws edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException
 	 *
 	 */
 	@POST

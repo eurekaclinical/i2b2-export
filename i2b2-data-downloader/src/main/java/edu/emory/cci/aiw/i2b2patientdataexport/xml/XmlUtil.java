@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2datadownloader.xml;
+package edu.emory.cci.aiw.i2b2patientdataexport.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

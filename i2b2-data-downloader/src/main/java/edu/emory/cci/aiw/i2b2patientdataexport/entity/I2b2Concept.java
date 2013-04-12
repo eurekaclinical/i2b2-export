@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2datadownloader.entity;
+package edu.emory.cci.aiw.i2b2patientdataexport.entity;
 
 import javax.persistence.*;
 

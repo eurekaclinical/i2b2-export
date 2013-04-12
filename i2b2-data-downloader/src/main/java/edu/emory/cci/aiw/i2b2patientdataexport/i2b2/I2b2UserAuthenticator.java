@@ -1,8 +1,8 @@
-package edu.emory.cci.aiw.i2b2datadownloader.i2b2;
+package edu.emory.cci.aiw.i2b2patientdataexport.i2b2;
 
-import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2datadownloader.xml.XmlUtil;
+import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;

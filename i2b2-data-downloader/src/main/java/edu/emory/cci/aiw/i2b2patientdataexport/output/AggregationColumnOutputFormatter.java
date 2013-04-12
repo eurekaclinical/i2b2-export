@@ -1,7 +1,7 @@
-package edu.emory.cci.aiw.i2b2datadownloader.output;
+package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observation;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;

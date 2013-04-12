@@ -1,16 +1,16 @@
-package edu.emory.cci.aiw.i2b2datadownloader.resource;
+package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException;
-import edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderXmlException;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.OutputConfigurationSummary;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.DeleteRequest;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.LoadRequest;
-import edu.emory.cci.aiw.i2b2datadownloader.comm.SaveRequest;
-import edu.emory.cci.aiw.i2b2datadownloader.dao.OutputConfigurationDao;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2UserAuthenticator;
+import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException;
+import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.DeleteRequest;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.LoadRequest;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.OutputConfigurationSummary;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.SaveRequest;
+import edu.emory.cci.aiw.i2b2patientdataexport.dao.OutputConfigurationDao;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -39,7 +39,7 @@ public class OutputConfigurationResource {
 	 * @param request the create request, containing the configuration to create
 	 *                   along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws edu.emory.cci.aiw.i2b2datadownloader.DataDownloaderException
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException
 	 *
 	 */
 	@POST

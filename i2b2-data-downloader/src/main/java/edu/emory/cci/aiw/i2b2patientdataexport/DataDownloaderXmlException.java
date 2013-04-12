@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2datadownloader;
+package edu.emory.cci.aiw.i2b2patientdataexport;
 
 public class DataDownloaderXmlException extends DataDownloaderException {
 

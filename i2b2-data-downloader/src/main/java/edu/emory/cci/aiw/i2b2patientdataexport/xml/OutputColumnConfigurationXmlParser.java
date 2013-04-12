@@ -1,6 +1,6 @@
-package edu.emory.cci.aiw.i2b2datadownloader.xml;
+package edu.emory.cci.aiw.i2b2patientdataexport.xml;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.TransformerException;

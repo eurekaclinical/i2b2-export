@@ -1,14 +1,14 @@
-package edu.emory.cci.aiw.i2b2datadownloader.output;
+package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.I2b2CommUtil;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Event;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.I2b2PdoResults;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observation;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Observer;
-import edu.emory.cci.aiw.i2b2datadownloader.i2b2.pdo.Patient;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Event;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.I2b2PdoResults;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observer;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Patient;
 import junit.framework.Assert;
 import org.junit.Test;
 

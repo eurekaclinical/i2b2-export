@@ -1,6 +1,6 @@
-package edu.emory.cci.aiw.i2b2datadownloader.xml;
+package edu.emory.cci.aiw.i2b2patientdataexport.xml;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import junit.framework.Assert;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

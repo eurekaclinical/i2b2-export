@@ -1,6 +1,6 @@
-package edu.emory.cci.aiw.i2b2datadownloader.comm;
+package edu.emory.cci.aiw.i2b2patientdataexport.comm;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 
 public class SaveRequest {
 

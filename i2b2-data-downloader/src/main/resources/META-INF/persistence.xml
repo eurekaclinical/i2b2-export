@@ -8,9 +8,9 @@
         <!-- <non-jta-data-source>java:comp/env/jdbc
             /I2b2DataDownloaderService</non-jta-data-source> -->
 
-        <class>edu.emory.cci.aiw.i2b2datadownloader.entity.I2b2Concept</class>
-        <class>edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration</class>
-        <class>edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration</class>
+        <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept</class>
+        <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration</class>
+        <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration</class>
 
         <properties>
             <!-- Disable the second-level cache -->

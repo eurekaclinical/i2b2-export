@@ -1,7 +1,7 @@
-package edu.emory.cci.aiw.i2b2datadownloader.output;
+package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2datadownloader.entity.OutputConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import junit.framework.Assert;
 import org.junit.Test;
 
