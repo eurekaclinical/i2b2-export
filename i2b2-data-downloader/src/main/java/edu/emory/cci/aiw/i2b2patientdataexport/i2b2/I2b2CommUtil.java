@@ -22,7 +22,10 @@ public final class I2b2CommUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(I2b2CommUtil.class);
 
-    private static final String I2B2_PROXY_URL = "https://eureka-dev.cci.emory.edu/i2b2/index.php";
+//    private static final String I2B2_PROXY_URL = "https://eureka-dev.cci.emory.edu/i2b2/index.php";
+//    static final String I2B2_SERVICE_HOST_URL = "http://localhost:9090";
+
+    private static final String I2B2_PROXY_URL = "http://192.168.86.128/webclient/index.php";
     static final String I2B2_SERVICE_HOST_URL = "http://localhost:9090";
 
 	/*
