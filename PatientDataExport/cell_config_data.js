@@ -2,10 +2,10 @@
 // every file in this list will be loaded after the cell's Init function is called
 {
 	files:[
-		"DataDownloader_ctrlr.js"
+		"PatientDataExport_ctrlr.js"
 	],
 	css:[ 
-		"DataDownloader.css"
+		"PatientDataExport.css"
 	],
 	config: {
 		// additional configuration variables that are set by the system
@@ -19,7 +19,7 @@
 			standardTabs: true, // this means the plugin uses standard tabs at top
 			html: {
 				source: 'injected_screens.html',
-				mainDivId: 'DataDownloader-mainDiv'
+				mainDivId: 'PatientDataExport-mainDiv'
 			}
 		}
 	}
