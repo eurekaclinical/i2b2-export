@@ -16,108 +16,70 @@ i2b2.PatientDataExport.ROW_INDEX = 1;
 i2b2.PatientDataExport.Init = function(loadedDiv) {
     // register DIV as valid DragDrop target for Patient Record Sets (PRS) objects
     var op_trgt = {dropTarget:true};
-    i2b2.sdx.Master.AttachType("PatientDataExport-CONCPTDROP-1", "CONCPT", op_trgt);
-    i2b2.sdx.Master.AttachType("PatientDataExport-PRSDROP", "PRS", op_trgt);
+    i2b2.sdx.Master.AttachType('PatientDataExport-PRSDROP', 'PRS', op_trgt);
     // drop event handlers used by this plugin
-    i2b2.sdx.Master.setHandlerCustom("PatientDataExport-CONCPTDROP-1", "CONCPT", "DropHandler", 
-				     function(sdxData) {
-					 sdxData = sdxData[0]; // only interested in first concept
-					 i2b2.PatientDataExport.model.configuration.columnConfigs['1'].conceptRecord = sdxData;
-					 // let the user know that the drop was successful by displaying the name of the concept
-					 $("PatientDataExport-CONCPTDROP-1").innerHTML = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
-					 // temporarly change background color to give GUI feedback of a successful drop occuring
-					 $("PatientDataExport-CONCPTDROP-1").style.background = "#CFB";
-					 setTimeout("$('PatientDataExport-CONCPTDROP-1').style.background='#DEEBEF'", 250);
-					 $("PatientDataExport-CONCPTDROP-1").className = "droptrgt SDX-CONCPT";		
-					 
-					 // populate the column name field with the name of the concept
-					 $("PatientDataExport-columnName-1").value = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
-					 
-					 // populate the display format dropdown based on the type of concept dropped    
-					 i2b2.PatientDataExport.populateDispFmtSelect('1', sdxData);
-					 
-					 // clear out the display format specific options
-					 $("PatientDataExport-timerange-container-1").style.display = "none";
-					 $("PatientDataExport-units-container-1").style.display = "none";
-        				 $("PatientDataExport-aggregation-container-1").style.display = "none";
-					 $("PatientDataExport-howmany-container-1").style.display = "none";
-					 
-					 // optimization to prevent requerying the hive for new results if the input dataset has not changed
-					 i2b2.PatientDataExport.model.dirtyResultsData = true;
-				     }
-				    );
-    i2b2.sdx.Master.setHandlerCustom("PatientDataExport-PRSDROP", "PRS", "DropHandler", i2b2.PatientDataExport.prsDropped);
+    i2b2.sdx.Master.setHandlerCustom('PatientDataExport-PRSDROP', 'PRS', 'DropHandler', i2b2.PatientDataExport.prsDropped);
+
     // initialize configuration object
     i2b2.PatientDataExport.model.configuration = {};
     i2b2.PatientDataExport.model.configuration.columnConfigs = [];
     
     // initialize the first configuration
     i2b2.PatientDataExport.initColumnConfig('1');
+    i2b2.sdx.Master.AttachType('PatientDataExport-CONCPTDROP-1', 'CONCPT', op_trgt);
+    i2b2.sdx.Master.setHandlerCustom('PatientDataExport-CONCPTDROP-1', 'CONCPT', 'DropHandler', 
+				     function(sdxData) { i2b2.PatientDataExport.conceptDropped(sdxData, 1); });
+    $('PatientDataExport-userConfigsList').addEventListener('change', i2b2.PatientDataExport.userConfigSelected);
+    $('PatientDataExport-upBtn-1').addEventListener('click', i2b2.PatientDataExport.moveUp);
+    $('PatientDataExport-dnBtn-1').addEventListener('click', i2b2.PatientDataExport.moveDown);
+    $('PatientDataExport-dispfmt-select-1').addEventListener('change', i2b2.PatientDataExport.onDispFmtChange);
     
-    $("PatientDataExport-userConfigsList").addEventListener("change", i2b2.PatientDataExport.userConfigSelected);
-    $("PatientDataExport-upBtn-1").addEventListener("click", i2b2.PatientDataExport.moveUp);
-    $("PatientDataExport-dnBtn-1").addEventListener("click", i2b2.PatientDataExport.moveDown);
-    $("PatientDataExport-dispfmt-select-1").addEventListener("change", i2b2.PatientDataExport.onDispFmtChange);
-    $("PatientDataExport-addColumnBtn").addEventListener("click", i2b2.PatientDataExport.addColumnConfig);
-    $("PatientDataExport-previewBtn").addEventListener("click", i2b2.PatientDataExport.generatePreview);
-    $("PatientDataExport-saveonly").addEventListener("click", i2b2.PatientDataExport.saveConfig);
-    $("PatientDataExport-export").addEventListener("click", i2b2.PatientDataExport.exportData);
-    $("PatientDataExport-deleteConfigBtn").addEventListener("click", i2b2.PatientDataExport.deleteConfig);
-    $("PatientDataExport-loadConfigBtn").addEventListener("click", i2b2.PatientDataExport.loadConfig);
+    // attach listeners to global buttons
+    $('PatientDataExport-addColumnBtn').addEventListener('click', i2b2.PatientDataExport.addColumnConfig);
+    $('PatientDataExport-previewBtn').addEventListener('click', i2b2.PatientDataExport.generatePreview);
+    $('PatientDataExport-saveonly').addEventListener('click', i2b2.PatientDataExport.saveConfig);
+    $('PatientDataExport-export').addEventListener('click', i2b2.PatientDataExport.exportData);
+    $('PatientDataExport-deleteConfigBtn').addEventListener('click', i2b2.PatientDataExport.deleteConfig);
+    $('PatientDataExport-loadConfigBtn').addEventListener('click', i2b2.PatientDataExport.loadConfig);
     
     // populate the list of configurations
     i2b2.PatientDataExport.populateConfigList();
     
     // manage YUI tabs
-    this.yuiTabs = new YAHOO.widget.TabView("PatientDataExport-TABS", {activeIndex:0});
-    this.yuiTabs.on('activeTabChange', function(ev) { 
-	//Tabs have changed 
-	if (ev.newValue.get('id')=="PatientDataExport-TAB1") {
-	    // user switched to Results tab
-	    if (i2b2.PatientDataExport.model.concepts && i2b2.PatientDataExport.model.concepts.length > 0 && i2b2.PatientDataExport.model.prsRecord) {
-		// contact PDO only if we have data
-		if (i2b2.PatientDataExport.model.dirtyResultsData) {
-		    // recalculate the results only if the input data has changed
-		    i2b2.PatientDataExport.getResults();
-		}
-	    }
-	}
-    });
-    
-    YAHOO.util.Event.addListener(window, 'resize', i2b2.PatientDataExport.resizeDataTable);
+    this.yuiTabs = new YAHOO.widget.TabView('PatientDataExport-TABS', {activeIndex:0});
 };
 
 i2b2.PatientDataExport.populateConfigList = function() {
-    new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + "/config/getAll", {
+    new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/config/getAll', {
 	method: 'POST',
 	contentType: 'application/json',
 	postBody: Object.toJSON(i2b2.PatientDataExport.createI2b2AuthRequestObject()),
-	requestHeaders: {"Accept": "application/json"},
+	requestHeaders: {'Accept': 'application/json'},
 	asynchronous: true,
 	onSuccess: function(response) {
-	    var select = $("PatientDataExport-userConfigsList");
+	    var select = $('PatientDataExport-userConfigsList');
 	    var configSummaries = response.responseJSON;
 	    while (select.hasChildNodes()) {
 		select.removeChild(select.firstChild);
 	    }
 	    configSummaries.forEach(function(config) {
-		var opt = document.createElement("option");
+		var opt = document.createElement('option');
 		opt.value = config.configurationId;
 		opt.text = config.configurationName;
 		select.appendChild(opt);
-	    });
-	    $("PatientDataExport-loadConfigBtn").disabled = true;
-	    $("PatientDataExport-deleteConfigBtn").disabled = true;
+0	    });
+	    $('PatientDataExport-loadConfigBtn').disabled = true;
+	    $('PatientDataExport-deleteConfigBtn').disabled = true;
 	}	
     });
 };
 
 i2b2.PatientDataExport.userConfigSelected = function(evt) {
-    $("PatientDataExport-loadConfigBtn").disabled = false;
-    $("PatientDataExport-deleteConfigBtn").disabled = false;
+    $('PatientDataExport-loadConfigBtn').disabled = false;
+    $('PatientDataExport-deleteConfigBtn').disabled = false;
     for (var i = 0; i < evt.target.options.length; i++) {
 	if (evt.target.options[i].selected === true) {
-	    $("PatientDataExport-saveas").value = evt.target.options[i].text;
+	    $('PatientDataExport-saveas').value = evt.target.options[i].text;
 	    return;
 	}
     }	
@@ -135,33 +97,33 @@ i2b2.PatientDataExport.initColumnConfig = function(index) {
 };
 
 i2b2.PatientDataExport.populateDispFmtSelect = function(index, sdxData) {
-    var dispFmtSel = $("PatientDataExport-dispfmt-select-" + index);
+    var dispFmtSel = $('PatientDataExport-dispfmt-select-' + index);
     while (dispFmtSel.hasChildNodes()) {
         dispFmtSel.removeChild(dispFmtSel.lastChild);
     }
 
-    var selectOpt = document.createElement("option");
+    var selectOpt = document.createElement('option');
     selectOpt.disabled = true;
     selectOpt.selected = true;
-    selectOpt.text = "Select one:";
+    selectOpt.text = 'Select one:';
     dispFmtSel.appendChild(selectOpt);
     
-    var existOpt = document.createElement("option");
-    existOpt.value = "existence";
-    existOpt.text = "Existence";
+    var existOpt = document.createElement('option');
+    existOpt.value = 'existence';
+    existOpt.text = 'Existence';
     
-    var valOpt = document.createElement("option");
-    valOpt.value = "value";
-    valOpt.text = "Value";
+    var valOpt = document.createElement('option');
+    valOpt.value = 'value';
+    valOpt.text = 'Value';
     
     dispFmtSel.appendChild(existOpt);
     dispFmtSel.appendChild(valOpt);
     
     var lvMetaDatas = i2b2.h.XPath(sdxData.origData.xmlOrig, 'metadataxml/ValueMetadata');
     if (lvMetaDatas.length > 0) {
-	var aggOpt = document.createElement("option");
-        aggOpt.value = "aggregation";
-        aggOpt.text = "Aggregation";
+	var aggOpt = document.createElement('option');
+        aggOpt.value = 'aggregation';
+        aggOpt.text = 'Aggregation';
 	
         dispFmtSel.appendChild(aggOpt);
     }
@@ -174,32 +136,32 @@ i2b2.PatientDataExport.onDispFmtChange = function(evt) {
 };
 
 i2b2.PatientDataExport.showHideDispFmt = function(index, dispFmt) {
-    if (dispFmt === "existence") {
-	$("PatientDataExport-timerange-container-" + index).style.display = "none";
-	$("PatientDataExport-howmany-container-" + index).style.display = "none";
-	$("PatientDataExport-units-container-" + index).style.display = "none";
-	$("PatientDataExport-aggregation-container-" + index).style.display = "none";
-    } else if (dispFmt === "value") {
-	$("PatientDataExport-timerange-container-" + index).style.display = "block";
-	$("PatientDataExport-timerange-container-" + index).style.marginBottom = "5px";
-	$("PatientDataExport-howmany-container-" + index).style.display = "block";
+    if (dispFmt === 'existence') {
+	$('PatientDataExport-timerange-container-' + index).style.display = 'none';
+	$('PatientDataExport-howmany-container-' + index).style.display = 'none';
+	$('PatientDataExport-units-container-' + index).style.display = 'none';
+	$('PatientDataExport-aggregation-container-' + index).style.display = 'none';
+    } else if (dispFmt === 'value') {
+	$('PatientDataExport-timerange-container-' + index).style.display = 'block';
+	$('PatientDataExport-timerange-container-' + index).style.marginBottom = '5px';
+	$('PatientDataExport-howmany-container-' + index).style.display = 'block';
 	var lvMetaDatas = i2b2.h.XPath(i2b2.PatientDataExport.model.configuration.columnConfigs[index].conceptRecord.origData.xmlOrig, 'metadataxml/ValueMetadata');
 	if (lvMetaDatas.length > 0) {
-	    $("PatientDataExport-units-container-" + index).style.display = "block";
+	    $('PatientDataExport-units-container-' + index).style.display = 'block';
 	} else {
-	    $("PatientDataExport-units-container-" + index).style.display = "none";
+	    $('PatientDataExport-units-container-' + index).style.display = 'none';
 	}
-	$("PatientDataExport-aggregation-container-" + index).style.display = "none";
-    } else if (dispFmt === "aggregation") {
-	$("PatientDataExport-timerange-container-" + index).style.display = "none";
-	$("PatientDataExport-howmany-container-" + index).style.display = "none";
-	$("PatientDataExport-units-container-" + index).style.display = "block";
-	$("PatientDataExport-aggregation-container-" + index).style.display = "block";
+	$('PatientDataExport-aggregation-container-' + index).style.display = 'none';
+    } else if (dispFmt === 'aggregation') {
+	$('PatientDataExport-timerange-container-' + index).style.display = 'none';
+	$('PatientDataExport-howmany-container-' + index).style.display = 'none';
+	$('PatientDataExport-units-container-' + index).style.display = 'block';
+	$('PatientDataExport-aggregation-container-' + index).style.display = 'block';
     }
 };
 
 i2b2.PatientDataExport.updateColumnConfigFirstRow = function() {
-    var table = $("PatientDataExport-configTable");
+    var table = $('PatientDataExport-configTable');
     var delCell = table.rows[1].cells[0];
     while (delCell.hasChildNodes()) {
 	delCell.removeChild(delCell.lastChild);
@@ -208,22 +170,21 @@ i2b2.PatientDataExport.updateColumnConfigFirstRow = function() {
     
     // if only one config row is left, we don't want to allow deletion of it
     if (table.rows.length === 2) {
-	img.src = "http://placehold.it/35/dbe8ff";
+	img.src = 'http://placehold.it/35/dbe8ff';
 	delCell.appendChild(img);
     } else {
-	img.src = "http://placehold.it/35/dbe8ff/ff0000&text=x";
-        //img.style.border = "1px solid red";
-	img.addEventListener("click", i2b2.PatientDataExport.deleteBtnClickListener);
+	img.src = 'http://placehold.it/35/dbe8ff/ff0000&text=x';
+	img.addEventListener('click', i2b2.PatientDataExport.deleteBtnClickListener);
         var anchor = document.createElement('a');
-	anchor.href = "#";
+	anchor.href = '#';
         anchor.appendChild(img);
-	delCell.className = "deleteBtn";
+	delCell.className = 'deleteBtn';
 	delCell.appendChild(anchor);
     }	
 };
 
 i2b2.PatientDataExport.addColumnConfig = function() {
-    var table = $("PatientDataExport-configTable");
+    var table = $('PatientDataExport-configTable');
     var newIndex = i2b2.PatientDataExport.addColumnConfigRow(table);
     i2b2.PatientDataExport.updateColumnConfigFirstRow();
     
@@ -254,7 +215,7 @@ i2b2.PatientDataExport.moveDown = function(evt) {
 i2b2.PatientDataExport.moveUp = function(evt) {
     var element = evt.target.ancestors()[2];
     var prev = element.previous();
-    if (prev && prev.id !== "PatientDataExport-headerRow") {
+    if (prev && prev.id !== 'PatientDataExport-headerRow') {
 	prev.remove();
 	element.insert({after:prev});
     }
@@ -265,30 +226,30 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     var index = i2b2.PatientDataExport.ROW_INDEX;
     i2b2.PatientDataExport.initColumnConfig(index);
     var tr = table.insertRow(-1);
-    tr.id = "PatientDataExport-columnConfig-" + index;
+    tr.id = 'PatientDataExport-columnConfig-' + index;
     
     var delCell = document.createElement('td');
     var img = document.createElement('img');
-    img.src = "http://placehold.it/35/dbe8ff/ff0000&text=x";
-    img.addEventListener("click", i2b2.PatientDataExport.deleteBtnClickListener);
+    img.src = 'http://placehold.it/35/dbe8ff/ff0000&text=x';
+    img.addEventListener('click', i2b2.PatientDataExport.deleteBtnClickListener);
     var anchor = document.createElement('a');
-    anchor.href = "#";
+    anchor.href = '#';
     anchor.appendChild(img);
-    delCell.className = "deleteBtn";
+    delCell.className = 'deleteBtn';
     delCell.appendChild(anchor);
     tr.appendChild(delCell);
     
     var reorderCell = document.createElement('td');
-    reorderCell.className = "deleteBtn";
+    reorderCell.className = 'deleteBtn';
     var upImg = document.createElement('img');
-    upImg.src = "http://placehold.it/20/dbe8ff/00ff00&text=UP";
-    upImg.addEventListener("click", i2b2.PatientDataExport.moveUp);
+    upImg.src = 'http://placehold.it/20/dbe8ff/00ff00&text=UP';
+    upImg.addEventListener('click', i2b2.PatientDataExport.moveUp);
     var upAnchor = document.createElement('a');
     upAnchor.href = '#';
     upAnchor.appendChild(upImg);
     var dnImg = document.createElement('img');
-    dnImg.src = "http://placehold.it/20/dbe8ff/00ff00&text=DN";
-    dnImg.addEventListener("click", i2b2.PatientDataExport.moveDown);
+    dnImg.src = 'http://placehold.it/20/dbe8ff/00ff00&text=DN';
+    dnImg.addEventListener('click', i2b2.PatientDataExport.moveDown);
     var dnAnchor = document.createElement('a');
     dnAnchor.href = '#';
     dnAnchor.appendChild(dnImg);
@@ -300,42 +261,18 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     var concptCell = document.createElement('td');
     var concptDiv = document.createElement('div');
     var concptSpan = document.createElement('span');
-    concptSpan.className = "droptrgtInit";
-    concptSpan.textContent = "Drop a concept here";
-    concptDiv.className = "droptrgtInit SDX-CONCPT";
-    concptDiv.id = "PatientDataExport-CONCPTDROP-" + index;
+    concptSpan.className = 'droptrgtInit';
+    concptSpan.textContent = 'Drop a concept here';
+    concptDiv.className = 'droptrgtInit SDX-CONCPT';
+    concptDiv.id = 'PatientDataExport-CONCPTDROP-' + index;
     concptDiv.appendChild(concptSpan);
-    concptCell.className = "droptrgtCell";
+    concptCell.className = 'droptrgtCell';
     concptCell.appendChild(concptDiv);
     tr.appendChild(concptCell);
     
-    i2b2.sdx.Master.AttachType("PatientDataExport-CONCPTDROP-" + index, "CONCPT", {dropTarget:true});
-    i2b2.sdx.Master.setHandlerCustom("PatientDataExport-CONCPTDROP-" + index, "CONCPT", "DropHandler", 
-				     function(sdxData) {
-					 sdxData = sdxData[0]; // only interested in first concept
-					 i2b2.PatientDataExport.model.configuration.columnConfigs[index.toString()].conceptRecord = sdxData;
-					 // let the user know that the drop was successful by displaying the name of the concept
-					 $("PatientDataExport-CONCPTDROP-" + index).innerHTML = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
-					 // temporarly change background color to give GUI feedback of a successful drop occuring
-					 $("PatientDataExport-CONCPTDROP-" + index).style.background = "#CFB";
-					 setTimeout("$('PatientDataExport-CONCPTDROP-" + index + "').style.background='#DEEBEF'", 250);	
-					 $("PatientDataExport-CONCPTDROP-" + index).className = "droptrgt SDX-CONCPT";
-					 
-					 // populate the column name field with the name of the concept
-					 $("PatientDataExport-columnName-" + index).value = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
-					 
-					 // populate the display format dropdown based on the type of concept dropped	
-					 i2b2.PatientDataExport.populateDispFmtSelect(index, sdxData);		
-					 
-					 // clear out the display format specific options
-					 $("PatientDataExport-timerange-container-" + index).style.display = "none";
-					 $("PatientDataExport-units-container-" + index).style.display = "none";
-        				 $("PatientDataExport-aggregation-container-" + index).style.display = "none";
-					 $("PatientDataExport-howmany-container-" + index).style.display = "none";
-					 // optimization to prevent requerying the hive for new results if the input dataset has not changed
-					 i2b2.PatientDataExport.model.dirtyResultsData = true;		
-				     }
-				    );
+    i2b2.sdx.Master.AttachType('PatientDataExport-CONCPTDROP-' + index, 'CONCPT', {dropTarget:true});
+    i2b2.sdx.Master.setHandlerCustom('PatientDataExport-CONCPTDROP-' + index, 'CONCPT', 'DropHandler',
+				     function(sdxData) { i2b2.PatientDataExport.conceptDropped(sdxData, index); });
 
     var colNameCell = document.createElement('td');
     colNameCell.className = 'columnNameCell';
@@ -354,7 +291,7 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     var dispfmtSelect = document.createElement('select');
     dispfmtSelect.id = 'PatientDataExport-dispfmt-select-' + index;
     dispfmtSelect.name = 'dispfmt-' + index;
-    dispfmtSelect.addEventListener("change", i2b2.PatientDataExport.onDispFmtChange);
+    dispfmtSelect.addEventListener('change', i2b2.PatientDataExport.onDispFmtChange);
     var dispfmtOpt = document.createElement('option');
     dispfmtOpt.disabled = true;
     dispfmtOpt.selected = true;
@@ -467,23 +404,23 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
 i2b2.PatientDataExport.assembleColumnConfig = function(index) {
     // the concept object is populated at drop-time, so we just focus on the other fields here
     var config = i2b2.PatientDataExport.model.configuration.columnConfigs[index];
-    config.columnName = $("PatientDataExport-columnName-" + index).value;
-    config.displayFormat = $("PatientDataExport-dispfmt-select-" + index).value;
+    config.columnName = $('PatientDataExport-columnName-' + index).value;
+    config.displayFormat = $('PatientDataExport-dispfmt-select-' + index).value;
     switch (config.displayFormat) {
-    case "value":
-	config.howMany = parseInt($("PatientDataExport-howmany-" + index).value);
-	config.includeTimeRange = $("PatientDataExport-timerange-" + index).checked;
-	config.includeUnits = $("PatientDataExport-units-" + index).checked;
+    case 'value':
+	config.howMany = parseInt($('PatientDataExport-howmany-' + index).value);
+	config.includeTimeRange = $('PatientDataExport-timerange-' + index).checked;
+	config.includeUnits = $('PatientDataExport-units-' + index).checked;
 	break;
-    case "aggregation":
-	var aggs = document.getElementsByName("aggregation-" + index);
+    case 'aggregation':
+	var aggs = document.getElementsByName('aggregation-' + index);
 	for (var i = 0; i < aggs.length; i++) {
 	    if (aggs[i].checked) {
 		config.aggregation = aggs[i].value;
 		break;
 	    }
 	}
-	config.includeUnits = $("PatientDataExport-units-" + index).checked;
+	config.includeUnits = $('PatientDataExport-units-' + index).checked;
 	break;
     default:
 	break;
@@ -491,7 +428,7 @@ i2b2.PatientDataExport.assembleColumnConfig = function(index) {
 };
 
 i2b2.PatientDataExport.assembleConfig = function() {
-    var table = $("PatientDataExport-configTable");
+    var table = $('PatientDataExport-configTable');
     for (var i = 1; i < table.rows.length; i++) {
 	var index = table.rows[i].id.split('-')[2];
 	if (i2b2.PatientDataExport.model.configuration.columnConfigs[index].conceptRecord) {
@@ -499,26 +436,26 @@ i2b2.PatientDataExport.assembleConfig = function() {
 	    i2b2.PatientDataExport.model.configuration.columnConfigs[index].order = i;
 	}
     }
-    i2b2.PatientDataExport.model.configuration.rowDimension = $("PatientDataExport-rowdim").value;
-    i2b2.PatientDataExport.model.configuration.whitespace = $("PatientDataExport-whitespace").value;
-    i2b2.PatientDataExport.model.configuration.delimiter = $("PatientDataExport-delimiter").value;
-    i2b2.PatientDataExport.model.configuration.missing = $("PatientDataExport-missing").value;
+    i2b2.PatientDataExport.model.configuration.rowDimension = $('PatientDataExport-rowdim').value;
+    i2b2.PatientDataExport.model.configuration.whitespace = $('PatientDataExport-whitespace').value;
+    i2b2.PatientDataExport.model.configuration.delimiter = $('PatientDataExport-delimiter').value;
+    i2b2.PatientDataExport.model.configuration.missing = $('PatientDataExport-missing').value;
 };
 
 i2b2.PatientDataExport.generatePreview = function() {
     i2b2.PatientDataExport.assembleConfig();
     var previewStr = '';
     switch (i2b2.PatientDataExport.model.configuration.rowDimension) {
-    case "patient":
+    case 'patient':
 	previewStr += 'Patient_id';
 	break;
-    case "visit":
+    case 'visit':
 	previewStr += 'Patient_id'
 	previewStr += 'Visit_id';
 	previewStr += 'Visit_start';
 	previewStr += 'Visit_end';
 	break;
-    case "provider":
+    case 'provider':
 	previewStr += 'Provider_name';
 	break;
     }
@@ -554,30 +491,50 @@ i2b2.PatientDataExport.generatePreview = function() {
 	    } 
 	}	
     });	
-    $("PatientDataExport-previewText").textContent = previewStr;
+    $('PatientDataExport-previewText').textContent = previewStr;
 };
 
 i2b2.PatientDataExport.Unload = function() {
     // purge old data
     i2b2.PatientDataExport.model.configuration = false;
     i2b2.PatientDataExport.model.prsRecord = false;
-    i2b2.PatientDataExport.model.dirtyResultsData = true;
     return true;
 };
+
+i2b2.PatientDataExport.conceptDropped = function(sdxData, index) {
+    sdxData = sdxData[0]; // only interested in first concept
+    i2b2.PatientDataExport.model.configuration.columnConfigs[index.toString()].conceptRecord = sdxData;
+    // let the user know that the drop was successful by displaying the name of the concept
+    $('PatientDataExport-CONCPTDROP-' + index).innerHTML = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
+    // temporarly change background color to give GUI feedback of a successful drop occuring
+    $('PatientDataExport-CONCPTDROP-' + index).style.background = '#CFB';
+    setTimeout("$('PatientDataExport-CONCPTDROP-" + index + "').style.background='#DEEBEF'", 250);	
+    $('PatientDataExport-CONCPTDROP-' + index).className = 'droptrgt SDX-CONCPT';
+    
+    // populate the column name field with the name of the concept
+    $('PatientDataExport-columnName-' + index).value = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
+    
+    // populate the display format dropdown based on the type of concept dropped	
+    i2b2.PatientDataExport.populateDispFmtSelect(index, sdxData);		
+    
+    // clear out the display format specific options
+    $('PatientDataExport-timerange-container-' + index).style.display = 'none';
+    $('PatientDataExport-units-container-' + index).style.display = 'none';
+    $('PatientDataExport-aggregation-container-' + index).style.display = 'none';
+    $('PatientDataExport-howmany-container-' + index).style.display = 'none';
+}
 
 i2b2.PatientDataExport.prsDropped = function(sdxData) {
     sdxData = sdxData[0];	// only interested in first record
     // save the info to our local data model
     i2b2.PatientDataExport.model.prsRecord = sdxData;
     // let the user know that the drop was successful by displaying the name of the patient set
-    $("PatientDataExport-PRSDROP").innerHTML = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
+    $('PatientDataExport-PRSDROP').innerHTML = i2b2.h.Escape(sdxData.sdxInfo.sdxDisplayName);
     // temporarly change background color to give GUI feedback of a successful drop occuring
-    $("PatientDataExport-PRSDROP").style.background = "#CFB";
+    $('PatientDataExport-PRSDROP').style.background = '#CFB';
     setTimeout("$('PatientDataExport-PRSDROP').style.background='#DEEBEF'", 250);	
-    // optimization to prevent requerying the hive for new results if the input dataset has not changed
-    i2b2.PatientDataExport.model.dirtyResultsData = true;		
-    
-    $("PatientDataExport-export").disabled = false;
+    // enable the export button
+    $('PatientDataExport-export').disabled = false;
 };
 
 i2b2.PatientDataExport.createI2b2AuthRequestObject = function() {
@@ -599,7 +556,7 @@ i2b2.PatientDataExport.createConfigRequestObject = function() {
     var request = {};
     request.i2b2AuthMetadata = i2b2.PatientDataExport.createI2b2AuthRequestObject();
     var config = {};
-    config.name = $("PatientDataExport-saveas").value;
+    config.name = $('PatientDataExport-saveas').value;
     config.rowDimension = rawConfig.rowDimension.toUpperCase();
     config.whitespaceReplacement = rawConfig.whitespace;
     config.separator = rawConfig.delimiter;
@@ -631,7 +588,7 @@ i2b2.PatientDataExport.createConfigRequestObject = function() {
                 tableName: conceptData.table_name,
 		columnName: conceptData.column_name,
                 dimensionCode: conceptData.dim_code,
-                isSynonym: "N",
+                isSynonym: 'N',
 		hasChildren: conceptData.hasChildren,
 		icd9: conceptData.icd9,
 		name: conceptData.name,
@@ -653,15 +610,15 @@ i2b2.PatientDataExport.createConfigRequestObject = function() {
 }
 
 i2b2.PatientDataExport.saveConfig = function() {
-    var saveAs = $("PatientDataExport-saveas").value;
+    var saveAs = $('PatientDataExport-saveas').value;
     if (saveAs.length <= 0) {
-	alert("Please name this configuration");
+	alert('Please name this configuration');
     } else {
 	new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/config/save', {
 	    method: 'POST',
 	    contentType: 'application/json',
 	    postBody: Object.toJSON(i2b2.PatientDataExport.createConfigRequestObject()),
-	    requestHeaders: {"Accept": "application/json"},
+	    requestHeaders: {'Accept': 'application/json'},
 	    asynchronous: true,
 	    onSuccess: function(response) {
 		i2b2.PatientDataExport.populateConfigList();
@@ -676,64 +633,64 @@ i2b2.PatientDataExport.exportData = function() {
 	method: 'POST',
 	contentType: 'application/json',
 	postBody: Object.toJSON(i2b2.PatientDataExport.createConfigRequestObject()),
-	requestHeaders: {"Accept": "application/json"},
+	requestHeaders: {'Accept': 'application/json'},
 	asynchronous: true,
 	onSuccess: function (response) {
-	    var downloadForm = $("PatientDataExport-downloadForm");
+	    var downloadForm = $('PatientDataExport-downloadForm');
 	    if (downloadForm) {
-		$("PatientDataExport-saveRunPanel").removeChild(downloadForm);
+		$('PatientDataExport-saveRunPanel').removeChild(downloadForm);
 	    }
 	    
-	    downloadForm = document.createElement("form");
-	    downloadForm.id = "PatientDataExport-downloadForm";
-	    downloadForm.display = "none";
+	    downloadForm = document.createElement('form');
+	    downloadForm.id = 'PatientDataExport-downloadForm';
+	    downloadForm.display = 'none';
 	    
-	    var i2b2Domain = document.createElement("input");
-	    i2b2Domain.type = "hidden";
-	    i2b2Domain.name = "i2b2-domain";
+	    var i2b2Domain = document.createElement('input');
+	    i2b2Domain.type = 'hidden';
+	    i2b2Domain.name = 'i2b2-domain';
 	    i2b2Domain.value = i2b2.h.getDomain();
 	    downloadForm.appendChild(i2b2Domain);
 	    
-	    var i2b2User = document.createElement("input");
-	    i2b2User.type = "hidden";
-	    i2b2User.name = "i2b2-user";
+	    var i2b2User = document.createElement('input');
+	    i2b2User.type = 'hidden';
+	    i2b2User.name = 'i2b2-user';
 	    i2b2User.value = i2b2.h.getUser();
 	    downloadForm.appendChild(i2b2User);
 	    
-	    var i2b2Pass = document.createElement("input");
-	    i2b2Pass.type = "hidden";
-	    i2b2Pass.name = "i2b2-pass";
+	    var i2b2Pass = document.createElement('input');
+	    i2b2Pass.type = 'hidden';
+	    i2b2Pass.name = 'i2b2-pass';
 	    i2b2Pass.value = i2b2.h.getPass();
 	    downloadForm.appendChild(i2b2Pass);
 	    
-	    var i2b2Project = document.createElement("input");
-	    i2b2Project.type = "hidden";
-	    i2b2Project.name = "i2b2-project";
+	    var i2b2Project = document.createElement('input');
+	    i2b2Project.type = 'hidden';
+	    i2b2Project.name = 'i2b2-project';
 	    i2b2Project.value = i2b2.h.getProject();
 	    downloadForm.appendChild(i2b2Project);
 	    
-	    var configId = document.createElement("input");
-	    configId.type = "hidden";
-	    configId.name = "config-id";
+	    var configId = document.createElement('input');
+	    configId.type = 'hidden';
+	    configId.name = 'config-id';
 	    configId.value = response.responseJSON;
 	    downloadForm.appendChild(configId);
 	    
-	    var patientSetCollId = document.createElement("input");
-	    patientSetCollId.type = "hidden";
-	    patientSetCollId.name = "patient-set-coll-id";
+	    var patientSetCollId = document.createElement('input');
+	    patientSetCollId.type = 'hidden';
+	    patientSetCollId.name = 'patient-set-coll-id';
 	    patientSetCollId.value = parseInt(i2b2.PatientDataExport.model.prsRecord.origData.PRS_id); 
 	    downloadForm.appendChild(patientSetCollId);
 	    
-	    var patientSetSize = document.createElement("input");
-	    patientSetSize.type = "hidden";
-	    patientSetSize.name = "patient-set-size";
+	    var patientSetSize = document.createElement('input');
+	    patientSetSize.type = 'hidden';
+	    patientSetSize.name = 'patient-set-size';
 	    patientSetSize.value = parseInt(i2b2.PatientDataExport.model.prsRecord.origData.size);
 	    downloadForm.appendChild(patientSetSize);
 	    
-	    document.getElementById("PatientDataExport-saveRunPanel").appendChild(downloadForm);
-	    var f = $$("FORM#PatientDataExport-downloadForm")[0];
-	    f.action = i2b2.PatientDataExport.SERVICE_URL + "/download/configId"
-	    f.method = "POST";			
+	    document.getElementById('PatientDataExport-saveRunPanel').appendChild(downloadForm);
+	    var f = $$('FORM#PatientDataExport-downloadForm')[0];
+	    f.action = i2b2.PatientDataExport.SERVICE_URL + '/download/configId'
+	    f.method = 'POST';			
 	    f.submit();
 	    
 	}
@@ -741,22 +698,22 @@ i2b2.PatientDataExport.exportData = function() {
 };
 
 i2b2.PatientDataExport.loadConfig = function() {
-    var selectedConfigId = parseInt($("PatientDataExport-userConfigsList").value);
+    var selectedConfigId = parseInt($('PatientDataExport-userConfigsList').value);
     if (!selectedConfigId) {
-	alert("Please select a configuration to load.");
+	alert('Please select a configuration to load.');
     } else {
 	new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/config/load', {
 	    method: 'POST',
 	    contentType: 'application/json',
 	    postBody: Object.toJSON({'authMetadata': i2b2.PatientDataExport.createI2b2AuthRequestObject(), 'outputConfigurationId': selectedConfigId}),
-	    requestHeaders: {"Accept": "application/json"},
+	    requestHeaders: {'Accept': 'application/json'},
 	    asynchronous: true,
 	    onSuccess: function(response) {
 		var config = response.responseJSON;
-		$("PatientDataExport-whitespace").value = config.whitespaceReplacement;
-		$("PatientDataExport-delimiter").value = config.separator;
-		$("PatientDataExport-missing").value = config.missingValue;
-		var rowDimOptions = $("PatientDataExport-rowdim").options;
+		$('PatientDataExport-whitespace').value = config.whitespaceReplacement;
+		$('PatientDataExport-delimiter').value = config.separator;
+		$('PatientDataExport-missing').value = config.missingValue;
+		var rowDimOptions = $('PatientDataExport-rowdim').options;
 		for (var i = 0; i < rowDimOptions.length; i++) {
 		    var option = rowDimOptions.item(i);
 		    if (option.value === config.rowDimension.toLowerCase()) {
@@ -766,7 +723,7 @@ i2b2.PatientDataExport.loadConfig = function() {
 		}
 
 		// remove all existing table rows
-		var table = $("PatientDataExport-configTable");
+		var table = $('PatientDataExport-configTable');
 		var rowHolder = table.rows[0].parentNode;
 		while (rowHolder.children.length > 1) {
 		    // we want to keep the header row
@@ -795,21 +752,21 @@ i2b2.PatientDataExport.loadConfig = function() {
 			xmlOrig: i2b2.h.parseXml(c.xmlOrig).getElementsByTagName('concept')[0]
 		    };
 		    var crSdxInfo = {
-			sdxControlCell: "ONT",
+			sdxControlCell: 'ONT',
 			sdxDisplayName: c.displayName,
-			sdxKeyName: "key",
+			sdxKeyName: 'key',
 			sdxKeyValue: c.i2b2Key,
-			sdxType: "CONCPT"
+			sdxType: 'CONCPT'
 		    };
 		    var cr = { origData: crOrigData, sdxInfo: crSdxInfo, renderData: {}};
 		    i2b2.PatientDataExport.model.configuration.columnConfigs[index].conceptRecord = cr;
 		    // let the user know that the drop was successful by displaying the name of the concept
-	            $("PatientDataExport-CONCPTDROP-" + index).innerHTML = i2b2.h.Escape(cr.sdxInfo.sdxDisplayName);
-	            $("PatientDataExport-CONCPTDROP-" + index).className = "droptrgt SDX-CONCPT";
+	            $('PatientDataExport-CONCPTDROP-' + index).innerHTML = i2b2.h.Escape(cr.sdxInfo.sdxDisplayName);
+	            $('PatientDataExport-CONCPTDROP-' + index).className = 'droptrgt SDX-CONCPT';
 		    
-		    $("PatientDataExport-columnName-" + index).value = colConfig.columnName;
+		    $('PatientDataExport-columnName-' + index).value = colConfig.columnName;
 		    i2b2.PatientDataExport.populateDispFmtSelect(index, cr);
-		    var dispFmtOptions = $("PatientDataExport-dispfmt-select-" + index).options;
+		    var dispFmtOptions = $('PatientDataExport-dispfmt-select-' + index).options;
 		    for (var i = 0; i < dispFmtOptions.length; i++) {
 			var option = dispFmtOptions.item(i);
 			if (option.value === colConfig.displayFormat.toLowerCase()) {
@@ -818,13 +775,13 @@ i2b2.PatientDataExport.loadConfig = function() {
 			}
 		    }
 		    i2b2.PatientDataExport.showHideDispFmt(index, colConfig.displayFormat.toLowerCase());
-		    if (colConfig.displayFormat === "VALUE") {
-			$("PatientDataExport-howmany-" + index).value = colConfig.howMany;
-			$("PatientDataExport-timerange-" + index).checked = colConfig.includeTimeRange;
-			$("PatientDataExport-units-" + index).checked = colConfig.includeUnits;
-		    } else if (colConfig.displayFormat === "AGGREGATION") {
-			$("PatientDataExport-" + colConfig.aggregation.toLowerCase() + "-" + index).checked = true;	
-			$("PatientDataExport-units-" + index).checked = colConfig.includeUnits;
+		    if (colConfig.displayFormat === 'VALUE') {
+			$('PatientDataExport-howmany-' + index).value = colConfig.howMany;
+			$('PatientDataExport-timerange-' + index).checked = colConfig.includeTimeRange;
+			$('PatientDataExport-units-' + index).checked = colConfig.includeUnits;
+		    } else if (colConfig.displayFormat === 'AGGREGATION') {
+			$('PatientDataExport-' + colConfig.aggregation.toLowerCase() + '-' + index).checked = true;	
+			$('PatientDataExport-units-' + index).checked = colConfig.includeUnits;
 		    }
 		});
 	    }
@@ -833,11 +790,11 @@ i2b2.PatientDataExport.loadConfig = function() {
 };
 
 i2b2.PatientDataExport.deleteConfig = function() {
-    var selectedConfigId = parseInt($("PatientDataExport-userConfigsList").value);
+    var selectedConfigId = parseInt($('PatientDataExport-userConfigsList').value);
     if (!selectedConfigId) {
-	alert("Please select a configuration to delete.");
+	alert('Please select a configuration to delete.');
     } else {
-	var configsList = $("PatientDataExport-userConfigsList");
+	var configsList = $('PatientDataExport-userConfigsList');
 	var configName = '';
 	for (var i = 0; i < configsList.options.length; i++) {
 	    if (configsList.options[i].selected) {
@@ -850,7 +807,7 @@ i2b2.PatientDataExport.deleteConfig = function() {
 		method: 'POST',
 		contentType: 'application/json',
 		postBody: Object.toJSON({'authMetadata': i2b2.PatientDataExport.createI2b2AuthRequestObject(), 'outputConfigurationId': selectedConfigId}),
-		requestHeaders: {"Accept": "application/json"},
+		requestHeaders: {'Accept': 'application/json'},
 		asynchronous: true,
 		onSuccess: function(response) {
 		    i2b2.PatientDataExport.populateConfigList();
