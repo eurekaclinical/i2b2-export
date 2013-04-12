@@ -114,6 +114,16 @@ public class OutputConfigurationResource {
 		}
 	}
 
+	/**
+	 * Retrieves the names of all of the specified user's output
+	 * configurations.
+	 *
+	 * @param authMetadata the i2b2 authentication tokens identifying the user
+	 *
+	 * @return a list of configuration names or a status indicating failure
+	 *
+	 * @throws I2b2PatientDataExportServiceException if an error occurs
+	 */
 	@POST
 	@Path("/getAll")
 	public Response getConfigurationsByUser(I2b2AuthMetadata
