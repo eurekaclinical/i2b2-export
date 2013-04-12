@@ -26,7 +26,7 @@ DIV#PatientDataExport-TABS DIV.PatientDataExport-MainContentPad {
 
 
 
-/*** CSS for the Specify Data tab ***/
+/*** CSS for the Configure/Export tab ***/
 DIV#PatientDataExport-mainDiv DIV.PatientDataExport-stepContent {
 	border: 1px solid #42558c;
 	padding: 6px;
@@ -148,6 +148,10 @@ DIV#PatientDataExport-mainDiv droptrgt .concptDiv {
 	height:1px;
 	overflow:hidden;
 	background-color:#63758C;
+}
+DIV#PatientDataExport-mainDiv .pleaseWait {
+	background-image: url("images/wait.gif");
+	background-repeat: no-repeat;
 }
 
 /*** CSS for the Plugin Help tab ***/
