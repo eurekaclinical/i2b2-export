@@ -1,144 +1,142 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-	<body>
-		<div id='DataDownloader-mainDiv'>
-			<div id="DataDownloader-TABS" class="yui-navset">
-				<ul class="yui-nav">
-					<li id="DataDownloader-TAB0" class="selected"><a href="#DataDownloader-TAB0"><em>Configure/Export</em></a></li>
-					<li id="DataDownloader-TAB1"><a href="#DataDownloader-TAB1"><em>Plugin Help</em></a></li>
-				</ul>
-			<div class="yui-content" id="DataDownloader-CONTENT">
-			<div>
-			<div class="DataDownloader-MainContent">
-			<div class="DataDownloader-MainContentPad">	
-			<div class="DataDownloader-stepContent" style="margin-bottom: 20px;">
-				<h1>Step 1: Configure Export Format</h1>
-				<div>
-					<label for="DataDownloader-userConfigsList">Use an existing configuration:</label>
-					<select id="DataDownloader-userConfigsList" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;"></select>
-					<div id="DataDownloader-loadDelBtnPanel" style="display: inline;">
-						<button id="DataDownloader-loadConfigBtn" disabled>Load</button>
-						<button id="DataDownloader-deleteConfigBtn" disabled>Delete</button>
-					</div>
-				</div>
-				<p>Or define a new configuration using the table below. You can also edit an existing configuration.</p>
-				<table>
-					<tr>
-				        	<td>
-							<label for="DataDownloader-rowdim" style="float: left;">Each row represents a </label>
-							<select id="DataDownloader-rowdim" name="rowdim">
-								<option value="patient">Patient</option>
-							        <option value="visit">Visit</option>
-							        <option value="provider">Provider</option>
-							</select>
-						</td>
-					 </tr>
-				 </table>
-				 <table id="DataDownloader-configTable">
-					 <tr id="DataDownloader-headerRow">
-						 <th>&nbsp;</th>
-						 <th>&nbsp;</th>
-						 <th>Column Concept</th>
-						 <th>Column Name</th>
-						 <th>Display Format</th>
-						 <th>Options</th>
-					</tr>
-					<tr id="DataDownloader-columnConfig-1">
-                                        	<td class="deleteBtn"><img id="DataDownloader-deleteBtn-1" src="http://placehold.it/35/dbe8ff&text="></td>
-						<td class="deleteBtn">
-							<a href="#"><img id="DataDownloader-upBtn-1" src="http://placehold.it/20/dbe8ff/00ff00&text=UP"></a>
-							<br />
-							<a href="#"><img id="DataDownloader-dnBtn-1" src="http://placehold.it/20/dbe8ff/00ff00&text=DN"></a>
-						</td>
-                                        	<td class="droptrgtCell">
-							<div class="droptrgtInit SDX-CONCPT" id="DataDownloader-CONCPTDROP-1"><span class="droptrgtInit">Drop a concept here</span><div>
-						</td>
-						<td class="columnNameCell">
-							<input type="text" id="DataDownloader-columnName-1" name="columnName-1" placeholder="Column name" size="16" maxLength="255" />
-						</td>
-	                                        <td class="dispfmt">
-        	                                    <select id="DataDownloader-dispfmt-select-1" name="dispfmt-1">
-							<option disabled selected>Select a concept first</option>
-                        	                    </select>
-                                	       </td>
-                                       		<td>
-                                       			<div id="DataDownloader-howmany-container-1" class="options" style="display: none;">
-								<label for="DataDownloader-howmany-1" style="padding-left: 5px;">How many?</label>
-								<input id="DataDownloader-howmany-1" type="text" name="howmany-1" value="1" size="4"/>
-							</div>
-							<div id="DataDownloader-units-container-1" class="options" style="display: none;">
-								<input type="checkbox" name="units-1" id="DataDownloader-units-1"/>
-								<label for="DataDownloader-units-1">Include units</label>
-							</div>
-							<div id="DataDownloader-timerange-container-1" class="options" style="display: none;">
-								<input type="checkbox" name="timerange-1" id="DataDownloader-timerange-1"/>
-								<label for="DataDownloader-timerange-1">Include time range</label>
-							</div>
-							<div id="DataDownloader-aggregation-container-1" class="options" style="display: none;">
-								<input type="radio" name="aggregation-1" id="DataDownloader-min-1" value="min" />
-								<label for="DataDownloader-min-1" class="aggMargin">Min</label>
-								<input type="radio" name="aggregation-1" id="DataDownloader-max-1" value="max" />
-								<label for="DataDownloader-max-1" class="aggMargin">Max</label>
-				
-								<input type="radio" name="aggregation-1" id="DataDownloader-avg-1" value="avg" />
-								<label for="DataDownloader-avg-1">Avg</label>
-							</div>
-						</td>
-                	                    </tr>
-                                </table>
-                                <div id="DataDownloader-addColumn"><button id="DataDownloader-addColumnBtn">Add</button></div>
-				<div id="DataDownloader-globalOptions" style="margin-top: 20px;">
-					<h2>Export Format Options</h2>
-					<label for="DataDownloader-whitespace">Replace all whitespace in column names with:</label>
-					<input id="DataDownloader-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
-					<br />
-					<label for="DataDownloader-delimiter">Column separator:</label>
-					<input id="DataDownloader-delimiter" name="delimiter" type="text" size="2" maxLength="32" value="," />
-					<br />
-					<label for="DataDownloader-missing">Show missing values as:</label>
-					<input id="DataDownloader-missing" name="missing" type="text" size="8" maxLength="32" value="(NULL)" />
-				</div>
-				<div id="DataDownloader-preview" style="margin-top: 20px;">
-					<h2>Export Preview</h2>
-					<textarea readonly="true" spellcheck="false" id="DataDownloader-previewText" style="width: 100%; overflow-x: scroll; overflow-y: scroll">Preview goes here</textarea>
-					<button id="DataDownloader-previewBtn">Preview</button>
-				</div>
-				<div id=DataDownloader-saveRunBtnPanel" style="padding: 6px;">
-					<h2>Save Configuration</h2>
-					<label for="DataDownloader-saveas">Save output configuration as:</label>
-					<input id="DataDownloader-saveas" type="text" name="saveas" placeholder="Name this configuration" maxLength="255" />
-					<button id="DataDownloader-saveonly">Save</button>
-				</div>	
+  <body>
+    <div id="PatientDataExport-mainDiv">
+      <div id="PatientDataExport-TABS" class="yui-navset">
+	<ul class="yui-nav">
+	  <li id="PatientDataExport-TAB0" class="selected"><a href="#PatientDataExport-TAB0"><em>Configure/Export</em></a></li>
+	  <li id="PatientDataExport-TAB1"><a href="#PatientDataExport-TAB1"><em>Plugin Help</em></a></li>
+	</ul>
+	<div class="yui-content" id="PatientDataExport-CONTENT">
+	  <div>
+	    <div class="PatientDataExport-MainContent">
+	      <div class="PatientDataExport-MainContentPad">	
+		<div class="PatientDataExport-stepContent" style="margin-bottom: 20px;">
+		  <h1>Step 1: Configure Export Format</h1>
+		  <div>
+		    <label for="PatientDataExport-userConfigsList">Use an existing configuration:</label>
+		    <select id="PatientDataExport-userConfigsList" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;"></select>
+		    <div id="PatientDataExport-loadDelBtnPanel" style="display: inline;">
+		      <button id="PatientDataExport-loadConfigBtn" disabled>Load</button>
+		      <button id="PatientDataExport-deleteConfigBtn" disabled>Delete</button>
+		    </div>
+		  </div>
+		  <p>Or define a new configuration using the table below. You can also edit an existing configuration.</p>
+		  <table>
+		    <tr>
+		      <td>
+			<label for="PatientDataExport-rowdim" style="float: left;">Each row represents a </label>
+			<select id="PatientDataExport-rowdim" name="rowdim">
+			  <option value="patient">Patient</option>
+			  <option value="visit">Visit</option>
+			  <option value="provider">Provider</option>
+			</select>
+		      </td>
+		    </tr>
+		  </table>
+		  <table id="PatientDataExport-configTable">
+		    <tr id="PatientDataExport-headerRow">
+		      <th>&nbsp;</th>
+		      <th>&nbsp;</th>
+		      <th>Column Concept</th>
+		      <th>Column Name</th>
+		      <th>Display Format</th>
+		      <th>Options</th>
+		    </tr>
+		    <tr id="PatientDataExport-columnConfig-1">
+                      <td class="deleteBtn"><img id="PatientDataExport-deleteBtn-1" src="http://placehold.it/35/dbe8ff&text="></td>
+		      <td class="deleteBtn">
+			<a href="#"><img id="PatientDataExport-upBtn-1" src="http://placehold.it/20/dbe8ff/00ff00&text=UP"></a>
+			<br />
+			<a href="#"><img id="PatientDataExport-dnBtn-1" src="http://placehold.it/20/dbe8ff/00ff00&text=DN"></a>
+		      </td>
+                      <td class="droptrgtCell">
+			<div class="droptrgtInit SDX-CONCPT" id="PatientDataExport-CONCPTDROP-1"><span class="droptrgtInit">Drop a concept here</span><div>
+		      </td>
+		      <td class="columnNameCell">
+			<input type="text" id="PatientDataExport-columnName-1" name="columnName-1" placeholder="Column name" size="16" maxLength="255" />
+		      </td>
+	              <td class="dispfmt">
+        	        <select id="PatientDataExport-dispfmt-select-1" name="dispfmt-1">
+			  <option disabled selected>Select a concept first</option>
+                        </select>
+                      </td>
+                      <td>
+                        <div id="PatientDataExport-howmany-container-1" class="options" style="display: none;">
+			  <label for="PatientDataExport-howmany-1" style="padding-left: 5px;">How many?</label>
+			  <input id="PatientDataExport-howmany-1" type="text" name="howmany-1" value="1" size="4"/>
 			</div>
-			<div class="DataDownloader-stepContent">
-				<h1>Step 2: Export a Patient Set</h1>
-				<div id="DataDownloader-saveRunPanel">
-					<div style="margin-bottom: 10px;">
-						<span id="DataDownloader-patientSetDropTrgtLbl">Patient Set:</span>
-						<span id="DataDownloader-PRSDROP">Drop a Patient Set here</span>
-						<button id="DataDownloader-export" disabled>Export Patient Set</button>
-					</div>
-				</div>
+			<div id="PatientDataExport-units-container-1" class="options" style="display: none;">
+			  <input type="checkbox" name="units-1" id="PatientDataExport-units-1"/>
+			  <label for="PatientDataExport-units-1">Include units</label>
 			</div>
-		</div>
-		</div>
-		</div>
-		<div>
-		<div class="DataDownloader-MainContent">
-			<div class="DataDownloader-MainContentPad">
-				<h1>Patient Data Downloader</h1>
-				<hr size="1" noshade>
-				<h2>Help</h2>
-				Help goes here
-				<h2>About</h2>
-				About goes here
+			<div id="PatientDataExport-timerange-container-1" class="options" style="display: none;">
+			  <input type="checkbox" name="timerange-1" id="PatientDataExport-timerange-1"/>
+			  <label for="PatientDataExport-timerange-1">Include time range</label>
 			</div>
+			<div id="PatientDataExport-aggregation-container-1" class="options" style="display: none;">
+			  <input type="radio" name="aggregation-1" id="PatientDataExport-min-1" value="min" />
+			  <label for="PatientDataExport-min-1" class="aggMargin">Min</label>
+			  <input type="radio" name="aggregation-1" id="PatientDataExport-max-1" value="max" />
+			  <label for="PatientDataExport-max-1" class="aggMargin">Max</label>
+			  
+			  <input type="radio" name="aggregation-1" id="PatientDataExport-avg-1" value="avg" />
+			  <label for="PatientDataExport-avg-1">Avg</label>
+			</div>
+		      </td>
+                    </tr>
+                  </table>
+                  <div id="PatientDataExport-addColumn"><button id="PatientDataExport-addColumnBtn">Add</button></div>
+		  <div id="PatientDataExport-globalOptions" style="margin-top: 20px;">
+		    <h2>Export Format Options</h2>
+		    <label for="PatientDataExport-whitespace">Replace all whitespace in column names with:</label>
+		    <input id="PatientDataExport-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
+		    <br />
+		    <label for="PatientDataExport-delimiter">Column separator:</label>
+		    <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="32" value="," />
+		    <br />
+		    <label for="PatientDataExport-missing">Show missing values as:</label>
+		    <input id="PatientDataExport-missing" name="missing" type="text" size="8" maxLength="32" value="(NULL)" />
+		  </div>
+		  <div id="PatientDataExport-preview" style="margin-top: 20px;">
+		    <h2>Export Preview</h2>
+		    <textarea readonly="true" spellcheck="false" id="PatientDataExport-previewText" style="width: 100%; overflow-x: scroll; overflow-y: scroll">Preview goes here</textarea>
+		    <button id="PatientDataExport-previewBtn">Preview</button>
+		  </div>
+		  <div id="PatientDataExport-saveRunBtnPanel" style="padding: 6px;">
+		    <h2>Save Configuration</h2>
+		    <label for="PatientDataExport-saveas">Save output configuration as:</label>
+		    <input id="PatientDataExport-saveas" type="text" name="saveas" placeholder="Name this configuration" maxLength="255" />
+		    <button id="PatientDataExport-saveonly">Save</button>
+		  </div>	
+		  </div>
+		  <div class="PatientDataExport-stepContent">
+		    <h1>Step 2: Export a Patient Set</h1>
+		    <div id="PatientDataExport-saveRunPanel">
+		      <div style="margin-bottom: 10px;">
+			<span id="PatientDataExport-patientSetDropTrgtLbl">Patient Set:</span>
+			<span id="PatientDataExport-PRSDROP">Drop a Patient Set here</span>
+			<button id="PatientDataExport-export" disabled>Export Patient Set</button>
+		      </div>
+		    </div>
+		  </div>
+		  </div>
 		</div>
-
-
+	      </div>
+	      <div>
+		<div class="PatientDataExport-MainContent">
+		  <div class="PatientDataExport-MainContentPad">
+		    <h1>Patient Data Downloader</h1>
+		    <hr size="1" noshade>
+		    <h2>Help</h2>
+		    Help goes here
+		    <h2>About</h2>
+		    About goes here
+		  </div>
 		</div>
-		</div>
-		</div>
-		</div>
-	</body>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+  </body>
 </html>

@@ -9,9 +9,9 @@
 	],
 	config: {
 		// additional configuration variables that are set by the system
-		short_name: "Patient Data Downloader",
-		name: "Patient Data Downloader",
-		description: "Download the results of a patient query.",
+		short_name: "Patient Data Export",
+		name: "Patient Data Export",
+		description: "Export the results of a patient query.",
 		category: ["celless","plugin","local"],
 		plugin: {
 			isolateHtml: false,  // this means do not use an IFRAME

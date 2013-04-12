@@ -1,6 +1,6 @@
 /*** CSS for main plugin wrapper ***/
 
-DIV#DataDownloader-mainDiv {
+DIV#PatientDataExport-mainDiv {
 	padding: 0px;
 }
 
@@ -8,11 +8,11 @@ DIV#DataDownloader-mainDiv {
 
 /*** CSS for tab background ***/
 
-DIV#DataDownloader-TABS DIV.yui-content {
+DIV#PatientDataExport-TABS DIV.yui-content {
 	background: #FFF;
 }
 
-DIV#DataDownloader-TABS DIV.DataDownloader-MainContent {
+DIV#PatientDataExport-TABS DIV.PatientDataExport-MainContent {
     background:#FFF;
     border:solid #63758C;
     border-width:1px 0;
@@ -20,77 +20,77 @@ DIV#DataDownloader-TABS DIV.DataDownloader-MainContent {
     height:100%;
     overflow-y: scroll;
 }
-DIV#DataDownloader-TABS DIV.DataDownloader-MainContentPad {
+DIV#PatientDataExport-TABS DIV.PatientDataExport-MainContentPad {
     padding:10px 10px;
 }
 
 
 
 /*** CSS for the Specify Data tab ***/
-DIV#DataDownloader-mainDiv DIV.DataDownloader-stepContent {
+DIV#PatientDataExport-mainDiv DIV.PatientDataExport-stepContent {
 	border: 1px solid #42558c;
 	padding: 6px;
 	background-color: #dbe8ff;
 }
 
-DIV#DataDownloader-mainDiv LABEL {
+DIV#PatientDataExport-mainDiv LABEL {
 	color: #666666;
 	font-weight: bold;
 	padding: 1px 0;
 	vertical-align: middle;
 	width: auto;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-rowdim {
+DIV#PatientDataExport-mainDiv #PatientDataExport-rowdim {
 	width: auto;
 	float: left;
 	margin-left: 5px;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-configTable {
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable {
 	width: 100%;
 	border-collapse: collapse;
 	margin-top: 20px;
 	margin-bottom: 5px;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-configTable TR {
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable TR {
 	height: 50px;
 	border-top: 1px double black;
 	border-bottom: 1px double black;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-configTable #DataDownloader-headerRow {
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable #PatientDataExport-headerRow {
 	height: auto;
 	border: none;
 }
-DIV#DataDownloader-mainDiv TD.deleteBtn {
+DIV#PatientDataExport-mainDiv TD.deleteBtn {
 	width: 40px;
 }
-DIV#DataDownloader-mainDiv TD.dispfmt {
+DIV#PatientDataExport-mainDiv TD.dispfmt {
 	padding-left: 10px;
 	width: 150px;
 }
-DIV#DataDownloader-mainDiv TD.columnNameCell {
+DIV#PatientDataExport-mainDiv TD.columnNameCell {
 	width: 150px;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-configTable TD.lbl {
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable TD.lbl {
 	color: #666666;
 	font-weight: bold;
 	padding: 6px 0;
 	vertical-align: middle;
 	width: auto;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-configTable DIV.options {
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable DIV.options {
 	padding-left: 50px;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-configTable LABEL.aggMargin {
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable LABEL.aggMargin {
 	margin-right: 10px;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-patientSetDropTrgtLbl {
+DIV#PatientDataExport-mainDiv #PatientDataExport-patientSetDropTrgtLbl {
 	padding: 6px;
 	width:80px;
 	font-weight:bold;
 	color:#666;
 	vertical-align: middle;
 }
-DIV#DataDownloader-mainDiv DIV.droptrgtInit {
+DIV#PatientDataExport-mainDiv DIV.droptrgtInit {
 	padding: 10px;
 	background: #DEEBEF;
 	text-align:center;
@@ -99,19 +99,19 @@ DIV#DataDownloader-mainDiv DIV.droptrgtInit {
 	overflow:hidden;
 	white-space:nowrap;
 }
-DIV#DataDownloader-mainDiv TD SPAN.droptrgtInit {
+DIV#PatientDataExport-mainDiv TD SPAN.droptrgtInit {
 	border: 1px dashed gray;
 	color: gray;
 	font-weight: bold;
 	padding: 3px 85px 3px 95px;
 }
-DIV#DataDownloader-mainDiv TD.droptrgtCell {
+DIV#PatientDataExport-mainDiv TD.droptrgtCell {
 	width: 300px;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-globalOptions LABEL {
+DIV#PatientDataExport-mainDiv #PatientDataExport-globalOptions LABEL {
 	padding-left: 6px;
 }
-DIV#DataDownloader-mainDiv DIV.droptrgt {
+DIV#PatientDataExport-mainDiv DIV.droptrgt {
 	padding: 10px;
 	background: #DEEBEF;
 	font-weight: bold;
@@ -121,7 +121,7 @@ DIV#DataDownloader-mainDiv DIV.droptrgt {
 	overflow:hidden;
 	white-space:nowrap;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-PRSDROP {
+DIV#PatientDataExport-mainDiv #PatientDataExport-PRSDROP {
 	padding: 10px;
 	background: #DEEBEF;
 	font-weight: bold;
@@ -133,7 +133,7 @@ DIV#DataDownloader-mainDiv #DataDownloader-PRSDROP {
 	vertical-align: middle;
 	display: inline-block;
 }
-DIV#DataDownloader-mainDiv droptrgt .concptItem {
+DIV#PatientDataExport-mainDiv droptrgt .concptItem {
 	padding: 5px 10px;
 	overflow:hidden;
 	white-space:nowrap;
@@ -141,82 +141,82 @@ DIV#DataDownloader-mainDiv droptrgt .concptItem {
 	color:#000;
 	text-decoration:none;
 }
-DIV#DataDownloader-mainDiv droptrgt .concptItem:hover {
+DIV#PatientDataExport-mainDiv droptrgt .concptItem:hover {
 	background-color:#FCC;
 }
-DIV#DataDownloader-mainDiv droptrgt .concptDiv {
+DIV#PatientDataExport-mainDiv droptrgt .concptDiv {
 	height:1px;
 	overflow:hidden;
 	background-color:#63758C;
 }
-DIV#DataDownloader-mainDiv #DataDownloader-DeleteMsg {
+DIV#PatientDataExport-mainDiv #PatientDataExport-DeleteMsg {
 	font-size:11px;
 	margin: 2px 0 0 90px;
 	display:none;
 }
 
 /*** CSS for the View Results tab ***/
-FORM#DataDownloader-Form {
+FORM#PatientDataExport-Form {
 	display: inline;
 }
-DIV#DataDownloader-TABS DIV.results-directions {
+DIV#PatientDataExport-TABS DIV.results-directions {
 	padding: 10px;
 	text-align:left;
 }
-DIV#DataDownloader-TABS DIV.results-working {
+DIV#PatientDataExport-TABS DIV.results-working {
 	margin:10px;
 	text-align:left;
 }
-DIV#DataDownloader-TABS DIV.results-empty {
+DIV#PatientDataExport-TABS DIV.results-empty {
 	margin:10px;
 	text-align:left;
 }
-DIV#DataDownloader-TABS DIV.results-finished {
+DIV#PatientDataExport-TABS DIV.results-finished {
     height: 100%;
 }
-DIV#DataDownloader-TABS DIV.results-text {
+DIV#PatientDataExport-TABS DIV.results-text {
     margin-top:10px;
     margin-left: 10px;
     margin-right: 10px;
     height: 3em;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO {
     margin-left: 10px;
     padding-bottom: 30px;
     margin-right: 10px;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO DIV#DataDownloader-Data {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO DIV#PatientDataExport-Data {
     height: 100%;
     overflow: auto;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO DIV#DataDownloader-Data TABLE {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO DIV#PatientDataExport-Data TABLE {
 	margin:0 10px 10px 10px;
 	border-collapse:collapse;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO DIV#DataDownloader-Data TABLE TH {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO DIV#PatientDataExport-Data TABLE TH {
 	width:150px;
 	border:solid 1px #63758C;
 	background-color:#CEDBEF;
 	padding:5px;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO DIV#DataDownloader-Data TABLE TD {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO DIV#PatientDataExport-Data TABLE TD {
 	border:solid 1px #63758C;
 	background-color:#DEEBEF;
 	padding:5px;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO .InfoPDO-Request {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO .InfoPDO-Request {
 	padding:0px;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO .InfoPDO-Response {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO .InfoPDO-Response {
 	padding:0px;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO .originalXML {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO .originalXML {
 	height:150px;
 	overflow:hidden;
 	padding:0px;
 	margin:0px;
 }
-DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO TABLE TD DIV PRE {
+DIV#PatientDataExport-mainDiv DIV#PatientDataExport-InfoPDO TABLE TD DIV PRE {
 	margin:0px;
 	width:300px;
 	height:140px;
@@ -227,18 +227,18 @@ DIV#DataDownloader-mainDiv DIV#DataDownloader-InfoPDO TABLE TD DIV PRE {
 
 /*** CSS for the Plugin Help tab ***/
 
-DIV#DataDownloader-TABS H1 {
+DIV#PatientDataExport-TABS H1 {
 	margin:0 0 10px 0;
 	font-size:16px;
 	color:#42558C;
 	font-weight:bold;
 }
-DIV#DataDownloader-TABS H2 {
+DIV#PatientDataExport-TABS H2 {
 	margin:10px 0 10px 0;
 	font-size:13px;
 	color:#42558C;
 	font-weight:bold;
 }
-DIV#DataDownloader-TABS HR {
+DIV#PatientDataExport-TABS HR {
 	margin:0;
 }
