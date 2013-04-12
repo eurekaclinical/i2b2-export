@@ -629,7 +629,7 @@ i2b2.PatientDataExport.saveConfig = function() {
 };
 
 i2b2.PatientDataExport.exportData = function() {
-    new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/download/configDetails', {
+    new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/export/configDetails', {
 	method: 'POST',
 	contentType: 'application/json',
 	postBody: Object.toJSON(i2b2.PatientDataExport.createConfigRequestObject()),
@@ -689,7 +689,7 @@ i2b2.PatientDataExport.exportData = function() {
 	    
 	    document.getElementById('PatientDataExport-saveRunPanel').appendChild(downloadForm);
 	    var f = $$('FORM#PatientDataExport-downloadForm')[0];
-	    f.action = i2b2.PatientDataExport.SERVICE_URL + '/download/configId'
+	    f.action = i2b2.PatientDataExport.SERVICE_URL + '/export/configId'
 	    f.method = 'POST';			
 	    f.submit();
 	    
