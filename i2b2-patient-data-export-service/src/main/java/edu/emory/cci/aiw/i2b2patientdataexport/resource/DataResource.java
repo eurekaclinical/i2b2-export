@@ -13,8 +13,6 @@ import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2PdoRetriever;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
 import edu.emory.cci.aiw.i2b2patientdataexport.output.DataOutputFormatter;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -23,12 +21,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-@Path("/download")
+@Path("/export")
 public final class DataResource {
 
 	private final OutputConfigurationDao dao;
@@ -40,14 +36,25 @@ public final class DataResource {
 
 	/**
 	 * Fetches the requested data from i2b2 and sends an output file back to the
-	 * client formatted according to the configuration indicated by the configuration ID in the request.
+	 * client formatted according to the configuration indicated by the
+	 * configuration ID in the request. The user must be authenticated
+	 * according to the security tokens passed in.
 	 *
-	 * @param i2b2Domain
-	 * @param i2b2Username
-	 * @param i2b2PasswordNode
-	 * @param i2b2ProjectId
-	 * @param outputConfigId
-	 * @param i2b2PatientSetCollId
+	 * We accept form parameters instead of JSON because in order for the
+	 * browser to trigger its download dialog, it must submit an actual HTML
+	 * form. This service endpoint accepts a constant number of parameters,
+	 * so it's easier for the client to create this form than one containing
+	 * the entire configuration, which contains an arbitrary number of
+	 * elements.
+	 *
+	 * @param i2b2Domain the i2b2 security domain
+	 * @param i2b2Username the i2b2 username
+	 * @param i2b2PasswordNode the i2b2 password node
+	 * @param i2b2ProjectId the i2b2 project ID
+	 * @param outputConfigId the ID of the output configuration to use
+	 * @param i2b2PatientSetCollId the i2b2 patient set ID
+	 * @param i2b2PatientSetSize the i2b2 patient set size
+	 *
 	 * @return the formatted output or a status code indicating failure
 	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException if something goes wrong
 	 */
@@ -87,6 +94,10 @@ public final class DataResource {
 				String output = new DataOutputFormatter(outputConfig,
 						new I2b2PdoRetriever(authMetadata, patientSet).
 								retrieve(extractConcepts(outputConfig))).format();
+
+				// if the configuration is flagged as temporary,
+				// then delete. It was saved by us to force the download
+				// dialog to pop up rather than explicitly by the user
 				if (outputConfig.isTemporary()) {
 					this.dao.delete(outputConfig);
 				}
@@ -104,7 +115,7 @@ public final class DataResource {
 
 	/**
 	 * Fetches the requested data from i2b2 and sends an output file back to the
-	 * client formatted according to the configuration given in the XML.
+	 * client formatted according to the configuration given in the request.
 	 *
 	 * @param request contains the request details, including i2b2 authentication tokens, configuration specification and i2b2 patient set ID
 	 * @return either the formatted output as a CSV file or a status code
@@ -122,8 +133,20 @@ public final class DataResource {
 			if (ua.authenticateUser()) {
 				request.getOutputConfiguration().setUsername(request
 						.getI2b2AuthMetadata().getUsername());
+
+				// because the client has to POST an actual form in order to
+				// trigger the download dialog, we save the details of the
+				// configuration and set the temporary flag so it will be
+				// deleted once the request is fulfilled in
+				// generateOuputFromConfigId. This is preferable to forcing
+				// the client to create a huge form with all of the
+				// configuration options since the service is already
+				// set up to accept and automatically convert JSON.
 				request.getOutputConfiguration().setTemporary(Boolean.TRUE);
 				this.dao.create(request.getOutputConfiguration());
+
+				// return the id so the client can immediately send a request
+				// to /configId with the just-created, temporary configuration
 				return Response.ok().entity(request.getOutputConfiguration()
 						.getId()).build();
 
@@ -144,103 +167,5 @@ public final class DataResource {
 		}
 
 		return result;
-	}
-
-	public static void main(String[] args) throws IOException, I2b2PatientDataExportServiceException {
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectWriter ow = mapper.defaultPrettyPrintingWriter();
-
-		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
-		authMetadata.setDomain("i2b2demo");
-		authMetadata.setUsername("i2b2");
-		authMetadata.setPasswordNode("<password token_ms_timeout=\"1800000\" is_token=\"true\">SessionKey:gEuDmP3jZi7BSqazk7wr</password>");
-		authMetadata.setProjectId("Demo2");
-
-		OutputConfiguration config = new OutputConfiguration();
-		config.setUsername("i2b2");
-		config.setName("foo");
-		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
-		config.setMissingValue("(NULL)");
-		config.setSeparator(",");
-		config.setWhitespaceReplacement("_");
-		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
-
-		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
-		colConfig1.setColumnOrder(1);
-		I2b2Concept concept1 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
-						"MyConcept3", "N");
-		colConfig1.setI2b2Concept(concept1);
-		colConfig1.setColumnName("Concept 3");
-		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
-
-		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
-		colConfig2.setColumnOrder(2);
-		I2b2Concept concept2 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
-						"MyConcept1", "N");
-		colConfig2.setI2b2Concept(concept2);
-		colConfig2.setColumnName("Concept 1");
-		colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
-		colConfig2.setHowMany(3);
-		colConfig2.setIncludeUnits(true);
-		colConfig2.setIncludeTimeRange(false);
-
-		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
-		colConfig3.setColumnOrder(3);
-		I2b2Concept concept3 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
-						"MyConcept2", "N");
-		colConfig3.setI2b2Concept(concept3);
-		colConfig3.setColumnName("Concept 2");
-		colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
-		colConfig3.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
-		colConfig3.setIncludeUnits(true);
-
-		OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
-		colConfig4.setColumnOrder(4);
-		I2b2Concept concept4 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept4", 2, "concept_dimension",
-						"MyConcept4", "N");
-		colConfig4.setI2b2Concept(concept4);
-		colConfig4.setColumnName("Systolic");
-		colConfig4.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
-		colConfig4.setIncludeTimeRange(true);
-		colConfig4.setIncludeUnits(false);
-		colConfig4.setHowMany(2);
-
-		OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
-		colConfig5.setColumnOrder(5);
-		I2b2Concept concept5 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept5", 2, "concept_dimension",
-						"MyConcept5", "N");
-		colConfig5.setI2b2Concept(concept5);
-		colConfig5.setColumnName("Diastolic");
-		colConfig5.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
-		colConfig5.setIncludeTimeRange(true);
-		colConfig5.setIncludeUnits(false);
-		colConfig5.setHowMany(2);
-
-		config.getColumnConfigs().add(colConfig1);
-		config.getColumnConfigs().add(colConfig2);
-		config.getColumnConfigs().add(colConfig3);
-		config.getColumnConfigs().add(colConfig4);
-		config.getColumnConfigs().add(colConfig5);
-
-		DetailedRequest request = new DetailedRequest();
-		request.setI2b2AuthMetadata(authMetadata);
-		request.setOutputConfiguration(config);
-
-		I2b2PatientSet patientSet = new I2b2PatientSet();
-		patientSet.setPatientSetCollId(82);
-		patientSet.setPatientSetSize(133);
-
-		request.setI2b2PatientSet(patientSet);
-
-		String reqJson = ow.writeValueAsString(request);
-		System.out.println(reqJson);
-
-//		DataResource dr = new DataResource();
-//		dr.generateOutput(request);
 	}
 }
