@@ -1,8 +1,8 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException;
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.DeleteRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.LoadRequest;
@@ -39,13 +39,13 @@ public class OutputConfigurationResource {
 	 * @param request the create request, containing the configuration to create
 	 *                   along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
 	 *
 	 */
 	@POST
 	@Path("/save")
 	public Response saveConfiguration(SaveRequest request) throws
-			DataDownloaderException {
+			I2b2PatientDataExportServiceException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
@@ -72,8 +72,8 @@ public class OutputConfigurationResource {
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (DataDownloaderXmlException e) {
-			throw new DataDownloaderException(e);
+		} catch (I2b2PatientDataExportServiceXmlException e) {
+			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 
@@ -85,13 +85,13 @@ public class OutputConfigurationResource {
 	 *                   i2b2 authentication tokens
 	 *
 	 * @return the output configuration or a status code indicating failure
-	 * @throws DataDownloaderException
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
 	 */
 	@POST
 	@Path("/load")
 	public Response loadConfiguration(LoadRequest request)
 			throws
-			DataDownloaderException {
+			I2b2PatientDataExportServiceException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getAuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
@@ -109,15 +109,15 @@ public class OutputConfigurationResource {
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (DataDownloaderXmlException e) {
-			throw new DataDownloaderException(e);
+		} catch (I2b2PatientDataExportServiceXmlException e) {
+			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 
 	@POST
 	@Path("/getAll")
 	public Response getConfigurationsByUser(I2b2AuthMetadata
-															authMetadata) throws DataDownloaderException {
+															authMetadata) throws I2b2PatientDataExportServiceException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
 		try {
 			if (ua.authenticateUser()) {
@@ -135,8 +135,8 @@ public class OutputConfigurationResource {
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (DataDownloaderXmlException e) {
-			throw new DataDownloaderException(e);
+		} catch (I2b2PatientDataExportServiceXmlException e) {
+			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 
@@ -147,11 +147,11 @@ public class OutputConfigurationResource {
 	 *                   operation, including the configuration ID and the
 	 *                   i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws DataDownloaderException
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
 	 */
     @POST
 	@Path("/delete")
-	public Response deleteConfiguration(DeleteRequest request) throws DataDownloaderException {
+	public Response deleteConfiguration(DeleteRequest request) throws I2b2PatientDataExportServiceException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request
 				.getAuthMetadata());
 		try {
@@ -169,8 +169,8 @@ public class OutputConfigurationResource {
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (DataDownloaderXmlException e) {
-			throw new DataDownloaderException(e);
+		} catch (I2b2PatientDataExportServiceXmlException e) {
+			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 }

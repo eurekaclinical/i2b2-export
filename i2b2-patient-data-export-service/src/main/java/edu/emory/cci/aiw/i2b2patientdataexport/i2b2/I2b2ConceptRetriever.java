@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
@@ -32,7 +32,7 @@ public final class I2b2ConceptRetriever {
 	private final I2b2AuthMetadata authMetadata;
 
 
-	public I2b2ConceptRetriever(I2b2AuthMetadata authMetadata) throws DataDownloaderXmlException {
+	public I2b2ConceptRetriever(I2b2AuthMetadata authMetadata) throws I2b2PatientDataExportServiceXmlException {
 		this.authMetadata = authMetadata;
 		this.config = new Configuration();
 		this.config.setClassForTemplateLoading(this.getClass(), "/");
@@ -40,7 +40,7 @@ public final class I2b2ConceptRetriever {
 		this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	}
 
-    public I2b2Concept retrieveConceptByCode(String code) throws DataDownloaderXmlException {
+    public I2b2Concept retrieveConceptByCode(String code) throws I2b2PatientDataExportServiceXmlException {
         try {
             Template tmpl = this.config.getTemplate("i2b2_ont_codeinfo.ftl");
             StringWriter writer = new StringWriter();
@@ -63,21 +63,21 @@ public final class I2b2ConceptRetriever {
 
             return extractConcept(respXml);
         } catch (SAXException e) {
-            throw new DataDownloaderXmlException(e);
+            throw new I2b2PatientDataExportServiceXmlException(e);
         } catch (TemplateException e) {
-            throw new DataDownloaderXmlException(e);
+            throw new I2b2PatientDataExportServiceXmlException(e);
         } catch (ParserConfigurationException e) {
-            throw new DataDownloaderXmlException(e);
+            throw new I2b2PatientDataExportServiceXmlException(e);
         } catch (XPathExpressionException e) {
-            throw new DataDownloaderXmlException(e);
+            throw new I2b2PatientDataExportServiceXmlException(e);
         } catch (ClientProtocolException e) {
-            throw new DataDownloaderXmlException(e);
+            throw new I2b2PatientDataExportServiceXmlException(e);
         } catch (IOException e) {
-            throw new DataDownloaderXmlException(e);
+            throw new I2b2PatientDataExportServiceXmlException(e);
         }
     }
 
-	public I2b2Concept retrieveConceptByPath(String conceptPath) throws DataDownloaderXmlException {
+	public I2b2Concept retrieveConceptByPath(String conceptPath) throws I2b2PatientDataExportServiceXmlException {
 		try {
 			Template tmpl = this.config.getTemplate("i2b2_ont_terminfo.ftl");
 			StringWriter writer = new StringWriter();
@@ -100,17 +100,17 @@ public final class I2b2ConceptRetriever {
 
 			return extractConcept(respXml);
 		} catch (IOException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (TemplateException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (IllegalStateException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (SAXException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (ParserConfigurationException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (XPathExpressionException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		}
 	}
 

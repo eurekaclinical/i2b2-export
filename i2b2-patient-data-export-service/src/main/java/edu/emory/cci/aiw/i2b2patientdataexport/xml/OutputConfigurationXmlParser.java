@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.xml;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import org.w3c.dom.Document;
@@ -19,7 +19,7 @@ public final class OutputConfigurationXmlParser {
 		this.requestXml = requestXml;
 	}
 
-	public OutputConfiguration parse() throws DataDownloaderXmlException {
+	public OutputConfiguration parse() throws I2b2PatientDataExportServiceXmlException {
 		try {
 			OutputConfiguration result = new OutputConfiguration();
 
@@ -58,7 +58,7 @@ public final class OutputConfigurationXmlParser {
 
 			return result;
 		} catch (XPathExpressionException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		}
 	}
 }

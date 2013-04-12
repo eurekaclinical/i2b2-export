@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.xml;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import junit.framework.Assert;
 import org.xml.sax.SAXException;
@@ -55,7 +55,7 @@ public class OutputConfigurationXmlParserTest {
 	private static final String FOOTER = "</datadownloader></message_body></i2b2:request>";
 
 
-	public void testParse() throws ParserConfigurationException, SAXException, IOException, DataDownloaderXmlException {
+	public void testParse() throws ParserConfigurationException, SAXException, IOException, I2b2PatientDataExportServiceXmlException {
 		String configXml = "<outputConfiguration>" +
 				"<name>foo</name>" +
 				"<rowDimension>patient</rowDimension>" +

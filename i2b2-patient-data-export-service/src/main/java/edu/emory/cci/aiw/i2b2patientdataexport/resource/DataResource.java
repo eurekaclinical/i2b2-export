@@ -1,8 +1,8 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException;
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.DetailedRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2PatientSet;
@@ -49,7 +49,7 @@ public final class DataResource {
 	 * @param outputConfigId
 	 * @param i2b2PatientSetCollId
 	 * @return the formatted output or a status code indicating failure
-	 * @throws DataDownloaderException if something goes wrong
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException if something goes wrong
 	 */
 	@POST
 	@Path("/configId")
@@ -69,7 +69,7 @@ public final class DataResource {
 											   @FormParam("patient-set-size")
 											   Integer i2b2PatientSetSize)
 			throws
-			DataDownloaderException {
+			I2b2PatientDataExportServiceException {
 		I2b2PatientSet patientSet = new I2b2PatientSet();
 		patientSet.setPatientSetCollId(i2b2PatientSetCollId);
 		patientSet.setPatientSetSize(i2b2PatientSetSize);
@@ -97,8 +97,8 @@ public final class DataResource {
 			} else {
 				return Response.status(300).build();
 			}
-		} catch (DataDownloaderXmlException e) {
-			throw new DataDownloaderException(e);
+		} catch (I2b2PatientDataExportServiceXmlException e) {
+			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 
@@ -109,14 +109,14 @@ public final class DataResource {
 	 * @param request contains the request details, including i2b2 authentication tokens, configuration specification and i2b2 patient set ID
 	 * @return either the formatted output as a CSV file or a status code
 	 *         indicating an error
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderException
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
 	 *
 	 */
 	@POST
 	@Path("/configDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response generateOutputFromConfigDetails(DetailedRequest request) throws DataDownloaderException {
+	public Response generateOutputFromConfigDetails(DetailedRequest request) throws I2b2PatientDataExportServiceException {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
@@ -130,12 +130,12 @@ public final class DataResource {
 			} else {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (DataDownloaderXmlException e) {
-			throw new DataDownloaderException(e);
+		} catch (I2b2PatientDataExportServiceXmlException e) {
+			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 
-	private Collection<I2b2Concept> extractConcepts(OutputConfiguration config) throws DataDownloaderXmlException {
+	private Collection<I2b2Concept> extractConcepts(OutputConfiguration config) throws I2b2PatientDataExportServiceXmlException {
 		Collection<I2b2Concept> result = new
 				HashSet<I2b2Concept>();
 
@@ -146,7 +146,7 @@ public final class DataResource {
 		return result;
 	}
 
-	public static void main(String[] args) throws IOException, DataDownloaderException {
+	public static void main(String[] args) throws IOException, I2b2PatientDataExportServiceException {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectWriter ow = mapper.defaultPrettyPrintingWriter();
 

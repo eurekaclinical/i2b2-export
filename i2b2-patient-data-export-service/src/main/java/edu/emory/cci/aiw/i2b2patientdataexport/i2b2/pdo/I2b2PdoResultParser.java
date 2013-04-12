@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import org.w3c.dom.Document;
@@ -39,11 +39,11 @@ public class I2b2PdoResultParser {
 		observations = new HashSet<Observation>();
 	}
 
-	public I2b2PdoResults parse() throws DataDownloaderXmlException {
+	public I2b2PdoResults parse() throws I2b2PatientDataExportServiceXmlException {
 		try {
 			parseAll();
 		} catch (XPathExpressionException e) {
-			throw new DataDownloaderXmlException("Unable to parse i2b2 PDO result XML", e);
+			throw new I2b2PatientDataExportServiceXmlException("Unable to parse i2b2 PDO result XML", e);
 		}
 
 		return new I2b2PdoResults(patients.values(), events.values(), observers.values(), observations);

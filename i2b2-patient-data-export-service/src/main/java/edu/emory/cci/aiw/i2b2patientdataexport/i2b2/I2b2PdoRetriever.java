@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.DataDownloaderXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2PatientSet;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept;
@@ -35,7 +35,7 @@ public final class I2b2PdoRetriever {
 		this.config.setObjectWrapper(new DefaultObjectWrapper());
 	}
 
-	public I2b2PdoResults retrieve(Collection<I2b2Concept> concepts) throws DataDownloaderXmlException {
+	public I2b2PdoResults retrieve(Collection<I2b2Concept> concepts) throws I2b2PatientDataExportServiceXmlException {
 		try {
 			Template tmpl = this.config.getTemplate("i2b2_pdo_request.ftl");
 			StringWriter writer = new StringWriter();
@@ -59,13 +59,13 @@ public final class I2b2PdoRetriever {
 			I2b2PdoResultParser parser = new I2b2PdoResultParser(respXml);
 			return parser.parse();
 		} catch (IOException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (TemplateException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (SAXException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		} catch (ParserConfigurationException e) {
-			throw new DataDownloaderXmlException(e);
+			throw new I2b2PatientDataExportServiceXmlException(e);
 		}
 	}
 }
