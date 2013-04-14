@@ -171,20 +171,6 @@ public class I2b2PdoResultParser {
 		String eventId = obxXml.getElementsByTagName("event_id").item(0)
 				.getTextContent();
         String conceptPath = obxXml.getParentNode().getAttributes().getNamedItem("panel_name").getNodeValue();
-		String blobStr = text(obxXml, "observation_blob");
-		String units = "", description = "";
-		if (validBlob(blobStr)) {
-//            ObservationType obxType = parseBlob(blobStr);
-
-			String[] parts = blobStr.split("\\|");
-			description = parts[1];
-//            if (parts.length > 2 && obxType.hasUnits()) {
-//                units = parts[parts.length - 1]; // not parts[2] in case the description has pipes in it
-//                // needs a more robust solution
-//            }
-		} else {
-			description = blobStr;
-		}
 
 		return new Observation.Builder(this.events.get(eventId))
 				.conceptCode(text(obxXml, "concept_cd"))
@@ -194,9 +180,9 @@ public class I2b2PdoResultParser {
 				.modifier(text(obxXml, "modifier_cd"))
 				.valuetype(text(obxXml, "valuetype_cd"))
 				.tval(text(obxXml, "tval_char")).nval(text(obxXml, "nval_num"))
-				.valueflag(text(obxXml, "valueflag_cd")).units(units)
+				.valueflag(text(obxXml, "valueflag_cd")).units(text(obxXml, "units_cd"))
 				.endDate(date(obxXml, "end_date"))
-				.location(text(obxXml, "location_cd")).blob(description)
+				.location(text(obxXml, "location_cd")).blob(text(obxXml, "observation_blob"))
 				.build();
 	}
 
