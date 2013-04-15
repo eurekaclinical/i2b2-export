@@ -13,6 +13,7 @@ import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2PdoRetriever;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
 import edu.emory.cci.aiw.i2b2patientdataexport.output.DataOutputFormatter;
+import edu.emory.cci.aiw.i2b2patientdataexport.output.HeaderRowOutputFormatter;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -91,24 +92,29 @@ public final class DataResource {
 			if (ua.authenticateUser()) {
 				OutputConfiguration outputConfig = this.dao.getById
 						(outputConfigId);
-				String output = new DataOutputFormatter(outputConfig,
+				if (null == outputConfig) {
+					return Response.status(Response.Status.NOT_FOUND).build();
+				} else {
+					String output = new DataOutputFormatter(outputConfig,
 						new I2b2PdoRetriever(authMetadata, patientSet).
 								retrieve(extractConcepts(outputConfig))).format();
 
-				// if the configuration is flagged as temporary,
-				// then delete. It was saved by us to force the download
-				// dialog to pop up rather than explicitly by the user
-				if (outputConfig.isTemporary()) {
-					this.dao.delete(outputConfig);
+					// if the configuration is flagged as temporary,
+					// then delete. It was saved by us to force the download
+					// dialog to pop up rather than explicitly by the user
+					if (outputConfig.isTemporary()) {
+						this.dao.delete(outputConfig);
+					}
+					return Response.ok(output, "text/csv").header
+							("Content-Disposition", "attachment;" +
+									"filename=i2b2PatientData.csv")
+							.build();
 				}
-				return Response.ok(output, "text/csv").header
-                        ("Content-Disposition", "attachment;" +
-                                "filename=i2b2PatientData.csv")
-						.build();
 			} else {
-				return Response.status(300).build();
+				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (I2b2PatientDataExportServiceXmlException e) {
+			this.dao.deleteAllTemporaryForUser(i2b2Username);
 			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
@@ -142,6 +148,12 @@ public final class DataResource {
 				// the client to create a huge form with all of the
 				// configuration options since the service is already
 				// set up to accept and automatically convert JSON.
+
+				// first, ensure that there are no existing temporary
+				// configurations for this user
+				this.dao.deleteAllTemporaryForUser(request
+						.getI2b2AuthMetadata().getUsername());
+
 				request.getOutputConfiguration().setTemporary(Boolean.TRUE);
 				this.dao.create(request.getOutputConfiguration());
 
@@ -154,6 +166,8 @@ public final class DataResource {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (I2b2PatientDataExportServiceXmlException e) {
+			this.dao.deleteAllTemporaryForUser(request.getI2b2AuthMetadata()
+					.getUsername());
 			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
@@ -167,5 +181,20 @@ public final class DataResource {
 		}
 
 		return result;
+	}
+
+	@POST
+	@Path("/preview")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response generatePreview(OutputConfiguration config) {
+		if (null != config) {
+			HeaderRowOutputFormatter headerFormatter = new
+					HeaderRowOutputFormatter(config);
+			return Response.ok().entity(headerFormatter.formatHeader()).build
+					();
+		} else {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 }
