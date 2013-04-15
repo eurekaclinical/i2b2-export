@@ -99,4 +99,24 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 	public void delete(OutputConfiguration config) {
 		this.getEntityManager().remove(config);
 	}
+
+	@Transactional
+	public void deleteAllTemporaryForUser(String username) {
+		EntityManager entityManager = this.getEntityManager();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<OutputConfiguration> query = builder.createQuery
+				(OutputConfiguration.class);
+		Root<OutputConfiguration> root = query.from(OutputConfiguration.class);
+		Path<String> usernamePath = root.get(OutputConfiguration_.username);
+		Path<Boolean> isTempPath = root.get(OutputConfiguration_.isTemporary);
+		CriteriaQuery<OutputConfiguration> where = query.where(builder.and(
+				builder.equal(usernamePath, username), builder.equal(isTempPath,
+				Boolean.TRUE)));
+		TypedQuery<OutputConfiguration> typedQuery = entityManager
+				.createQuery(where);
+		List<OutputConfiguration> result = typedQuery.getResultList();
+		for (OutputConfiguration config : result) {
+			entityManager.remove(config);
+		}
+	}
 }

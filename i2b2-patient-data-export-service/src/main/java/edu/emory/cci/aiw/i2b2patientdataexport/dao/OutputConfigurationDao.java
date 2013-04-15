@@ -18,4 +18,6 @@ public interface OutputConfigurationDao {
     public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig);
 
 	public void delete(OutputConfiguration config);
+
+	public void deleteAllTemporaryForUser(String username);
 }
