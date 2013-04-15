@@ -439,7 +439,11 @@ i2b2.PatientDataExport.assembleConfig = function() {
     i2b2.PatientDataExport.model.configuration.missing = $('PatientDataExport-missing').value;
 };
 
-i2b2.PatientDataExport.generatePreview = function() {
+/*
+ * This function has been deprecated by i2b2.PatientDataExport.generatePreview
+ * below, which retrieves the preview as a service call.
+ */
+i2b2.PatientDataExport.generatePreviewLocal = function() {
     i2b2.PatientDataExport.assembleConfig();
     var previewStr = '';
     switch (i2b2.PatientDataExport.model.configuration.rowDimension) {
@@ -547,11 +551,9 @@ i2b2.PatientDataExport.colConfigComp = function(a, b) {
     return a.columnOrder - b.columnOrder; 
 }
 
-i2b2.PatientDataExport.createConfigRequestObject = function() {
+i2b2.PatientDataExport.createConfigObject = function() {
     i2b2.PatientDataExport.assembleConfig();
     var rawConfig = i2b2.PatientDataExport.model.configuration;
-    var request = {};
-    request.i2b2AuthMetadata = i2b2.PatientDataExport.createI2b2AuthRequestObject();
     var config = {};
     config.name = $('PatientDataExport-saveas').value;
     config.rowDimension = rawConfig.rowDimension.toUpperCase();
@@ -601,9 +603,19 @@ i2b2.PatientDataExport.createConfigRequestObject = function() {
     
     // ensure we save the column configs in the correct order
     config.columnConfigs.sort(i2b2.PatientDataExport.colConfigComp);
-    request.outputConfiguration = config;
     
-    return request;
+    return config;
+}
+
+i2b2.PatientDataExport.createRequestObject = function() {
+	var config = i2b2.PatientDataExport.createConfigObject();
+	var i2b2AuthMetadata = i2b2.PatientDataExport.createI2b2AuthRequestObject();
+
+	var request = {};
+	request.outputConfiguration = config;
+	request.i2b2AuthMetadata = i2b2AuthMetadata;
+
+	return request;
 }
 
 i2b2.PatientDataExport.modalDialog = function(id, msg) {
@@ -630,18 +642,35 @@ i2b2.PatientDataExport.modalDialog = function(id, msg) {
 	return modalPanel;
 }
 
+i2b2.PatientDataExport.generatePreview = function() {
+    var pleaseWait = i2b2.PatientDataExport.modalDialog('PatientDataExport-pleaseWaitPreview', 
+							'Fetching preview, please wait...');
+    pleaseWait.show();
+    new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/export/preview', {
+        method: 'POST',
+        contentType: 'application/json',
+        postBody: Object.toJSON(i2b2.PatientDataExport.createConfigObject()),
+        requestHeaders: {'Accept': 'text/plain'},
+        asynchronous: true,
+        onSuccess: function(response) {
+	    $('PatientDataExport-previewText').textContent = response.responseText;
+	    pleaseWait.hide();
+        }
+    });
+}
+
 i2b2.PatientDataExport.saveConfig = function() {
     var saveAs = $('PatientDataExport-saveas').value;
     if (saveAs.length <= 0) {
 		alert('Please name this configuration');
     } else {
 		var pleaseWait = i2b2.PatientDataExport.modalDialog('PatientDataExport-pleaseWaitSave', 
-															'Saving, please wait...');
+								    'Saving, please wait...');
 		pleaseWait.show();
 		new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/config/save', {
 	    	method: 'POST',
 	    	contentType: 'application/json',
-	    	postBody: Object.toJSON(i2b2.PatientDataExport.createConfigRequestObject()),
+	    	postBody: Object.toJSON(i2b2.PatientDataExport.createRequestObject()),
 	    	requestHeaders: {'Accept': 'application/json'},
 	    	asynchronous: true,
 	    	onSuccess: function(response) {
@@ -676,7 +705,7 @@ i2b2.PatientDataExport.exportData = function() {
     new Ajax.Request(i2b2.PatientDataExport.SERVICE_URL + '/export/configDetails', {
 		method: 'POST',
 		contentType: 'application/json',
-		postBody: Object.toJSON(i2b2.PatientDataExport.createConfigRequestObject()),
+		postBody: Object.toJSON(i2b2.PatientDataExport.createRequestObject()),
 		requestHeaders: {'Accept': 'application/json'},
 		asynchronous: true,
 		onSuccess: function (response) {
