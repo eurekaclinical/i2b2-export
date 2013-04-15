@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-final class HeaderRowOutputFormatter {
+public final class HeaderRowOutputFormatter {
 	private final OutputConfiguration outputConfiguration;
 
-	HeaderRowOutputFormatter(OutputConfiguration outputConfiguration) {
+	public HeaderRowOutputFormatter(OutputConfiguration outputConfiguration) {
 		this.outputConfiguration = outputConfiguration;
 	}
 
