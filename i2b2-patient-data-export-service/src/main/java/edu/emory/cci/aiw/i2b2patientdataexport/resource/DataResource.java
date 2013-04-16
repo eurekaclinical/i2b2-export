@@ -13,6 +13,8 @@ import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2PdoRetriever;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
 import edu.emory.cci.aiw.i2b2patientdataexport.output.DataOutputFormatter;
 import edu.emory.cci.aiw.i2b2patientdataexport.output.HeaderRowOutputFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -26,6 +28,8 @@ import java.util.HashSet;
 
 @Path("/export")
 public final class DataResource {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataResource.class);
 
 	private final OutputConfigurationDao dao;
 
@@ -77,6 +81,7 @@ public final class DataResource {
 											   Integer i2b2PatientSetSize)
 			throws
 			I2b2PatientDataExportServiceException {
+        LOGGER.info("Received request to generate output from configuration id: {} from user: {}", i2b2Username, outputConfigId);
 		I2b2PatientSet patientSet = new I2b2PatientSet();
 		patientSet.setPatientSetCollId(i2b2PatientSetCollId);
 		patientSet.setPatientSetSize(i2b2PatientSetSize);
@@ -92,6 +97,7 @@ public final class DataResource {
 				OutputConfiguration outputConfig = this.dao.getById
 						(outputConfigId);
 				if (null == outputConfig) {
+                    LOGGER.warn("No configuration found with id: {}", outputConfigId);
 					return Response.status(Response.Status.NOT_FOUND).build();
 				} else {
 					String output = new DataOutputFormatter(outputConfig,
@@ -110,9 +116,12 @@ public final class DataResource {
 							.build();
 				}
 			} else {
+                LOGGER.warn("User not authenticated: {}", i2b2Username);
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (I2b2PatientDataExportServiceXmlException e) {
+            LOGGER.error("Exception thrown: {}" , e);
+            LOGGER.debug("Deleting all temporary configurations for user: {}", i2b2Username);
 			this.dao.deleteAllTemporaryForUser(i2b2Username);
 			throw new I2b2PatientDataExportServiceException(e);
 		}
@@ -133,6 +142,8 @@ public final class DataResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response generateOutputFromConfigDetails(DetailedRequest request) throws I2b2PatientDataExportServiceException {
+        LOGGER.info("Received request to generate output from configuration details by user: {}",
+                request.getI2b2AuthMetadata().getUsername());
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
 		try {
 			if (ua.authenticateUser()) {
@@ -156,15 +167,20 @@ public final class DataResource {
 				request.getOutputConfiguration().setTemporary(Boolean.TRUE);
 				this.dao.create(request.getOutputConfiguration());
 
+                LOGGER.info("Temporary output configuration created with id: {}", request.getOutputConfiguration().getId());
+
 				// return the id so the client can immediately send a request
 				// to /configId with the just-created, temporary configuration
 				return Response.ok().entity(request.getOutputConfiguration()
 						.getId()).build();
 
 			} else {
+                LOGGER.warn("User {} not authenticated", request.getI2b2AuthMetadata().getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		} catch (I2b2PatientDataExportServiceXmlException e) {
+            LOGGER.error("Exception thrown: {}", e);
+            LOGGER.debug("Deleting all temporary configurations for user: {}", request.getI2b2AuthMetadata().getUsername());
 			this.dao.deleteAllTemporaryForUser(request.getI2b2AuthMetadata()
 					.getUsername());
 			throw new I2b2PatientDataExportServiceException(e);

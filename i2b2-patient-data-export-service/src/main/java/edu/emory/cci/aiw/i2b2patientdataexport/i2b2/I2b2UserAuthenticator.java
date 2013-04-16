@@ -7,6 +7,9 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -23,7 +26,9 @@ import java.util.Map;
 
 public final class I2b2UserAuthenticator {
 
-	private final Configuration config;
+    private static final Logger LOGGER = LoggerFactory.getLogger(I2b2UserAuthenticator.class);
+
+    private final Configuration config;
 	private final I2b2AuthMetadata authMetadata;
 
 	/**
@@ -48,6 +53,11 @@ public final class I2b2UserAuthenticator {
 	 */
 	public boolean authenticateUser() throws I2b2PatientDataExportServiceXmlException {
 		try {
+            LOGGER.debug("Attempting to authenticate i2b2 user: {} with password node: {} in domain {} for project {}",
+                    new String[] {
+                            this.authMetadata.getUsername(), this.authMetadata.getPasswordNode(),
+                            this.authMetadata.getDomain(), this.authMetadata.getProjectId()});
+
 			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "/i2b2_user_auth.ftl");
 			StringWriter writer = new StringWriter();
 
@@ -70,6 +80,8 @@ public final class I2b2UserAuthenticator {
 			String status = (String) XmlUtil.evalXPath(respXml,
 					"//response_header/result_status/status/@type",
 					XPathConstants.STRING);
+
+            LOGGER.debug("Received authentication status: {}", status);
 
 			return "DONE".equalsIgnoreCase(status);
 		} catch (IOException e) {

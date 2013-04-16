@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,18 +60,20 @@ public final class I2b2CommUtil {
 		i2b2Post.setEntity(xmlEntity);
 		HttpResponse resp = http.execute(i2b2Post);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-        StringBuilder respXml = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            respXml.append(line);
+        if (LOGGER.isDebugEnabled()) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+            StringBuilder respXml = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                respXml.append(line);
+            }
+            LOGGER.debug("Response XML: " + respXml.toString());
+
+            return XmlUtil.xmlStringToDocument(respXml.toString());
+        } else {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                    .parse(resp.getEntity().getContent());
         }
-        LOGGER.debug("Response XML: " + respXml.toString());
-
-        return XmlUtil.xmlStringToDocument(respXml.toString());
-
-//		return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-//				.parse(resp.getEntity().getContent());
 	}
 
 	/**
