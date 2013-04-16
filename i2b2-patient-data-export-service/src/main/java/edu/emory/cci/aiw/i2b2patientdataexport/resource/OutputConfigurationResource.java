@@ -1,8 +1,7 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException;
-import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.DeleteRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.LoadRequest;
@@ -39,7 +38,7 @@ public class OutputConfigurationResource {
 	 * @param request the create request, containing the configuration to create
 	 *                   along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
+	 * @throws I2b2PatientDataExportServiceException
 	 *
 	 */
 	@POST
@@ -85,7 +84,7 @@ public class OutputConfigurationResource {
 	 *                   i2b2 authentication tokens
 	 *
 	 * @return the output configuration or a status code indicating failure
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
+	 * @throws I2b2PatientDataExportServiceException
 	 */
 	@POST
 	@Path("/load")
@@ -157,7 +156,7 @@ public class OutputConfigurationResource {
 	 *                   operation, including the configuration ID and the
 	 *                   i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
+	 * @throws I2b2PatientDataExportServiceException
 	 */
     @POST
 	@Path("/delete")

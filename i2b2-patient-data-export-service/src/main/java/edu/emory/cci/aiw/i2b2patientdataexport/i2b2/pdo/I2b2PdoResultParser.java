@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import org.w3c.dom.Document;

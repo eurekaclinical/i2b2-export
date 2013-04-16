@@ -1,8 +1,7 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException;
-import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.DetailedRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2PatientSet;
@@ -57,7 +56,7 @@ public final class DataResource {
 	 * @param i2b2PatientSetSize the i2b2 patient set size
 	 *
 	 * @return the formatted output or a status code indicating failure
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException if something goes wrong
+	 * @throws I2b2PatientDataExportServiceException if something goes wrong
 	 */
 	@POST
 	@Path("/configId")
@@ -126,7 +125,7 @@ public final class DataResource {
 	 * @param request contains the request details, including i2b2 authentication tokens, configuration specification and i2b2 patient set ID
 	 * @return either the formatted output as a CSV file or a status code
 	 *         indicating an error
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceException
+	 * @throws I2b2PatientDataExportServiceException
 	 *
 	 */
 	@POST

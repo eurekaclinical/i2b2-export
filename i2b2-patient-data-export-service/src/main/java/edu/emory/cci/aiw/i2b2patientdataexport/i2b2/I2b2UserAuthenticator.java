@@ -1,6 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import freemarker.template.Configuration;
@@ -43,7 +43,7 @@ public final class I2b2UserAuthenticator {
 	 *
 	 * @return <code>true</code> if the user was authenticated,
 	 *         <code>false</code> otherwise
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.I2b2PatientDataExportServiceXmlException if an error occurred in the parsing of the incoming or
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException if an error occurred in the parsing of the incoming or
 	 *                                    response XML
 	 */
 	public boolean authenticateUser() throws I2b2PatientDataExportServiceXmlException {

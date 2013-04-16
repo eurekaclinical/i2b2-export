@@ -1,4 +1,6 @@
-package edu.emory.cci.aiw.i2b2patientdataexport;
+package edu.emory.cci.aiw.i2b2patientdataexport.xml;
+
+import edu.emory.cci.aiw.i2b2patientdataexport.resource.I2b2PatientDataExportServiceException;
 
 public class I2b2PatientDataExportServiceXmlException extends I2b2PatientDataExportServiceException {
 
