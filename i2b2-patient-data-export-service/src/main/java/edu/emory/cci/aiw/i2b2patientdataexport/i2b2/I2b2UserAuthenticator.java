@@ -48,7 +48,7 @@ public final class I2b2UserAuthenticator {
 	 */
 	public boolean authenticateUser() throws I2b2PatientDataExportServiceXmlException {
 		try {
-			Template tmpl = this.config.getTemplate("i2b2_user_auth.ftl");
+			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "/i2b2_user_auth.ftl");
 			StringWriter writer = new StringWriter();
 
 			DateFormat sdf = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);

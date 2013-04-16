@@ -37,7 +37,7 @@ public final class I2b2PdoRetriever {
 
 	public I2b2PdoResults retrieve(Collection<I2b2Concept> concepts) throws I2b2PatientDataExportServiceXmlException {
 		try {
-			Template tmpl = this.config.getTemplate("i2b2_pdo_request.ftl");
+			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "i2b2_pdo_request.ftl");
 			StringWriter writer = new StringWriter();
 
 			String messageId = I2b2CommUtil.generateMessageId();
