@@ -12,15 +12,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <inherited>true</inherited>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.glassfish</groupId>
-                <artifactId>maven-glassfish-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -55,18 +52,6 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jersey-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.distributions</groupId>
-            <artifactId>web-all</artifactId>
-            <version>10.0-build-20080430</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.embedded</groupId>
-            <artifactId>gf-embedded-api</artifactId>
-            <version>1.0-alpha-4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -150,12 +135,6 @@
         <jersey-version>1.8</jersey-version>
     </properties>
     <repositories>
-        <repository>
-            <id>glassfish.java.net</id>
-            <name>GlassFish Maven Repository</name>
-            <url>http://download.java.net/maven/glassfish</url>
-            <layout>default</layout>
-        </repository>
         <repository>
             <id>m2.java.net</id>
             <name>Java.net Maven 2 Repository</name>
