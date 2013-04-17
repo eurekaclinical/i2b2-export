@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "output_configurations", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"username", "name", "isTemporary"})})
+		@UniqueConstraint(columnNames = {"username", "name"})})
 public class OutputConfiguration {
 
 	@Id
@@ -45,13 +45,6 @@ public class OutputConfiguration {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OutputColumnConfiguration> columnConfigs;
-
-	/*
-	 * for configurations not explicitly saved by the user
-	 * these should not be retrieved by a "get-all" query
-	 */
-	@Column(nullable = false)
-	private Boolean isTemporary;
 
 	public Long getId() {
 		return id;
@@ -116,13 +109,5 @@ public class OutputConfiguration {
 	public void setColumnConfigs(
 			List<OutputColumnConfiguration> columnConfigs) {
 		this.columnConfigs = columnConfigs;
-	}
-
-	public Boolean isTemporary() {
-		return isTemporary;
-	}
-
-	public void setTemporary(Boolean isTemporary) {
-		this.isTemporary = isTemporary;
 	}
 }

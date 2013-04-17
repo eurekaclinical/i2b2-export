@@ -74,7 +74,6 @@ public class OutputConfigurationResource {
                             request.getOutputConfiguration().getName());
 					request.getOutputConfiguration().setUsername(request
 							.getI2b2AuthMetadata().getUsername());
-					request.getOutputConfiguration().setTemporary(Boolean.FALSE);
                     this.dao.create(request.getOutputConfiguration());
                 }
 
