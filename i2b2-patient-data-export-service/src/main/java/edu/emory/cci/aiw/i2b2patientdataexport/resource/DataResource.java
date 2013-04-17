@@ -57,24 +57,45 @@ public final class DataResource {
 		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
 
 		try {
-				if (ua.authenticateUser()) {
-					String output = new DataOutputFormatter(outputConfig,
-							new I2b2PdoRetriever(authMetadata, patientSet).
-									retrieve(extractConcepts(outputConfig))).format();
+			if (ua.authenticateUser()) {
+				String output = new DataOutputFormatter(outputConfig,
+						new I2b2PdoRetriever(authMetadata, patientSet).
+								retrieve(extractConcepts(outputConfig))).format();
 
-					return Response.ok(output, "text/csv").header
-							("Content-Disposition", "attachment;" +
-									"filename=i2b2PatientData.csv")
-							.build();
-				} else {
-					LOGGER.warn("User not authenticated: {}", i2b2Username);
-					return Response.status(Response.Status.UNAUTHORIZED).build();
-				}
+				return Response.ok(output, "text/csv").header
+						("Content-Disposition", "attachment;" +
+								"filename=i2b2PatientData.csv")
+						.build();
+			} else {
+				LOGGER.warn("User not authenticated: {}", i2b2Username);
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			}
 		} catch (Exception e) {
 			throw new I2b2PatientDataExportServiceException(e);
 		}
 	}
 
+	/**
+	 * Fetches the requested data from i2b2 and sends an output file back to the
+	 * client formatted according to the configuration indicated by the full
+	 * configuration in the request. The user must be authenticated
+	 * according to the security tokens passed in.
+	 *
+	 * This method accepts form parameters instead of raw JSON because in
+	 * order for the browser to trigger its download dialog, it must submit an
+	 * actual HTML form.
+	 *
+	 * @param i2b2Domain the i2b2 security domain
+	 * @param i2b2Username the i2b2 username
+	 * @param i2b2PasswordNode the i2b2 password node
+	 * @param i2b2ProjectId the i2b2 project ID
+	 * @param outputConfigJson the JSON string of the output configuration
+	 * @param i2b2PatientSetCollId the i2b2 patient set ID
+	 * @param i2b2PatientSetSize the i2b2 patient set size
+	 *
+	 * @return the formatted output or a status code indicating failure
+	 * @throws I2b2PatientDataExportServiceException if something goes wrong
+	 */
 	@POST
 	@Path("/configDetails")
 	@Produces("text/csv")
@@ -113,9 +134,9 @@ public final class DataResource {
 	 * configuration ID in the request. The user must be authenticated
 	 * according to the security tokens passed in.
 	 *
-	 * We accept form parameters instead of JSON because in order for the
-	 * browser to trigger its download dialog, it must submit an actual HTML
-	 * form.
+	 * This method accepts form parameters instead of raw JSON because in
+	 * order for the browser to trigger its download dialog, it must submit an
+	 * actual HTML form.
 	 *
 	 * @param i2b2Domain the i2b2 security domain
 	 * @param i2b2Username the i2b2 username
