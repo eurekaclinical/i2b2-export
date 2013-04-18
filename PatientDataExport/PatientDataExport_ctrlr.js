@@ -8,7 +8,7 @@
  * updated 2013-04-15: 	Initial Launch [Michel Mansour] 
  */
 
-i2b2.PatientDataExport.SERVICE_URL = 'http://192.168.86.128/I2b2PatientDataExportService/rest';
+i2b2.PatientDataExport.SERVICE_URL = 'http://192.168.232.128/I2b2PatientDataExportService/rest';
 // global row index counter because the concept drop handlers
 // seem to fail if a handler is applied to the same object twice in the same session
 i2b2.PatientDataExport.ROW_INDEX = 1;
@@ -504,6 +504,7 @@ i2b2.PatientDataExport.assembleConfig = function() {
     i2b2.PatientDataExport.model.configuration.rowDimension = $('PatientDataExport-rowdim').value;
     i2b2.PatientDataExport.model.configuration.whitespace = $('PatientDataExport-whitespace').value;
     i2b2.PatientDataExport.model.configuration.delimiter = $('PatientDataExport-delimiter').value;
+	i2b2.PatientDataExport.model.configuration.quote = $('PatientDataExport-quote').checked;
     i2b2.PatientDataExport.model.configuration.missing = $('PatientDataExport-missing').value;
 
 	return true;
@@ -578,6 +579,7 @@ i2b2.PatientDataExport.createConfigObject = function() {
 		config.rowDimension = rawConfig.rowDimension.toUpperCase();
 		config.whitespaceReplacement = rawConfig.whitespace;
 		config.separator = rawConfig.delimiter;
+		config.quoteChar = rawConfig.quote ? '"' : '';
 		config.missingValue = rawConfig.missing;
 		config.columnConfigs = [];
     
@@ -811,6 +813,7 @@ i2b2.PatientDataExport.loadConfig = function() {
 				var config = response.responseJSON;
 				$('PatientDataExport-whitespace').value = config.whitespaceReplacement;
 				$('PatientDataExport-delimiter').value = config.separator;
+				$('PatientDataExport-quote').checked = config.quoteChar === '"';
 				$('PatientDataExport-missing').value = config.missingValue;
 				var rowDimOptions = $('PatientDataExport-rowdim').options;
 				for (var i = 0; i < rowDimOptions.length; i++) {

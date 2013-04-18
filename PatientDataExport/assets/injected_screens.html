@@ -93,10 +93,13 @@
 		    <input id="PatientDataExport-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
 		    <br />
 		    <label for="PatientDataExport-delimiter">Column separator:</label>
-		    <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="32" value="," />
+		    <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="1" value="," />
 		    <br />
+			<label for="PatientDataExport-quote">Surround data with double quotes?</label>
+			<input id="PatientDataExport-quote" name="quote" type="checkbox" unchecked />
+			<br />
 		    <label for="PatientDataExport-missing">Show missing values as:</label>
-		    <input id="PatientDataExport-missing" name="missing" type="text" size="8" maxLength="32" value="(NULL)" />
+		    <input id="PatientDataExport-missing" name="missing" type="text" size="8" maxLength="32" value="(null)" />
 		  </div>
 		  <div id="PatientDataExport-preview" style="margin-top: 20px;">
 		    <h2>Export Preview</h2>
