@@ -15,7 +15,7 @@ public final class HeaderRowOutputFormatter {
 		this.outputConfiguration = outputConfiguration;
 	}
 
-	public String formatHeader() {
+	public String[] formatHeader() {
 		List<String> result = new ArrayList<String>();
 		switch (outputConfiguration.getRowDimension()) {
 			case PROVIDER:
@@ -81,6 +81,7 @@ public final class HeaderRowOutputFormatter {
 					break;
 			}
 		}
-		return StringUtils.join(result, outputConfiguration.getSeparator());
+//		return StringUtils.join(result, outputConfiguration.getSeparator());
+        return result.toArray(new String[result.size()]);
 	}
 }

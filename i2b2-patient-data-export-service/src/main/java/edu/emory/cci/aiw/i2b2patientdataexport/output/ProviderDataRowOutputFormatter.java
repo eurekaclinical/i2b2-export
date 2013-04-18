@@ -19,10 +19,11 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	}
 
 	@Override
-	protected String rowPrefix() {
+	protected List<String> rowPrefix() {
 		List<String> result = new ArrayList<String>();
 		result.add(provider.getName());
-		return StringUtils.join(result, getConfig().getSeparator());
+        return result;
+//		return StringUtils.join(result, getConfig().getSeparator());
 	}
 
 	@Override

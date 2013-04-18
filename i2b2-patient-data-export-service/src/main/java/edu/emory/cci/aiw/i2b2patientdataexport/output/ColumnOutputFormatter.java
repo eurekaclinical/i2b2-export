@@ -3,6 +3,7 @@ package edu.emory.cci.aiw.i2b2patientdataexport.output;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,5 @@ public interface ColumnOutputFormatter {
 	 * @param data The observations to format. This collection should include all of the observations matching a particular i2b2 concept.
 	 * @return The formatted output
 	 */
-	public String format(Collection<Observation> data);
+	public List<String> format(Collection<Observation> data);
 }

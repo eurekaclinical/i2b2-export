@@ -1,7 +1,12 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.I2b2PdoResults;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class DataOutputFormatter {
 
@@ -14,21 +19,36 @@ public final class DataOutputFormatter {
 	}
 
 	public String format() {
-		StringBuilder result = new StringBuilder(new HeaderRowOutputFormatter(config).formatHeader());
-		result.append("\n");
+        List<String[]> result = new ArrayList<String[]>();
+//		StringBuilder result =
+                result.add(new HeaderRowOutputFormatter(config).formatHeader());
+//		result.append("\n");
 		switch (this.config.getRowDimension()) {
 			case PATIENT:
-				result.append(new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+//				result.append
+                result.addAll(new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format());
 				break;
 			case VISIT:
-				result.append(new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+//				result.append
+                result.addAll(new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format());
 				break;
 			case PROVIDER:
-				result.append(new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format());
+//				result.append
+                result.addAll(new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format());
 				break;
 			default:
 				throw new AssertionError("no row dimension provided");
 		}
-		return result.toString();
+//		return result.toString();
+        StringWriter resultStr = new StringWriter();
+        CSVWriter writer;
+        if (null == config.getQuoteChar() || config.getQuoteChar().isEmpty()) {
+            writer = new CSVWriter(resultStr, config.getSeparator().charAt(0));
+        } else {
+            writer = new CSVWriter(resultStr, config.getSeparator().charAt(0), config.getQuoteChar().charAt(0));
+        }
+        writer.writeAll(result);
+
+        return resultStr.toString();
 	}
 }

@@ -18,13 +18,15 @@ final class PatientDataOutputFormatter {
 		this.patients = patients;
 	}
 
-	public String format() {
-		List<String> result = new ArrayList<String>();
+	public List<String[]> format() {
+//		List<String> result = new ArrayList<String>();
+        List<String[]> result = new ArrayList<String[]>();
 
 		for (Patient patient : this.patients) {
 			result.add(new PatientDataRowOutputFormatter(this.config, patient).format());
 		}
 
-		return StringUtils.join(result, "\n");
+//		return StringUtils.join(result, "\n");
+        return result;
 	}
 }

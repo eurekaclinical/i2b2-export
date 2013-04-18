@@ -44,30 +44,31 @@ public abstract class DataRowOutputFormatter {
 	 * @return the first fields of the row, as a {@link String}, joined by the column separator specified in the
 	 *         output configuration
 	 */
-	protected abstract String rowPrefix();
+	protected abstract List<String> rowPrefix();
 
-	public final String format() {
+	public final String[] format() {
 		List<String> result = new ArrayList<String>();
 
-		result.add(rowPrefix());
+		result.addAll(rowPrefix());
 		for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {
 			Collection<Observation> obxs = matchingObservations(colConfig
 					.getI2b2Concept());
 			switch (colConfig.getDisplayFormat()) {
 				case EXISTENCE:
-					result.add(new ExistenceColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
+					result.addAll(new ExistenceColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
 					break;
 				case VALUE:
-					result.add(new ValueColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
+					result.addAll(new ValueColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
 					break;
 				case AGGREGATION:
-					result.add(new AggregationColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
+					result.addAll(new AggregationColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
 					break;
 				default:
 					throw new RuntimeException("display format not provided");
 			}
 		}
 
-		return StringUtils.join(result, getConfig().getSeparator());
+//		return StringUtils.join(result, getConfig().getSeparator());
+        return result.toArray(new String[result.size()]);
 	}
 }

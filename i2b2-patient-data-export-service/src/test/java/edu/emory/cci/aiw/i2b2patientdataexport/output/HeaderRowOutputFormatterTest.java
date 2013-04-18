@@ -3,6 +3,7 @@ package edu.emory.cci.aiw.i2b2patientdataexport.output;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import junit.framework.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class HeaderRowOutputFormatterTest {
 		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setSeparator(",");
+        config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
@@ -75,6 +77,6 @@ public class HeaderRowOutputFormatterTest {
 
 		HeaderRowOutputFormatter formatter = new HeaderRowOutputFormatter(config);
 		Assert.assertEquals("Patient_id,Concept_FOO,Concept_BAR_1_value,Concept_BAR_1_units,Concept_BAR_1_start,Concept_BAR_1_end,Concept_BAR_1_value,Concept_BAR_1_units,Concept_BAR_1_start,Concept_BAR_1_end,Concept_BAR_1_value,Concept_BAR_1_units,Concept_BAR_1_start,Concept_BAR_1_end," +
-				"ConceptAgg_max,ConceptAgg_units,Concept_BAZ_value,ConceptAgg2_avg,Concept_QUUX_value,Concept_QUUX_start,Concept_QUUX_end", formatter.formatHeader());
+				"ConceptAgg_max,ConceptAgg_units,Concept_BAZ_value,ConceptAgg2_avg,Concept_QUUX_value,Concept_QUUX_start,Concept_QUUX_end", StringUtils.join(formatter.formatHeader(), ','));
 	}
 }

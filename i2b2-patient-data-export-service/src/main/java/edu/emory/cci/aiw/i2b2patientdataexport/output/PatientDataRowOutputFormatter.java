@@ -8,6 +8,8 @@ import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Patient patient;
@@ -18,8 +20,8 @@ final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	}
 
 	@Override
-	protected String rowPrefix() {
-		return patient.getPatientId();
+	protected List<String> rowPrefix() {
+		return Collections.singletonList(patient.getPatientId());
 	}
 
 	@Override

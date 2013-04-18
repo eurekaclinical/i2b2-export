@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class AggregationColumnOutputFormatterTest {
 	private OutputConfiguration config;
@@ -33,6 +35,7 @@ public class AggregationColumnOutputFormatterTest {
 		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setSeparator(",");
+        config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
@@ -56,7 +59,7 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("100.17", formatter.format(obxs));
+		Assert.assertEquals(Collections.singletonList("100.17"), formatter.format(obxs));
 	}
 
 	@Test
@@ -66,7 +69,7 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500.51", formatter.format(obxs));
+		Assert.assertEquals(Collections.singletonList("500.51"), formatter.format(obxs));
 	}
 
 	@Test
@@ -76,7 +79,7 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("300.35", formatter.format(obxs));
+		Assert.assertEquals(Collections.singletonList("300.35"), formatter.format(obxs));
 	}
 
 	@Test
@@ -86,7 +89,10 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("100.17,U", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("100.17");
+        expected.add("U");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -96,7 +102,10 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500.51,U", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500.51");
+        expected.add("U");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -106,6 +115,9 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("300.35,U", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("300.35");
+        expected.add("U");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 }

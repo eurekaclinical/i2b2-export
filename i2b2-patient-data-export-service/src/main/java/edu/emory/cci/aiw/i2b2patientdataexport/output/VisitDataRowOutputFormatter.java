@@ -23,7 +23,7 @@ final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 	}
 
 	@Override
-	public String rowPrefix() {
+	public List<String> rowPrefix() {
 		List<String> result = new ArrayList<String>();
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
@@ -32,7 +32,8 @@ final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 		result.add(fmt.format(visit.getStartDate()));
 		result.add(fmt.format(visit.getEndDate()));
 
-		return StringUtils.join(result, getConfig().getSeparator());
+        return result;
+//		return StringUtils.join(result, getConfig().getSeparator());
 	}
 
 	@Override

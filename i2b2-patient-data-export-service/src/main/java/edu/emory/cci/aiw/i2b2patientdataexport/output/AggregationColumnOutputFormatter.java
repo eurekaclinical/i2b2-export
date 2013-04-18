@@ -16,7 +16,7 @@ public final class AggregationColumnOutputFormatter extends AbstractColumnOutput
 	}
 
 	@Override
-	public String format(Collection<Observation> data) {
+	public List<String> format(Collection<Observation> data) {
 		List<String> result = new ArrayList<String>();
 		String units = "";
 
@@ -75,6 +75,7 @@ public final class AggregationColumnOutputFormatter extends AbstractColumnOutput
 			result.add(units);
 		}
 
-		return StringUtils.join(result, getFormatOptions().getColumnSeparator());
+//		return StringUtils.join(result, getFormatOptions().getColumnSeparator());
+        return result;
 	}
 }

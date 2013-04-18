@@ -10,6 +10,7 @@ import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observer;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Patient;
 import junit.framework.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -32,6 +33,7 @@ public class DataOutputFormatterTest {
 		config.setName("foo");
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
+        config.setQuoteChar("\"");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
@@ -262,10 +264,10 @@ public class DataOutputFormatterTest {
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		formatter = new DataOutputFormatter(config, data);
 
-		String expected = "Patient_id,Concept_3,Concept_1_value,Concept_1_units,Concept_1_value,Concept_1_units,Concept_1_value,Concept_1_units,Concept_2_max,Concept_2_units,Systolic_value,Systolic_start,Systolic_end,Systolic_value,Systolic_start,Systolic_end,Diastolic_value,Diastolic_start,Diastolic_end,Diastolic_value,Diastolic_start,Diastolic_end\n" +
-				"P1,true,300,U,200,U,100,U,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P2,false,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),1.8,X,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P3,true,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),140,2013-07-07T09:00:00.000-0400,2013-07-07T10:00:00.000-0400,(NULL),(NULL),(NULL),90,2013-07-07T09:00:00.000-0400,2013-07-07T10:00:00.000-0400,(NULL),(NULL),(NULL)";
+		String expected = "\"Patient_id\",\"Concept_3\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_2_max\",\"Concept_2_units\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\"\n" +
+				"\"P1\",\"true\",\"300\",\"U\",\"200\",\"U\",\"100\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P2\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.8\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P3\",\"true\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"140\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"90\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n";
 		Assert.assertEquals(expected, formatter.format());
 	}
 
@@ -274,14 +276,14 @@ public class DataOutputFormatterTest {
 		config.setRowDimension(OutputConfiguration.RowDimension.VISIT);
 		formatter = new DataOutputFormatter(config, data);
 
-		String expected = "Patient_id,Visit_id,Visit_start,Visit_end,Concept_3,Concept_1_value,Concept_1_units,Concept_1_value,Concept_1_units,Concept_1_value,Concept_1_units,Concept_2_max,Concept_2_units,Systolic_value,Systolic_start,Systolic_end,Systolic_value,Systolic_start,Systolic_end,Diastolic_value,Diastolic_start,Diastolic_end,Diastolic_value,Diastolic_start,Diastolic_end\n" +
-				"P1,E11,2013-01-01T09:00:00.000-0500,2013-01-01T14:00:00.000-0500,false,100,U,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P1,E12,2013-02-02T09:00:00.000-0500,2013-02-02T14:00:00.000-0500,false,200,U,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P1,E13,2013-03-03T09:00:00.000-0500,2013-03-03T14:00:00.000-0500,true,300,U,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P2,E21,2013-04-04T09:00:00.000-0400,2013-04-04T14:00:00.000-0400,false,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),1.0,X,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P2,E22,2013-05-05T09:00:00.000-0400,2013-05-05T14:00:00.000-0400,false,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),1.8,X,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P2,E23,2013-06-06T09:00:00.000-0400,2013-06-06T14:00:00.000-0400,false,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),1.75,X,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"P3,E31,2013-07-07T09:00:00.000-0400,2013-07-07T14:00:00.000-0400,true,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),140,2013-07-07T09:00:00.000-0400,2013-07-07T10:00:00.000-0400,(NULL),(NULL),(NULL),90,2013-07-07T09:00:00.000-0400,2013-07-07T10:00:00.000-0400,(NULL),(NULL),(NULL)";
+		String expected = "\"Patient_id\",\"Visit_id\",\"Visit_start\",\"Visit_end\",\"Concept_3\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_2_max\",\"Concept_2_units\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\"\n" +
+				"\"P1\",\"E11\",\"2013-01-01T09:00:00.000-0500\",\"2013-01-01T14:00:00.000-0500\",\"false\",\"100\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P1\",\"E12\",\"2013-02-02T09:00:00.000-0500\",\"2013-02-02T14:00:00.000-0500\",\"false\",\"200\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P1\",\"E13\",\"2013-03-03T09:00:00.000-0500\",\"2013-03-03T14:00:00.000-0500\",\"true\",\"300\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P2\",\"E21\",\"2013-04-04T09:00:00.000-0400\",\"2013-04-04T14:00:00.000-0400\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.0\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P2\",\"E22\",\"2013-05-05T09:00:00.000-0400\",\"2013-05-05T14:00:00.000-0400\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.8\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P2\",\"E23\",\"2013-06-06T09:00:00.000-0400\",\"2013-06-06T14:00:00.000-0400\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.75\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"P3\",\"E31\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T14:00:00.000-0400\",\"true\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"140\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"90\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n";
 		Assert.assertEquals(expected, formatter.format());
 	}
 
@@ -290,11 +292,11 @@ public class DataOutputFormatterTest {
 		config.setRowDimension(OutputConfiguration.RowDimension.PROVIDER);
 		formatter = new DataOutputFormatter(config, data);
 
-		String expected = "Provider_name,Concept_3,Concept_1_value,Concept_1_units,Concept_1_value,Concept_1_units,Concept_1_value,Concept_1_units,Concept_2_max,Concept_2_units,Systolic_value,Systolic_start,Systolic_end,Systolic_value,Systolic_start,Systolic_end,Diastolic_value,Diastolic_start,Diastolic_end,Diastolic_value,Diastolic_start,Diastolic_end\n" +
-				"SMITH, JOHN,true,200,U,100,U,(NULL),(NULL),1.75,X,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"DOE, JANE,false,300,U,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"SALK, JONAS,false,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),1.8,X,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)\n" +
-				"HIPPOCRATES, BRIAN,true,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),140,2013-07-07T09:00:00.000-0400,2013-07-07T10:00:00.000-0400,(NULL),(NULL),(NULL),90,2013-07-07T09:00:00.000-0400,2013-07-07T10:00:00.000-0400,(NULL),(NULL),(NULL)";
+		String expected = "\"Provider_name\",\"Concept_3\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_2_max\",\"Concept_2_units\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\"\n" +
+				"\"SMITH, JOHN\",\"true\",\"200\",\"U\",\"100\",\"U\",\"(NULL)\",\"(NULL)\",\"1.75\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"DOE, JANE\",\"false\",\"300\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"SALK, JONAS\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.8\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
+				"\"HIPPOCRATES, BRIAN\",\"true\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"140\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"90\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n";
 		Assert.assertEquals(expected, formatter.format());
 	}
 }

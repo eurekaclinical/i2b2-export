@@ -18,13 +18,15 @@ final class ProviderDataOutputFormatter {
 		this.providers = providers;
 	}
 
-	public String format() {
-		List<String> result = new ArrayList<String>();
+	public List<String[]> format() {
+//		List<String> result = new ArrayList<String>();
+        List<String[]> result = new ArrayList<String[]>();
 
 		for (Observer provider : this.providers) {
 			result.add(new ProviderDataRowOutputFormatter(this.config, provider).format());
 		}
 
-		return StringUtils.join(result, "\n");
+//		return StringUtils.join(result, "\n");
+        return result;
 	}
 }

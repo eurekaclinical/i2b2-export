@@ -18,9 +18,9 @@ final class VisitDataOutputFormatter {
 		this.patients = patients;
 	}
 
-	public String format() {
-		List<String> result = new ArrayList<String>();
-		FormatOptions formatOptions = new FormatOptions(this.config);
+	public List<String[]> format() {
+//		List<String> result = new ArrayList<String>();
+        List<String[]> result = new ArrayList<String[]>();
 
 		for (Patient patient : this.patients) {
 			for (Event visit : patient.getEvents()) {
@@ -28,6 +28,7 @@ final class VisitDataOutputFormatter {
 			}
 		}
 
-		return StringUtils.join(result, "\n");
+//		return StringUtils.join(result, "\n");
+        return result;
 	}
 }

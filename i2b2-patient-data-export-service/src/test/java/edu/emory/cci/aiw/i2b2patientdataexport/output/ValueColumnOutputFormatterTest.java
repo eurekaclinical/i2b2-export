@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class ValueColumnOutputFormatterTest {
 
@@ -34,6 +36,7 @@ public class ValueColumnOutputFormatterTest {
 		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setSeparator(",");
+        config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
@@ -58,7 +61,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500", formatter.format(obxs));
+		Assert.assertEquals(Collections.singletonList("500"), formatter.format(obxs));
 	}
 
 	@Test
@@ -69,7 +72,10 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,Y", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("Y");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -80,7 +86,11 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,2013-05-05T13:00:00.000-0400,2013-05-05T14:00:00.000-0400", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("2013-05-05T13:00:00.000-0400");
+        expected.add("2013-05-05T14:00:00.000-0400");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -91,7 +101,12 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,Y,2013-05-05T13:00:00.000-0400,2013-05-05T14:00:00.000-0400", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("Y");
+        expected.add("2013-05-05T13:00:00.000-0400");
+        expected.add("2013-05-05T14:00:00.000-0400");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -102,7 +117,13 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,400,300,200,100", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("400");
+        expected.add("300");
+        expected.add("200");
+        expected.add("100");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -113,7 +134,11 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,400,300", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("400");
+        expected.add("300");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -124,7 +149,15 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,400,300,200,100,(NULL),(NULL)", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("400");
+        expected.add("300");
+        expected.add("200");
+        expected.add("100");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -135,7 +168,36 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("500,Y,2013-05-05T13:00:00.000-0400,2013-05-05T14:00:00.000-0400,400,X,2013-04-04T12:00:00.000-0400,2013-04-04T13:00:00.000-0400,300,W,2013-03-03T11:00:00.000-0500,2013-03-03T12:00:00.000-0500,200,V,2013-02-02T10:00:00.000-0500,2013-02-02T11:00:00.000-0500,100,U,2013-01-01T09:00:00.000-0500,2013-01-01T10:00:00.000-0500,(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)", formatter.format(obxs));
+        List<String> expected = new ArrayList<String>();
+        expected.add("500");
+        expected.add("Y");
+        expected.add("2013-05-05T13:00:00.000-0400");
+        expected.add("2013-05-05T14:00:00.000-0400");
+        expected.add("400");
+        expected.add("X");
+        expected.add("2013-04-04T12:00:00.000-0400");
+        expected.add("2013-04-04T13:00:00.000-0400");
+        expected.add("300");
+        expected.add("W");
+        expected.add("2013-03-03T11:00:00.000-0500");
+        expected.add("2013-03-03T12:00:00.000-0500");
+        expected.add("200");
+        expected.add("V");
+        expected.add("2013-02-02T10:00:00.000-0500");
+        expected.add("2013-02-02T11:00:00.000-0500");
+        expected.add("100");
+        expected.add("U");
+        expected.add("2013-01-01T09:00:00.000-0500");
+        expected.add("2013-01-01T10:00:00.000-0500");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
 	@Test
@@ -146,6 +208,15 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals("(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL)", formatter.format(new ArrayList<Observation>()));
+        List<String> expected = new ArrayList<String>();
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+        expected.add("(NULL)");
+		Assert.assertEquals(expected, formatter.format(new ArrayList<Observation>()));
 	}
 }

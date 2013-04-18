@@ -34,7 +34,7 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 	};
 
 	@Override
-	public String format(Collection<Observation> data) {
+	public List<String> format(Collection<Observation> data) {
 		List<String> result = new ArrayList<String>();
 		List<Observation> dataList = new ArrayList<Observation>(data);
 		Collections.sort(dataList, obxComp);
@@ -70,6 +70,7 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 			}
 		}
 
-		return StringUtils.join(result, getFormatOptions().getColumnSeparator());
+        return result;
+//		return StringUtils.join(result, getFormatOptions().getColumnSeparator());
 	}
 }

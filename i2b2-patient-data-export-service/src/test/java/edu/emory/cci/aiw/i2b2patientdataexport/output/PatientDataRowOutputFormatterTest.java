@@ -8,6 +8,7 @@ import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Event;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Patient;
 import junit.framework.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -29,6 +30,7 @@ public class PatientDataRowOutputFormatterTest {
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
+        config.setQuoteChar("\"");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
@@ -133,6 +135,6 @@ public class PatientDataRowOutputFormatterTest {
 	@Test
 	public void testFormat() {
 		PatientDataRowOutputFormatter formatter = new PatientDataRowOutputFormatter(config, patient);
-		Assert.assertEquals("P1,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", formatter.format());
+		Assert.assertEquals("P1,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", StringUtils.join(formatter.format(), ','));
 	}
 }

@@ -1,5 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import com.google.inject.Inject;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2PatientSet;
@@ -24,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -203,8 +205,15 @@ public final class DataResource {
 		if (null != config) {
 			HeaderRowOutputFormatter headerFormatter = new
 					HeaderRowOutputFormatter(config);
-			return Response.ok().entity(headerFormatter.formatHeader()).build
-					();
+            StringWriter csvStr = new StringWriter();
+            CSVWriter writer;
+            if (null == config.getQuoteChar() || config.getQuoteChar().isEmpty()) {
+                writer = new CSVWriter(csvStr, config.getSeparator().charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
+            } else {
+                writer = new CSVWriter(csvStr, config.getSeparator().charAt(0), config.getQuoteChar().charAt(0));
+            }
+            writer.writeNext(headerFormatter.formatHeader());
+			return Response.ok().entity(csvStr.toString()).build();
 		} else {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
