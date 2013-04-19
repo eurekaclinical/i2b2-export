@@ -34,10 +34,15 @@ public final class DataResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataResource.class);
 
+	private final I2b2UserAuthenticator userAuthenticator;
+	private final I2b2PdoRetriever pdoRetriever;
 	private final OutputConfigurationDao dao;
 
 	@Inject
-	public DataResource(OutputConfigurationDao dao) {
+	public DataResource(OutputConfigurationDao dao, I2b2UserAuthenticator
+			userAuthenticator, I2b2PdoRetriever pdoRetriever) {
+		this.userAuthenticator = userAuthenticator;
+		this.pdoRetriever = pdoRetriever;
 		this.dao = dao;
 	}
 
@@ -56,13 +61,12 @@ public final class DataResource {
 		authMetadata.setUsername(i2b2Username);
 		authMetadata.setPasswordNode(i2b2PasswordNode);
 		authMetadata.setProjectId(i2b2ProjectId);
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
 
 		try {
-			if (ua.authenticateUser()) {
+			if (this.userAuthenticator.authenticateUser(authMetadata)) {
 				String output = new DataOutputFormatter(outputConfig,
-						new I2b2PdoRetriever(authMetadata, patientSet).
-								retrieve(extractConcepts(outputConfig))).format();
+						this.pdoRetriever.retrieve(authMetadata,
+								extractConcepts(outputConfig), patientSet)).format();
 
 				return Response.ok(output, "text/csv").header
 						("Content-Disposition", "attachment;" +

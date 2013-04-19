@@ -1,7 +1,6 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.resource;
 
 import com.google.inject.Inject;
-import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.DeleteRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.LoadRequest;
@@ -10,6 +9,7 @@ import edu.emory.cci.aiw.i2b2patientdataexport.comm.SaveRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.dao.OutputConfigurationDao;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +29,13 @@ public class OutputConfigurationResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OutputConfigurationResource.class);
 
+	private final I2b2UserAuthenticator userAuthenticator;
 	private final OutputConfigurationDao dao;
 
 	@Inject
-	public OutputConfigurationResource(OutputConfigurationDao dao) {
+	public OutputConfigurationResource(OutputConfigurationDao dao,
+									   I2b2UserAuthenticator userAuthenticator) {
+		this.userAuthenticator = userAuthenticator;
 		this.dao = dao;
 	}
 
@@ -50,9 +53,9 @@ public class OutputConfigurationResource {
 	public Response saveConfiguration(SaveRequest request) throws
 			I2b2PatientDataExportServiceException {
         LOGGER.info("Received request to save configuration for user: {}", request.getI2b2AuthMetadata().getUsername());
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getI2b2AuthMetadata());
+
 		try {
-			if (ua.authenticateUser()) {
+			if (this.userAuthenticator.authenticateUser(request.getI2b2AuthMetadata())) {
 				OutputConfiguration config = this.dao
 						.getByUsernameAndConfigName(request
 								.getI2b2AuthMetadata().getUsername(),
@@ -105,9 +108,9 @@ public class OutputConfigurationResource {
 			I2b2PatientDataExportServiceException {
         LOGGER.info("Received request to load configuration for user: {} with id: {}",
                 request.getAuthMetadata().getUsername(), request.getOutputConfigurationId());
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request.getAuthMetadata());
+
 		try {
-			if (ua.authenticateUser()) {
+			if (this.userAuthenticator.authenticateUser(request.getAuthMetadata())) {
 				OutputConfiguration config = this.dao
 						.getById(request.getOutputConfigurationId());
                 if (config != null) {
@@ -145,12 +148,12 @@ public class OutputConfigurationResource {
 	 */
 	@POST
 	@Path("/getAll")
-	public Response getConfigurationsByUser(I2b2AuthMetadata
-															authMetadata) throws I2b2PatientDataExportServiceException {
+	public Response getConfigurationsByUser(I2b2AuthMetadata authMetadata)
+			throws I2b2PatientDataExportServiceException {
         LOGGER.info("Received request to retrieve all configurations for user: {}", authMetadata.getUsername());
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(authMetadata);
+
 		try {
-			if (ua.authenticateUser()) {
+			if (this.userAuthenticator.authenticateUser(authMetadata)) {
 				List<OutputConfigurationSummary> result = new ArrayList<OutputConfigurationSummary>();
 				List<OutputConfiguration> configs = this.dao.getAllByUsername
 						(authMetadata.getUsername());
@@ -189,10 +192,9 @@ public class OutputConfigurationResource {
 	@Path("/delete")
 	public Response deleteConfiguration(DeleteRequest request) throws I2b2PatientDataExportServiceException {
         LOGGER.info("Received request to delete configuration with id: {}", request.getOutputConfigurationId());
-		I2b2UserAuthenticator ua = new I2b2UserAuthenticator(request
-				.getAuthMetadata());
+
 		try {
-			if (ua.authenticateUser()) {
+			if (this.userAuthenticator.authenticateUser(request.getAuthMetadata())) {
 				OutputConfiguration config = this.dao.getById(request.getOutputConfigurationId());
                 if (config != null) {
                     LOGGER.debug("Found configuration with id: {}", config.getId());

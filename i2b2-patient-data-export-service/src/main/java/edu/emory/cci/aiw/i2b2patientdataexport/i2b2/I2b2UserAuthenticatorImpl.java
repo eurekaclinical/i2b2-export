@@ -9,7 +9,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -24,20 +23,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class I2b2UserAuthenticator {
+public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(I2b2UserAuthenticator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(I2b2UserAuthenticatorImpl.class);
 
     private final Configuration config;
-	private final I2b2AuthMetadata authMetadata;
 
 	/**
-	 * Creates a new I2b2UserAuthenticator instance based on the given XML.
-	 *
-	 * @param authMetadata the metadata used to authenticate to i2b2
+	 * Creates a new I2b2UserAuthenticatorImpl instance based on the given XML.
 	 */
-	public I2b2UserAuthenticator(I2b2AuthMetadata authMetadata) {
-		this.authMetadata = authMetadata;
+	public I2b2UserAuthenticatorImpl() {
 		this.config = new Configuration();
 		this.config.setClassForTemplateLoading(this.getClass(), "/");
 		this.config.setObjectWrapper(new DefaultObjectWrapper());
@@ -51,12 +46,13 @@ public final class I2b2UserAuthenticator {
 	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException if an error occurred in the parsing of the incoming or
 	 *                                    response XML
 	 */
-	public boolean authenticateUser() throws I2b2PatientDataExportServiceXmlException {
+	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws
+			I2b2PatientDataExportServiceXmlException {
 		try {
             LOGGER.debug("Attempting to authenticate i2b2 user: {} with password node: {} in domain {} for project {}",
                     new String[] {
-                            this.authMetadata.getUsername(), this.authMetadata.getPasswordNode(),
-                            this.authMetadata.getDomain(), this.authMetadata.getProjectId()});
+                            authMetadata.getUsername(), authMetadata.getPasswordNode(),
+                            authMetadata.getDomain(), authMetadata.getProjectId()});
 
 			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "/i2b2_user_auth.ftl");
 			StringWriter writer = new StringWriter();
@@ -67,12 +63,12 @@ public final class I2b2UserAuthenticator {
 
 			Map<String, Object> params = new HashMap<String, Object>();
             params.put("redirectHost", I2b2CommUtil.I2B2_SERVICE_HOST_URL);
-			params.put("domain", this.authMetadata.getDomain());
-			params.put("username", this.authMetadata.getUsername());
-			params.put("passwordNode", this.authMetadata.getPasswordNode());
+			params.put("domain", authMetadata.getDomain());
+			params.put("username", authMetadata.getUsername());
+			params.put("passwordNode", authMetadata.getPasswordNode());
 			params.put("messageId", messageId);
 			params.put("messageDatetime", sdf.format(now));
-			params.put("projectId", this.authMetadata.getProjectId());
+			params.put("projectId", authMetadata.getProjectId());
 
 			tmpl.process(params, writer);
 			Document respXml = I2b2CommUtil.postXmlToI2b2(writer.toString());

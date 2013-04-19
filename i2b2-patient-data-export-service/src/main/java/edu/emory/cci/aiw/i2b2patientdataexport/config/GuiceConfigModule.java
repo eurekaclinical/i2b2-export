@@ -5,6 +5,8 @@ import edu.emory.cci.aiw.i2b2patientdataexport.dao.JpaOutputColumnConfigurationD
 import edu.emory.cci.aiw.i2b2patientdataexport.dao.JpaOutputConfigurationDao;
 import edu.emory.cci.aiw.i2b2patientdataexport.dao.OutputColumnConfigurationDao;
 import edu.emory.cci.aiw.i2b2patientdataexport.dao.OutputConfigurationDao;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticator;
+import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2UserAuthenticatorImpl;
 
 
 public class GuiceConfigModule extends AbstractModule {
@@ -13,5 +15,6 @@ public class GuiceConfigModule extends AbstractModule {
 	protected void configure() {
 		bind(OutputConfigurationDao.class).to(JpaOutputConfigurationDao.class);
         bind(OutputColumnConfigurationDao.class).to(JpaOutputColumnConfigurationDao.class);
+		bind(I2b2UserAuthenticator.class).to(I2b2UserAuthenticatorImpl.class);
 	}
 }

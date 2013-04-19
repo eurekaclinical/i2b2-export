@@ -39,20 +39,6 @@ public abstract class AbstractResourceTest extends JerseyTest {
                 build();
     }
 
-    @Override
-    public final void setUp() throws Exception {
-        super.setUp();
-        this.persistService = this.injector.getInstance(PersistService.class);
-        this.persistService.start();
-    }
-
-    @Override
-    public final void tearDown() throws Exception {
-        this.persistService.stop();
-        this.persistService = null;
-        super.tearDown();
-    }
-
     protected final <T> T getInstance(Class<T> className) {
         return this.injector.getInstance(className);
     }
