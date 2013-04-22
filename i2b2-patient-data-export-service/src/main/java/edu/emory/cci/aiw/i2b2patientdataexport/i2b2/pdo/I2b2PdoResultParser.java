@@ -3,6 +3,8 @@ package edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,6 +22,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class I2b2PdoResultParser {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger
+			(I2b2PdoResultParser.class);
 
 	private final DateFormat i2b2DateFormat;
 
@@ -172,22 +177,28 @@ public class I2b2PdoResultParser {
 				.getTextContent();
         String conceptPath = obxXml.getParentNode().getAttributes().getNamedItem("panel_name").getNodeValue();
 
+		// some observations, like demographics, are timestamps and have no
+		// end date, so we just set it to the start date
+		Date startDate = date(obxXml, "start_date");
+		Date endDate;
+		if (obxXml.getElementsByTagName("end_date").getLength() == 1) {
+			endDate = date(obxXml, "end_date");
+		} else {
+			endDate = new Date(startDate.getTime());
+		}
+
 		return new Observation.Builder(this.events.get(eventId))
 				.conceptCode(text(obxXml, "concept_cd"))
                 .conceptPath(conceptPath)
 				.observer(text(obxXml, "observer_cd"))
-				.startDate(date(obxXml, "start_date"))
+				.startDate(startDate)
 				.modifier(text(obxXml, "modifier_cd"))
 				.valuetype(text(obxXml, "valuetype_cd"))
 				.tval(text(obxXml, "tval_char")).nval(text(obxXml, "nval_num"))
 				.valueflag(text(obxXml, "valueflag_cd")).units(text(obxXml, "units_cd"))
-				.endDate(date(obxXml, "end_date"))
+				.endDate(endDate)
 				.location(text(obxXml, "location_cd")).blob(text(obxXml, "observation_blob"))
 				.build();
-	}
-
-	private boolean validBlob(String obxBlob) {
-		return (null != obxBlob && !obxBlob.isEmpty() && obxBlob.contains("|"));
 	}
 
 	private String text(Element elt, String tagName) {
@@ -199,19 +210,22 @@ public class I2b2PdoResultParser {
 	}
 
 	private Date date(Element elt, String tagName) {
-		try {
-			String dtTxt = text(elt, tagName);
-			// remove the last colon (:)
-			// we have to do this because Java's SimpleDateFormat does not directly
-			// support the format i2b2 is using: 2001-07-04T12:08:56.235-07:00
-			// even though it is a valid ISO-8601 date
-			// the closest Java has is: 2001-07-04T12:08:56.235-0700 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)
-			// the other alternative is write our own date parser
-			int colonIdx = dtTxt.lastIndexOf(':');
+		String dtTxt = text(elt, tagName);
+		// remove the last colon (:)
+		// we have to do this because Java's SimpleDateFormat does not directly
+		// support the format i2b2 is using: 2001-07-04T12:08:56.235-07:00
+		// even though it is a valid ISO-8601 date
+		// the closest Java has is: 2001-07-04T12:08:56.235-0700 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)
+		// the other alternative is write our own date parser
+		int colonIdx = dtTxt.lastIndexOf(':');
+		if (colonIdx >= 0) {
 			dtTxt = dtTxt.substring(0, colonIdx).concat(dtTxt.substring(colonIdx + 1));
+		}
 
+		try {
 			return i2b2DateFormat.parse(dtTxt);
 		} catch (ParseException e) {
+			LOGGER.warn("Unable to parse date: {}", dtTxt);
 			return null;
 		}
 	}
