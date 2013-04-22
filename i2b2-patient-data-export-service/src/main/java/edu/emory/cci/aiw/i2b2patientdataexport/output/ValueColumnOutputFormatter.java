@@ -3,7 +3,6 @@ package edu.emory.cci.aiw.i2b2patientdataexport.output;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +22,7 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 	}
 
 	private static final Comparator<Observation> obxComp = new Comparator<Observation>() {
+
 		@Override
 		public int compare(Observation o1, Observation o2) {
 			final int startComp = -1 * o1.getStartDate().compareTo(o2.getStartDate());
