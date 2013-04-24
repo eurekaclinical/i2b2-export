@@ -85,17 +85,31 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 
 	@Override
 	public OutputConfiguration getByUsernameAndConfigName(String username, String configName) {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		if (username.equals("test-user") && configName.equals("test-config")) {
+			OutputConfiguration config = new OutputConfiguration();
+			config.setUsername("test-user");
+			config.setName("test-config");
+
+			return config;
+		} else if (configName.equals("bad-config")) {
+			OutputConfiguration config = new OutputConfiguration();
+			config.setUsername("bad-user");
+			config.setName("bad-config");
+
+			return config;
+		}
+		return null;
 	}
 
 	@Override
 	public void create(OutputConfiguration config) {
-		//To change body of implemented methods use File | Settings | File Templates.
+
 	}
 
 	@Override
-	public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig) {
-		//To change body of implemented methods use File | Settings | File Templates.
+	public void update(OutputConfiguration oldConfig, OutputConfiguration
+		newConfig) {
+
 	}
 
 	@Override

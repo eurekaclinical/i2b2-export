@@ -4,6 +4,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.DeleteRequest;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.LoadRequest;
+import edu.emory.cci.aiw.i2b2patientdataexport.comm.SaveRequest;
+import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -210,5 +212,98 @@ public class OutputConfigurationResourceTest extends AbstractResourceTest {
 						.class);
 
 		Assert.assertEquals(ClientResponse.Status.UNAUTHORIZED, response.getClientResponseStatus());
+	}
+
+	@Test
+	public void testSaveCreateOk() {
+		SaveRequest request = new SaveRequest();
+		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
+		authMetadata.setDomain("test-domain");
+		authMetadata.setUsername("test-user");
+		authMetadata.setPasswordNode("<password>test-password</password>");
+		authMetadata.setProjectId("test-project");
+		request.setI2b2AuthMetadata(authMetadata);
+
+		OutputConfiguration config = new OutputConfiguration();
+		config.setUsername("test-user");
+		config.setName("config-name");
+		request.setOutputConfiguration(config);
+
+		ClientResponse response = this.resource().path("/rest/config/save")
+				.entity(request).accept(MediaType.APPLICATION_JSON_TYPE).type
+						(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse
+						.class);
+
+		Assert.assertEquals(ClientResponse.Status.OK, response.getClientResponseStatus());
+	}
+
+	@Test
+	public void testSaveUpdateOk() {
+		SaveRequest request = new SaveRequest();
+		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
+		authMetadata.setDomain("test-domain");
+		authMetadata.setUsername("test-user");
+		authMetadata.setPasswordNode("<password>test-password</password>");
+		authMetadata.setProjectId("test-project");
+		request.setI2b2AuthMetadata(authMetadata);
+
+		OutputConfiguration config = new OutputConfiguration();
+		config.setUsername("test-user");
+		config.setName("test-config");
+		request.setOutputConfiguration(config);
+
+		ClientResponse response = this.resource().path("/rest/config/save")
+				.entity(request).accept(MediaType.APPLICATION_JSON_TYPE).type
+						(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse
+						.class);
+
+		Assert.assertEquals(ClientResponse.Status.OK, response.getClientResponseStatus());
+	}
+
+	@Test
+	public void testSaveUpdateWrongUsername() {
+		SaveRequest request = new SaveRequest();
+		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
+		authMetadata.setDomain("test-domain");
+		authMetadata.setUsername("test-user");
+		authMetadata.setPasswordNode("<password>test-password</password>");
+		authMetadata.setProjectId("test-project");
+		request.setI2b2AuthMetadata(authMetadata);
+
+		OutputConfiguration config = new OutputConfiguration();
+		config.setUsername("test-user");
+		config.setName("bad-config");
+		request.setOutputConfiguration(config);
+
+		ClientResponse response = this.resource().path("/rest/config/save")
+				.entity(request).accept(MediaType.APPLICATION_JSON_TYPE).type
+						(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse
+						.class);
+
+		Assert.assertEquals(ClientResponse.Status.UNAUTHORIZED, response.getClientResponseStatus());
+	}
+
+	@Test
+	public void testSaveNotAuthorized() {
+		SaveRequest request = new SaveRequest();
+		I2b2AuthMetadata authMetadata = new I2b2AuthMetadata();
+		authMetadata.setDomain("test-domain");
+		authMetadata.setUsername("bad-user");
+		authMetadata.setPasswordNode("<password>test-password</password>");
+		authMetadata.setProjectId("test-project");
+		request.setI2b2AuthMetadata(authMetadata);
+
+		OutputConfiguration config = new OutputConfiguration();
+		config.setUsername("test-user");
+		config.setName("test-config");
+		request.setOutputConfiguration(config);
+
+		ClientResponse response = this.resource().path("/rest/config/save")
+				.entity(request).accept(MediaType.APPLICATION_JSON_TYPE).type
+						(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse
+						.class);
+
+		Assert.assertEquals(ClientResponse.Status.UNAUTHORIZED, response.getClientResponseStatus());
+
 	}
 }
