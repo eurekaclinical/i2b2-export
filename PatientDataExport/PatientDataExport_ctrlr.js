@@ -578,7 +578,13 @@ i2b2.PatientDataExport.createConfigObject = function() {
 		config.name = $('PatientDataExport-saveas').value;
 		config.rowDimension = rawConfig.rowDimension.toUpperCase();
 		config.whitespaceReplacement = rawConfig.whitespace;
-		config.separator = rawConfig.delimiter;
+		if (rawConfig.delimiter === 'pipe') {
+			config.separator = '|';
+		} else if (rawConfig.delimiter === 'tab') {
+			config.separator = '\t';
+		} else {
+			config.separator = ',';
+		}
 		config.quoteChar = rawConfig.quote ? '"' : '';
 		config.missingValue = rawConfig.missing;
 		config.columnConfigs = [];
@@ -812,7 +818,13 @@ i2b2.PatientDataExport.loadConfig = function() {
 		    onSuccess: function(response) {
 				var config = response.responseJSON;
 				$('PatientDataExport-whitespace').value = config.whitespaceReplacement;
-				$('PatientDataExport-delimiter').value = config.separator;
+				if (config.separator === '\t') {
+					$('PatientDataExport-delimiter').value = 'tab';
+				} else if (config.separator === '|') {
+					$('PatientDataExport-delimiter').value = 'pipe';
+				} else {
+					$('PatientDataExport-delimiter').value = 'comma';
+				}
 				$('PatientDataExport-quote').checked = config.quoteChar === '"';
 				$('PatientDataExport-missing').value = config.missingValue;
 				var rowDimOptions = $('PatientDataExport-rowdim').options;

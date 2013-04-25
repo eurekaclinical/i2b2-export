@@ -93,7 +93,12 @@
 		    <input id="PatientDataExport-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
 		    <br />
 		    <label for="PatientDataExport-delimiter">Column separator:</label>
-		    <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="1" value="," />
+		    <!-- <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="1" value="," /> -->
+			<select id="PatientDataExport-delimiter" name="delimiter">
+				<option selected value="comma">, (comma)</option>
+				<option value="pipe">| (pipe)</option>
+				<option value="tab">Tab</option>
+			</select>
 		    <br />
 			<label for="PatientDataExport-quote">Surround data with double quotes?</label>
 			<input id="PatientDataExport-quote" name="quote" type="checkbox" unchecked />
