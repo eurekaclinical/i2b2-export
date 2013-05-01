@@ -33,6 +33,10 @@ DIV#PatientDataExport-mainDiv DIV.PatientDataExport-stepContent {
 	background-color: #dbe8ff;
 }
 
+DIV#PatientDataExport-mainDiv SELECT {
+        width: auto;
+}
+
 DIV#PatientDataExport-mainDiv LABEL {
 	color: #666666;
 	font-weight: bold;
