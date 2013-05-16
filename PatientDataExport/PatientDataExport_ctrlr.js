@@ -221,10 +221,10 @@ i2b2.PatientDataExport.updateColumnConfigFirstRow = function() {
     
     // if only one config row is left, we don't want to allow deletion of it
     if (table.rows.length === 2) {
-		img.src = 'http://placehold.it/35/dbe8ff';
+		img.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/blank16x16.png';
 		delCell.appendChild(img);
     } else {
-		img.src = 'http://placehold.it/35/dbe8ff/ff0000&text=x';
+		img.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/delete.png';
 		img.addEventListener('click', i2b2.PatientDataExport.deleteBtnClickListener);
         var anchor = document.createElement('a');
 		anchor.href = '#';
@@ -255,7 +255,7 @@ i2b2.PatientDataExport.deleteBtnClickListener = function(evt) {
 };
 
 i2b2.PatientDataExport.moveDown = function(evt) {
-    var element = evt.target.ancestors()[2];
+    var element = evt.target.ancestors()[3];
     var next = element.next();
     if (next) {
 		next.remove();
@@ -264,7 +264,7 @@ i2b2.PatientDataExport.moveDown = function(evt) {
 };
 
 i2b2.PatientDataExport.moveUp = function(evt) {
-    var element = evt.target.ancestors()[2];
+    var element = evt.target.ancestors()[3];
     var prev = element.previous();
     if (prev && prev.id !== 'PatientDataExport-headerRow') {
 		prev.remove();
@@ -281,7 +281,7 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     
     var delCell = document.createElement('td');
     var img = document.createElement('img');
-    img.src = 'http://placehold.it/35/dbe8ff/ff0000&text=x';
+    img.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/delete.png';
     img.addEventListener('click', i2b2.PatientDataExport.deleteBtnClickListener);
     var anchor = document.createElement('a');
     anchor.href = '#';
@@ -293,20 +293,23 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     var reorderCell = document.createElement('td');
     reorderCell.className = 'deleteBtn';
     var upImg = document.createElement('img');
-    upImg.src = 'http://placehold.it/20/dbe8ff/00ff00&text=UP';
+    upImg.className = 'upBtn';
+    upImg.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-up.png';
     upImg.addEventListener('click', i2b2.PatientDataExport.moveUp);
     var upAnchor = document.createElement('a');
     upAnchor.href = '#';
     upAnchor.appendChild(upImg);
     var dnImg = document.createElement('img');
-    dnImg.src = 'http://placehold.it/20/dbe8ff/00ff00&text=DN';
+    dnImg.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-down.png';
     dnImg.addEventListener('click', i2b2.PatientDataExport.moveDown);
     var dnAnchor = document.createElement('a');
     dnAnchor.href = '#';
     dnAnchor.appendChild(dnImg);
-    reorderCell.appendChild(upAnchor);
-    reorderCell.appendChild(document.createElement('br'));
-    reorderCell.appendChild(dnAnchor);
+    var reorderDiv = document.createElement('div');
+    reorderDiv.appendChild(upAnchor);
+    reorderDiv.appendChild(document.createElement('br'));
+    reorderDiv.appendChild(dnAnchor);
+    reorderCell.appendChild(reorderDiv);
     tr.appendChild(reorderCell);
     
     var concptCell = document.createElement('td');

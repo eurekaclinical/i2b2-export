@@ -33,10 +33,6 @@ DIV#PatientDataExport-mainDiv DIV.PatientDataExport-stepContent {
 	background-color: #dbe8ff;
 }
 
-DIV#PatientDataExport-mainDiv SELECT {
-        width: auto;
-}
-
 DIV#PatientDataExport-mainDiv LABEL {
 	color: #666666;
 	font-weight: bold;
@@ -66,6 +62,9 @@ DIV#PatientDataExport-mainDiv #PatientDataExport-configTable #PatientDataExport-
 }
 DIV#PatientDataExport-mainDiv TD.deleteBtn {
 	width: 40px;
+}
+DIV#PatientDataExport-mainDiv IMG.upBtn {
+	margin-bottom: 5px;
 }
 DIV#PatientDataExport-mainDiv TD.dispfmt {
 	padding-left: 10px;
