@@ -40,6 +40,9 @@ DIV#PatientDataExport-mainDiv LABEL {
 	vertical-align: middle;
 	width: auto;
 }
+DIV#PatientDataExport-mainDiv SELECT {
+	width: auto;
+}
 DIV#PatientDataExport-mainDiv #PatientDataExport-rowdim {
 	width: auto;
 	float: left;
