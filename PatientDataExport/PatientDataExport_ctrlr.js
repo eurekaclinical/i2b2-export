@@ -9,6 +9,7 @@
  */
 
 i2b2.PatientDataExport.SERVICE_URL = 'http://192.168.232.128/I2b2PatientDataExportService/rest';
+i2b2.PatientDataExport.IMG_DIR = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/'
 // global row index counter because the concept drop handlers
 // seem to fail if a handler is applied to the same object twice in the same session
 i2b2.PatientDataExport.ROW_INDEX = 1;
@@ -221,10 +222,10 @@ i2b2.PatientDataExport.updateColumnConfigFirstRow = function() {
     
     // if only one config row is left, we don't want to allow deletion of it
     if (table.rows.length === 2) {
-		img.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/blank16x16.png';
+		img.src = i2b2.PatientDataExport.IMG_DIR + 'blank16x16.png';
 		delCell.appendChild(img);
     } else {
-		img.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/delete.png';
+		img.src = i2b2.PatientDataExport.IMG_DIR + 'delete.png';
 		img.addEventListener('click', i2b2.PatientDataExport.deleteBtnClickListener);
         var anchor = document.createElement('a');
 		anchor.href = '#';
@@ -281,7 +282,7 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     
     var delCell = document.createElement('td');
     var img = document.createElement('img');
-    img.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/delete.png';
+    img.src = i2b2.PatientDataExport.IMG_DIR + 'delete.png';
     img.addEventListener('click', i2b2.PatientDataExport.deleteBtnClickListener);
     var anchor = document.createElement('a');
     anchor.href = '#';
@@ -294,13 +295,13 @@ i2b2.PatientDataExport.addColumnConfigRow = function(table) {
     reorderCell.className = 'deleteBtn';
     var upImg = document.createElement('img');
     upImg.className = 'upBtn';
-    upImg.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-up.png';
+    upImg.src = i2b2.PatientDataExport.IMG_DIR + 'move-up.png';
     upImg.addEventListener('click', i2b2.PatientDataExport.moveUp);
     var upAnchor = document.createElement('a');
     upAnchor.href = '#';
     upAnchor.appendChild(upImg);
     var dnImg = document.createElement('img');
-    dnImg.src = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-down.png';
+    dnImg.src = i2b2.PatientDataExport.IMG_DIR + 'move-down.png';
     dnImg.addEventListener('click', i2b2.PatientDataExport.moveDown);
     var dnAnchor = document.createElement('a');
     dnAnchor.href = '#';
