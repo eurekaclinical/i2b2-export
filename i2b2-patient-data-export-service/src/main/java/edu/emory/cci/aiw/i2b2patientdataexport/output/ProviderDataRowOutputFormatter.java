@@ -4,7 +4,6 @@ import edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observer;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,8 +21,7 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	protected List<String> rowPrefix() {
 		List<String> result = new ArrayList<String>();
 		result.add(provider.getName());
-        return result;
-//		return StringUtils.join(result, getConfig().getSeparator());
+		return result;
 	}
 
 	@Override

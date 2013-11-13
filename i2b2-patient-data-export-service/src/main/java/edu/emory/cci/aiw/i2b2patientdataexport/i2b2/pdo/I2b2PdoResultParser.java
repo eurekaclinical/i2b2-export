@@ -1,7 +1,7 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +62,9 @@ public class I2b2PdoResultParser {
 
 		for (Observation o : observations) {
 			o.getEvent().addObservation(o);
-            if (observers.containsKey(o.getObserver())) {
-                observers.get(o.getObserver()).addObservation(o);
-            }
+			if (observers.containsKey(o.getObserver())) {
+				observers.get(o.getObserver()).addObservation(o);
+			}
 		}
 		for (Event e : events.values()) {
 			e.getPatient().addEvent(e);
@@ -175,7 +175,7 @@ public class I2b2PdoResultParser {
 	private Observation parseObservation(Element obxXml) {
 		String eventId = obxXml.getElementsByTagName("event_id").item(0)
 				.getTextContent();
-        String conceptPath = obxXml.getParentNode().getAttributes().getNamedItem("panel_name").getNodeValue();
+		String conceptPath = obxXml.getParentNode().getAttributes().getNamedItem("panel_name").getNodeValue();
 
 		// some observations, like demographics, are timestamps and have no
 		// end date, so we just set it to the start date
@@ -189,7 +189,7 @@ public class I2b2PdoResultParser {
 
 		return new Observation.Builder(this.events.get(eventId))
 				.conceptCode(text(obxXml, "concept_cd"))
-                .conceptPath(conceptPath)
+				.conceptPath(conceptPath)
 				.observer(text(obxXml, "observer_cd"))
 				.startDate(startDate)
 				.modifier(text(obxXml, "modifier_cd"))

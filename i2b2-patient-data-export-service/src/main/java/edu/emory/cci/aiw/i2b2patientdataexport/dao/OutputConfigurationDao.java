@@ -15,7 +15,7 @@ public interface OutputConfigurationDao {
 
 	public void create(OutputConfiguration config);
 
-    public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig);
+	public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig);
 
 	public void delete(OutputConfiguration config);
 }

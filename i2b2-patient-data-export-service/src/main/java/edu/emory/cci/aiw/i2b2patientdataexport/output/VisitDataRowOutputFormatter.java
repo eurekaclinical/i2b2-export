@@ -5,7 +5,6 @@ import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Event;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,8 +31,7 @@ final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 		result.add(fmt.format(visit.getStartDate()));
 		result.add(fmt.format(visit.getEndDate()));
 
-        return result;
-//		return StringUtils.join(result, getConfig().getSeparator());
+		return result;
 	}
 
 	@Override

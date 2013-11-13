@@ -39,13 +39,13 @@ public class OutputConfiguration {
 	@Column(nullable = false)
 	private RowDimension rowDimension;
 
-    @Column(length = 1)
+	@Column(length = 1)
 	private String separator;
 
-    @Column(length = 1)
-    private String quoteChar;
+	@Column(length = 1)
+	private String quoteChar;
 
-    private String whitespaceReplacement;
+	private String whitespaceReplacement;
 	private String missingValue;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -99,13 +99,13 @@ public class OutputConfiguration {
 		this.separator = separator;
 	}
 
-    public String getQuoteChar() {
-        return quoteChar;
-    }
+	public String getQuoteChar() {
+		return quoteChar;
+	}
 
-    public void setQuoteChar(String quoteChar) {
-        this.quoteChar = quoteChar;
-    }
+	public void setQuoteChar(String quoteChar) {
+		this.quoteChar = quoteChar;
+	}
 
 	public String getMissingValue() {
 		return missingValue;

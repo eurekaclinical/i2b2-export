@@ -21,7 +21,7 @@ public final class ExistenceColumnOutputFormatter extends
 	public List<String> format(Collection<Observation> data) {
 		if (null == data || data.isEmpty()) {
 			return Collections.singletonList("false");
-        } else {
+		} else {
 			return Collections.singletonList("true");
 		}
 	}

@@ -6,10 +6,10 @@ import com.google.inject.servlet.GuiceServletContextListener;
 
 public class ContextTestListener extends GuiceServletContextListener {
 
-    private final Injector injector = Guice.createInjector(new ServletTestModule(), new AppTestModule());
+	private final Injector injector = Guice.createInjector(new ServletTestModule(), new AppTestModule());
 
-    @Override
-    protected Injector getInjector() {
-        return this.injector;
-    }
+	@Override
+	protected Injector getInjector() {
+		return this.injector;
+	}
 }

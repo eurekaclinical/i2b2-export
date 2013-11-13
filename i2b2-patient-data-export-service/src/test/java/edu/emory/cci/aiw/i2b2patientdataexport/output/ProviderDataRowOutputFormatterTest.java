@@ -31,7 +31,7 @@ public class ProviderDataRowOutputFormatterTest {
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
-        config.setQuoteChar("\"");
+		config.setQuoteChar("\"");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 

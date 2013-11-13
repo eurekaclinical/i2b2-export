@@ -8,19 +8,19 @@ import javax.persistence.EntityManager;
 
 public class JpaOutputColumnConfigurationDao implements OutputColumnConfigurationDao {
 
-    private final Provider<EntityManager> provider;
+	private final Provider<EntityManager> provider;
 
-    @Inject
-    public JpaOutputColumnConfigurationDao(Provider<EntityManager> provider) {
-        this.provider = provider;
-    }
+	@Inject
+	public JpaOutputColumnConfigurationDao(Provider<EntityManager> provider) {
+		this.provider = provider;
+	}
 
-    private EntityManager getEntityManager() {
-        return this.provider.get();
-    }
+	private EntityManager getEntityManager() {
+		return this.provider.get();
+	}
 
-    @Override
-    public void delete(OutputColumnConfiguration colConfig) {
-        this.getEntityManager().remove(colConfig);
-    }
+	@Override
+	public void delete(OutputColumnConfiguration colConfig) {
+		this.getEntityManager().remove(colConfig);
+	}
 }

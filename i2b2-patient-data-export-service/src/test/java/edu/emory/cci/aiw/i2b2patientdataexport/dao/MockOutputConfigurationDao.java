@@ -108,7 +108,7 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 
 	@Override
 	public void update(OutputConfiguration oldConfig, OutputConfiguration
-		newConfig) {
+			newConfig) {
 
 	}
 

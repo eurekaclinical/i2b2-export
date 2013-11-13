@@ -2,7 +2,6 @@ package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Patient;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,14 +18,12 @@ final class PatientDataOutputFormatter {
 	}
 
 	public List<String[]> format() {
-//		List<String> result = new ArrayList<String>();
-        List<String[]> result = new ArrayList<String[]>();
+		List<String[]> result = new ArrayList<String[]>();
 
 		for (Patient patient : this.patients) {
 			result.add(new PatientDataRowOutputFormatter(this.config, patient).format());
 		}
 
-//		return StringUtils.join(result, "\n");
-        return result;
+		return result;
 	}
 }

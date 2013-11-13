@@ -2,7 +2,6 @@ package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,11 +37,11 @@ public final class HeaderRowOutputFormatter {
 		for (int i = 0; i < outputConfiguration.getColumnConfigs().size(); i++) {
 			OutputColumnConfiguration colConfig = outputConfiguration
 					.getColumnConfigs().get(i);
-            String baseColName = colConfig.getColumnName();
-            if (outputConfiguration.getWhitespaceReplacement() != null && !outputConfiguration.getWhitespaceReplacement().equals("")) {
-                baseColName = colConfig.getColumnName().replaceAll("\\s",
-                        outputConfiguration.getWhitespaceReplacement());
-            }
+			String baseColName = colConfig.getColumnName();
+			if (outputConfiguration.getWhitespaceReplacement() != null && !outputConfiguration.getWhitespaceReplacement().isEmpty()) {
+				baseColName = colConfig.getColumnName().replaceAll("\\s",
+						outputConfiguration.getWhitespaceReplacement());
+			}
 			switch (colConfig.getDisplayFormat()) {
 				case EXISTENCE:
 					result.add(baseColName);
@@ -81,7 +80,6 @@ public final class HeaderRowOutputFormatter {
 					break;
 			}
 		}
-//		return StringUtils.join(result, outputConfiguration.getSeparator());
-        return result.toArray(new String[result.size()]);
+		return result.toArray(new String[result.size()]);
 	}
 }

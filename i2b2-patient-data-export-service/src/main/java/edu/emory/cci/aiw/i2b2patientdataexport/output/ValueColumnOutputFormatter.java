@@ -48,13 +48,13 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 		}
 
 		for (int i = 0; i < getColumnConfig().getHowMany(); i++) {
-			if (dataList == null || dataList.isEmpty() || i >= dataList.size()) {
+			if (null == dataList || dataList.isEmpty() || i >= dataList.size()) {
 				for (int j = 0; j < numCols; j++) {
 					result.add(getFormatOptions().getMissingData());
 				}
 			} else {
 				final Observation obx = dataList.get(i);
-				if (null != obx.getValuetype() && obx.getValuetype().equals
+				if (obx.getValuetype() != null && obx.getValuetype().equals
 						("N")) {
 					result.add(obx.getNval());
 				} else {
@@ -70,7 +70,6 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 			}
 		}
 
-        return result;
-//		return StringUtils.join(result, getFormatOptions().getColumnSeparator());
+		return result;
 	}
 }

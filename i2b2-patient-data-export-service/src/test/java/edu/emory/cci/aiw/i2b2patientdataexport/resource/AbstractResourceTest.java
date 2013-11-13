@@ -19,39 +19,39 @@ import javax.servlet.ServletContextListener;
 
 public abstract class AbstractResourceTest extends JerseyTest {
 
-    private final Injector injector;
-    private PersistService persistService;
+	private final Injector injector;
+	private PersistService persistService;
 
-    protected AbstractResourceTest() {
-        super();
-        this.injector = Guice.createInjector(this.getModules());
-    }
+	protected AbstractResourceTest() {
+		super();
+		this.injector = Guice.createInjector(this.getModules());
+	}
 
-    @Override
-    protected AppDescriptor configure() {
-        ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	@Override
+	protected AppDescriptor configure() {
+		ClientConfig clientConfig = new DefaultClientConfig();
+		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
-        return new WebAppDescriptor.Builder().
-                contextListenerClass(getListener()).
-                filterClass(getFilter()).
-                clientConfig(clientConfig).
-                build();
-    }
+		return new WebAppDescriptor.Builder().
+				contextListenerClass(getListener()).
+				filterClass(getFilter()).
+				clientConfig(clientConfig).
+				build();
+	}
 
-    protected final <T> T getInstance(Class<T> className) {
-        return this.injector.getInstance(className);
-    }
+	protected final <T> T getInstance(Class<T> className) {
+		return this.injector.getInstance(className);
+	}
 
-    protected final Class<? extends ServletContextListener> getListener() {
-        return ContextTestListener.class;
-    }
+	protected final Class<? extends ServletContextListener> getListener() {
+		return ContextTestListener.class;
+	}
 
-    protected Class<? extends Filter> getFilter() {
-        return GuiceFilter.class;
-    }
+	protected Class<? extends Filter> getFilter() {
+		return GuiceFilter.class;
+	}
 
-    protected Module[] getModules() {
-        return new Module[]{ new AppTestModule() };
-    }
+	protected Module[] getModules() {
+		return new Module[]{new AppTestModule()};
+	}
 }

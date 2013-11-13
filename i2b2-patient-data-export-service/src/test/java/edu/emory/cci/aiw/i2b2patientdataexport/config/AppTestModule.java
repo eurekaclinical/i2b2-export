@@ -13,12 +13,12 @@ import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.MockI2b2UserAuthenticator;
 
 public class AppTestModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
+	@Override
+	protected void configure() {
 		install(new JpaPersistModule("i2b2-patient-data-export-persist"));
-        bind(OutputConfigurationDao.class).to(MockOutputConfigurationDao.class);
-        bind(OutputColumnConfigurationDao.class).to(MockOutputColumnConfigurationDao.class);
+		bind(OutputConfigurationDao.class).to(MockOutputConfigurationDao.class);
+		bind(OutputColumnConfigurationDao.class).to(MockOutputColumnConfigurationDao.class);
 		bind(I2b2UserAuthenticator.class).to(MockI2b2UserAuthenticator.class);
 		bind(I2b2PdoRetriever.class).to(MockI2b2PdoRetriever.class);
-    }
+	}
 }

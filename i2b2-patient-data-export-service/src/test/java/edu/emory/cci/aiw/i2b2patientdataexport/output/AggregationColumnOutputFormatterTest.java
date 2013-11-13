@@ -35,7 +35,7 @@ public class AggregationColumnOutputFormatterTest {
 		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setSeparator(",");
-        config.setQuoteChar("\"");
+		config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
@@ -89,9 +89,9 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-        List<String> expected = new ArrayList<String>();
-        expected.add("100.17");
-        expected.add("U");
+		List<String> expected = new ArrayList<String>();
+		expected.add("100.17");
+		expected.add("U");
 		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
@@ -102,9 +102,9 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-        List<String> expected = new ArrayList<String>();
-        expected.add("500.51");
-        expected.add("U");
+		List<String> expected = new ArrayList<String>();
+		expected.add("500.51");
+		expected.add("U");
 		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 
@@ -115,9 +115,9 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-        List<String> expected = new ArrayList<String>();
-        expected.add("300.35");
-        expected.add("U");
+		List<String> expected = new ArrayList<String>();
+		expected.add("300.35");
+		expected.add("U");
 		Assert.assertEquals(expected, formatter.format(obxs));
 	}
 }

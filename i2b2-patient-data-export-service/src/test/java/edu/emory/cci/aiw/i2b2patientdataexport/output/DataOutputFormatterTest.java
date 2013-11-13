@@ -10,7 +10,6 @@ import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observer;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Patient;
 import junit.framework.Assert;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -33,7 +32,7 @@ public class DataOutputFormatterTest {
 		config.setName("foo");
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
-        config.setQuoteChar("\"");
+		config.setQuoteChar("\"");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 

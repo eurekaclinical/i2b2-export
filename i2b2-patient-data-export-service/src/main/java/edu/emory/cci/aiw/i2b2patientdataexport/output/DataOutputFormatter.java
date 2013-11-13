@@ -19,36 +19,31 @@ public final class DataOutputFormatter {
 	}
 
 	public String format() {
-        List<String[]> result = new ArrayList<String[]>();
-//		StringBuilder result =
-                result.add(new HeaderRowOutputFormatter(config).formatHeader());
-//		result.append("\n");
+		List<String[]> result = new ArrayList<String[]>();
+		result.add(new HeaderRowOutputFormatter(config).formatHeader());
 		switch (this.config.getRowDimension()) {
 			case PATIENT:
-//				result.append
-                result.addAll(new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+				result.addAll(new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format());
 				break;
 			case VISIT:
-//				result.append
-                result.addAll(new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+				result.addAll(new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format());
 				break;
 			case PROVIDER:
-//				result.append
-                result.addAll(new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format());
+				result.addAll(new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format());
 				break;
 			default:
 				throw new AssertionError("no row dimension provided");
 		}
-//		return result.toString();
-        StringWriter resultStr = new StringWriter();
-        CSVWriter writer;
-        if (null == config.getQuoteChar() || config.getQuoteChar().isEmpty()) {
-            writer = new CSVWriter(resultStr, config.getSeparator().charAt(0));
-        } else {
-            writer = new CSVWriter(resultStr, config.getSeparator().charAt(0), config.getQuoteChar().charAt(0));
-        }
-        writer.writeAll(result);
 
-        return resultStr.toString();
+		StringWriter resultStr = new StringWriter();
+		CSVWriter writer;
+		if (null == config.getQuoteChar() || config.getQuoteChar().isEmpty()) {
+			writer = new CSVWriter(resultStr, config.getSeparator().charAt(0));
+		} else {
+			writer = new CSVWriter(resultStr, config.getSeparator().charAt(0), config.getQuoteChar().charAt(0));
+		}
+		writer.writeAll(result);
+
+		return resultStr.toString();
 	}
 }

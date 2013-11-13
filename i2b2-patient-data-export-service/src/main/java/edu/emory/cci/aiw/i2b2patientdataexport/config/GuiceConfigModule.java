@@ -16,7 +16,7 @@ public class GuiceConfigModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(OutputConfigurationDao.class).to(JpaOutputConfigurationDao.class);
-        bind(OutputColumnConfigurationDao.class).to(JpaOutputColumnConfigurationDao.class);
+		bind(OutputColumnConfigurationDao.class).to(JpaOutputColumnConfigurationDao.class);
 		bind(I2b2UserAuthenticator.class).to(I2b2UserAuthenticatorImpl.class);
 		bind(I2b2PdoRetriever.class).to(I2b2PdoRetrieverImpl.class);
 	}

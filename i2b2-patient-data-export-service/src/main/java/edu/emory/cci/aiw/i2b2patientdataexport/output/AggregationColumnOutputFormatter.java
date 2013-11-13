@@ -2,7 +2,6 @@ package edu.emory.cci.aiw.i2b2patientdataexport.output;
 
 import edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration;
 import edu.emory.cci.aiw.i2b2patientdataexport.i2b2.pdo.Observation;
-import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -75,7 +74,6 @@ public final class AggregationColumnOutputFormatter extends AbstractColumnOutput
 			result.add(units);
 		}
 
-//		return StringUtils.join(result, getFormatOptions().getColumnSeparator());
-        return result;
+		return result;
 	}
 }
