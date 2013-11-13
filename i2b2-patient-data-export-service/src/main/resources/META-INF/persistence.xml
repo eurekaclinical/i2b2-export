@@ -41,8 +41,8 @@
             <property name="hibernate.id.new_generator_mappings" value="true" />
 
             <!-- for testing purposes ONLY -->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-            <!--<property name="hibernate.connection.driver_class" value="org.h2.Driver" />
+            <!-- <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url"
                       value="jdbc:h2:file:/tmp/i2b2-patient-data-export-test" />
             <property name="hibernate.connection.username" value="sa" />
