@@ -1,7 +1,7 @@
 package edu.emory.cci.aiw.i2b2patientdataexport.i2b2;
 
-import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.comm.I2b2AuthMetadata;
+import edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2patientdataexport.xml.XmlUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -25,9 +25,9 @@ import java.util.Map;
 
 public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(I2b2UserAuthenticatorImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(I2b2UserAuthenticatorImpl.class);
 
-    private final Configuration config;
+	private final Configuration config;
 
 	/**
 	 * Creates a new I2b2UserAuthenticatorImpl instance based on the given XML.
@@ -43,16 +43,17 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 	 *
 	 * @return <code>true</code> if the user was authenticated,
 	 *         <code>false</code> otherwise
-	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException if an error occurred in the parsing of the incoming or
-	 *                                    response XML
+	 * @throws edu.emory.cci.aiw.i2b2patientdataexport.xml.I2b2PatientDataExportServiceXmlException
+	 *          if an error occurred in the parsing of the incoming or
+	 *          response XML
 	 */
 	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws
 			I2b2PatientDataExportServiceXmlException {
 		try {
-            LOGGER.debug("Attempting to authenticate i2b2 user: {} with password node: {} in domain {} for project {}",
-                    new String[] {
-                            authMetadata.getUsername(), authMetadata.getPasswordNode(),
-                            authMetadata.getDomain(), authMetadata.getProjectId()});
+			LOGGER.debug("Attempting to authenticate i2b2 user: {} with password node: {} in domain {} for project {}",
+					new String[]{
+							authMetadata.getUsername(), authMetadata.getPasswordNode(),
+							authMetadata.getDomain(), authMetadata.getProjectId()});
 
 			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "/i2b2_user_auth.ftl");
 			StringWriter writer = new StringWriter();
@@ -62,7 +63,7 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 			String messageId = I2b2CommUtil.generateMessageId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
-            params.put("redirectHost", I2b2CommUtil.I2B2_SERVICE_HOST_URL);
+			params.put("redirectHost", I2b2CommUtil.getI2b2ServiceHostUrl());
 			params.put("domain", authMetadata.getDomain());
 			params.put("username", authMetadata.getUsername());
 			params.put("passwordNode", authMetadata.getPasswordNode());
@@ -77,7 +78,7 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 					"//response_header/result_status/status/@type",
 					XPathConstants.STRING);
 
-            LOGGER.debug("Received authentication status: {}", status);
+			LOGGER.debug("Received authentication status: {}", status);
 
 			return "DONE".equalsIgnoreCase(status);
 		} catch (IOException e) {
