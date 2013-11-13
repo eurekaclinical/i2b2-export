@@ -24,8 +24,7 @@
     <persistence-unit name="i2b2-patient-data-export-persist"
                       transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <!-- <non-jta-data-source>java:comp/env/jdbc
-            /I2b2PatientDataExportService</non-jta-data-source> -->
+        <non-jta-data-source>java:comp/env/jdbc/I2b2PatientDataExportService</non-jta-data-source>
 
         <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept</class>
         <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration</class>
@@ -43,13 +42,13 @@
 
             <!-- for testing purposes ONLY -->
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-            <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
+            <!--<property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url"
                       value="jdbc:h2:file:/tmp/i2b2-patient-data-export-test" />
             <property name="hibernate.connection.username" value="sa" />
             <property name="hibernate.connection.password" value="" />
             <property name="hibernate.connection.pool_size" value="1" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />-->
         </properties>
     </persistence-unit>
 </persistence>
