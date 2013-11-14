@@ -50,3 +50,19 @@ For example, in Tomcat 7, this configuration goes in the context.xml:
             maxWait="-1"/>
 ...
 </Context>
+
+To set up the tables required for the i2b2 Patient Data Export Service to run,
+you should use one of the included SQL scripts found in etc/sql. Scripts are
+provided for several database systems:
+
+h2.sql -> H2
+mysql.sql -> MySQL 4.x and earlier
+mysql5.sql -> MySQL 5.x
+oracle8i.sql -> Oracle 8i
+oracle9i.sql -> Oracle 9i
+oracle10g.sql -> Oracle 10g
+postgresql.sql -> PostgreSQL
+sqlserver.sql -> SQL Server 2000 and 2005
+sqlserver2008.sql -> SQL Server 2008
+
+These files can be used as a reference for any other database system.
