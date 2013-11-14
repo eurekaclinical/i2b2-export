@@ -1,0 +1,48 @@
+i2b2 Patient Data Export plugin -- An i2b2 plugin for exporting patient data from i2b2 to CSV files
+Department of Biomedical Informatics, Emory University
+
+OVERVIEW
+
+This is the Patient Data Export plugin, an i2b2 plugin for exporting patient data from i2b2 to CSV files. Users can configure the format of the CSV file using the plugin's interface, as well as save, load, and delete configurations. More information on doing so is available in the plugin's Help tab. The plugin communicates with i2b2's cells via the i2b2 Patient Data Export Service, a RESTful web service that routes requests from the plugin to the appropriate i2b2 cell, as well as providing authentication.
+
+REQUIREMENTS
+
+The only requirement is an installation of i2b2 1.5. This plugin has only been tested to work with i2b2 1.5. It has NOT been tested with any later versions.
+
+INSTALLATION
+
+This plugin is installed using the standard i2b2 plugin installation procedure: https://community.i2b2.org/wiki/display/webclient/Web+Client+Plug-in+Developers+Guide.
+
+These instructions assume your i2b2 installation is rooted at /var/www/html/webclient. This location will be referred to as $I2B2_ROOT.
+
+1. Locate your i2b2 insallation's plugins directory: $I2B2_ROOT/js-i2b2/cells/plugins.
+
+2. Create a new directory inside the plugins directory. This directory will be referred to as $CUSTOM_PLUGIN_DIR.
+
+3. Copy the entire PatientDataExport into the directory created in the previous step.
+
+4. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of i2b2.PatientDataExort.SERVICE_URL variable to the location of the i2b2 Patient Data Export Service's REST methods that the plugin needs to call.
+
+5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of the i2b2.PatientDataExport.IMG_DIR variable to the path from the web server's document root to the plugin's images directory. Assuming the installation above, this would be: '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images'.
+
+6. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
+
+ { code: "PatientDataExport",
+    forceLoading: true,
+    forceConfigMsg: { params: [] },
+    forceDir: "cells/plugins/$CUSTOM_PLUGIN_DIR"
+ }
+
+ where $CUSTOM_PLUGIN_DIR is the name of the directory you created in step 2 (where the plugin was copied to).
+
+This completes the installation of the Patient Data Export plugin.
+
+CONTACTING US
+
+Please send an email to aiwhelp@emory.edu for support or questions.
+
+LICENSING
+
+i2b2 Patient Data Export plugin is freely available as open source software under the Apache License, Version 2.0. A copy of the license is in the LICENSE file provided in this distribution.
+
+i2b2 Patient Data Export plugin is Copyright (C) 2013 Emory University
