@@ -43,7 +43,7 @@ public class OutputConfiguration {
 	@Id
 	@SequenceGenerator(name = "OUTPUT_CONFIG_SEQ_GENERATOR",
 			sequenceName = "OUTPUT_CONFIG_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+	@GeneratedValue(strategy = GenerationType.AUTO,
 			generator = "OUTPUT_CONFIG_SEQ_GENERATOR")
 	private Long id;
 

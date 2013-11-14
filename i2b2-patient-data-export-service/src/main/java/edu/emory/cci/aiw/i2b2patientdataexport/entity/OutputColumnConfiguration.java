@@ -38,7 +38,7 @@ public class OutputColumnConfiguration implements
 	@Id
 	@SequenceGenerator(name = "OUTPUT_COL_CONFIG_SEQ_GENERATOR",
 			sequenceName = "OUTPUT_COL_CONFIG_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+	@GeneratedValue(strategy = GenerationType.AUTO,
 			generator = "OUTPUT_COL_CONFIG_SEQ_GENERATOR")
 	private Long id;
 

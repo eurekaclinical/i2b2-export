@@ -36,7 +36,7 @@ public final class I2b2Concept {
 	@Id
 	@SequenceGenerator(name = "I2B2_CONCEPT_SEQ_GENERATOR",
 			sequenceName = "I2B2_CONCEPT_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+	@GeneratedValue(strategy = GenerationType.AUTO,
 			generator = "I2B2_CONCEPT_SEQ_GENERATOR")
 	private Long id;
 
