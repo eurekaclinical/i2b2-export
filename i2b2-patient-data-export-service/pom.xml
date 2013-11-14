@@ -4,7 +4,7 @@
 	<groupId>edu.emory.cci</groupId>
 	<artifactId>i2b2-patient-data-export-service</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>i2b2 Patient Data Export Service</name>
 	<description>A service that provides REST endpoints for the i2b2 patient
 		data export plugin. It supports exporting an i2b2 patient set with a
@@ -17,7 +17,7 @@
 	</organization>
 
 	<build>
-		<finalName>I2b2PatientDataExportService</finalName>
+		<finalName>i2b2-patient-data-export-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -86,6 +86,25 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly/bin.xml</descriptor>
+						<descriptor>assembly/src.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -105,11 +124,15 @@
 			<roles>
 				<role>Software Developer</role>
 			</roles>
-			<organization>Center for Comprehensive Informatics, Emory
+			<organization>Department of Biomedical Informatics, Emory
 				University
 			</organization>
 		</developer>
 	</developers>
+
+	<properties>
+		<jersey-version>1.8</jersey-version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -227,9 +250,7 @@
 			<version>1.6.4</version>
 		</dependency>
 	</dependencies>
-	<properties>
-		<jersey-version>1.8</jersey-version>
-	</properties>
+
 	<repositories>
 		<repository>
 			<id>m2.java.net</id>
@@ -238,6 +259,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>m2.java.net</id>
