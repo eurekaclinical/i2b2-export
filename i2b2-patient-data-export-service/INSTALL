@@ -28,7 +28,11 @@ i2b2ServiceHostUrl - The URL where the core i2b2 services are hosted. The i2b2
 
 These properties are specified in a standard Java properties file. By default,
 the application looks for the file in /etc/i2b2export/i2b2export.properties.
-This location can be overridden using the Java system property: i2b2export.propertiesFile
+This location can be overridden using the Java system property:
+i2b2export.propertiesFile.
+
+An example properties file can be found in this distribution at
+etc/i2b2export.properties.
 
 DATABASE CONFIGURATION
 
