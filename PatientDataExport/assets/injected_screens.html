@@ -1,170 +1,174 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <body>
-    <div id="PatientDataExport-mainDiv">
-      <div id="PatientDataExport-TABS" class="yui-navset">
-	<ul class="yui-nav">
-	  <li id="PatientDataExport-TAB0" class="selected"><a href="#PatientDataExport-TAB0"><em>Configure/Export</em></a></li>
-	  <li id="PatientDataExport-TAB1"><a href="#PatientDataExport-TAB1"><em>Plugin Help</em></a></li>
-	</ul>
-	<div class="yui-content" id="PatientDataExport-CONTENT">
-	  <div>
-	    <div class="PatientDataExport-MainContent">
-	      <div class="PatientDataExport-MainContentPad">	
-		<div class="PatientDataExport-stepContent" style="margin-bottom: 20px;">
-		  <h1>Step 1: Configure Export Format</h1>
-		  <div>
-		    <label for="PatientDataExport-userConfigsList">Use an existing configuration:</label>
-		    <select id="PatientDataExport-userConfigsList" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;"></select>
-		    <div id="PatientDataExport-loadDelBtnPanel" style="display: inline;">
-		      <button id="PatientDataExport-loadConfigBtn" disabled>Load</button>
-		      <button id="PatientDataExport-deleteConfigBtn" disabled>Delete</button>
-		    </div>
-		  </div>
-		  <p>Or define a new configuration using the table below. You can also edit an existing configuration.</p>
-		  <table>
-		    <tr>
-		      <td>
-			<label for="PatientDataExport-rowdim" style="float: left;">Each row represents a </label>
-			<select id="PatientDataExport-rowdim" name="rowdim">
-			  <option value="patient">Patient</option>
-			  <option value="visit">Visit</option>
-			  <option value="provider">Provider</option>
-			</select>
-		      </td>
-		    </tr>
-		  </table>
-		  <table id="PatientDataExport-configTable">
-		    <tr id="PatientDataExport-headerRow">
-		      <th>&nbsp;</th>
-		      <th>&nbsp;</th>
-		      <th>Column Concept</th>
-		      <th>Column Name</th>
-		      <th>Display Format</th>
-		      <th>Options</th>
-		    </tr>
-		    <tr id="PatientDataExport-columnConfig-1">
-                      <td class="deleteBtn"><img id="PatientDataExport-deleteBtn-1" src="/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/blank16x16.png"></td>
-		      <td class="deleteBtn">
-			<div>
-			  <a href="#"><img id="PatientDataExport-upBtn-1" class="upBtn" src="/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-up.png"></a>
-			  <br>
-			  <a href="#"><img id="PatientDataExport-dnBtn-1" src="/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-down.png"></a>
+<body>
+	<div id="PatientDataExport-mainDiv">
+		<div id="PatientDataExport-TABS" class="yui-navset">
+			<ul class="yui-nav">
+				<li id="PatientDataExport-TAB0" class="selected"><a href="#PatientDataExport-TAB0"><em>Configure/Export</em></a></li>
+				<li id="PatientDataExport-TAB1"><a href="#PatientDataExport-TAB1"><em>Plugin Help</em></a></li>
+			</ul>
+			<div class="yui-content" id="PatientDataExport-CONTENT">
+				<div>
+					<div class="PatientDataExport-MainContent">
+						<div class="PatientDataExport-MainContentPad">	
+							<div class="PatientDataExport-stepContent" style="margin-bottom: 20px;">
+								<h1>Step 1: Configure Export Format</h1>
+								<div>
+									<label for="PatientDataExport-userConfigsList">Use an existing configuration:</label>
+									<select id="PatientDataExport-userConfigsList" name="loadConfig" size="3" style="vertical-align: middle; width: 200px;"></select>
+									<div id="PatientDataExport-loadDelBtnPanel" style="display: inline;">
+										<button id="PatientDataExport-loadConfigBtn" disabled>Load</button>
+										<button id="PatientDataExport-deleteConfigBtn" disabled>Delete</button>
+									</div>
+								</div>
+								<p>Or define a new configuration using the table below. You can also edit an existing configuration.</p>
+								<table>
+									<tr>
+										<td>
+											<label for="PatientDataExport-rowdim" style="float: left;">Each row represents a </label>
+											<select id="PatientDataExport-rowdim" name="rowdim">
+												<option value="patient">Patient</option>
+												<option value="visit">Visit</option>
+												<option value="provider">Provider</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+								<table id="PatientDataExport-configTable">
+									<tr id="PatientDataExport-headerRow">
+										<th>&nbsp;</th>
+										<th>&nbsp;</th>
+										<th>Column Concept</th>
+										<th>Column Name</th>
+										<th>Display Format</th>
+										<th>Options</th>
+									</tr>
+									<tr id="PatientDataExport-columnConfig-1">
+										<td class="deleteBtn"><img id="PatientDataExport-deleteBtn-1" src="/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/blank16x16.png"></td>
+										<td class="deleteBtn">
+											<div>
+												<a href="#"><img id="PatientDataExport-upBtn-1" class="upBtn" src="/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-up.png"></a>
+												<br>
+												<a href="#"><img id="PatientDataExport-dnBtn-1" src="/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/move-down.png"></a>
+											</div>
+										</td>
+										<td class="droptrgtCell">
+											<div class="droptrgtInit SDX-CONCPT" id="PatientDataExport-CONCPTDROP-1"><span class="droptrgtInit">Drop a concept here</span><div>
+											</td>
+											<td class="columnNameCell">
+												<input type="text" id="PatientDataExport-columnName-1" name="columnName-1" placeholder="Column name" size="16" maxLength="255" />
+											</td>
+											<td class="dispfmt">
+												<select id="PatientDataExport-dispfmt-select-1" name="dispfmt-1">
+													<option disabled selected>Select a concept first</option>
+												</select>
+											</td>
+											<td>
+												<div id="PatientDataExport-howmany-container-1" class="options" style="display: none;">
+													<label for="PatientDataExport-howmany-1" style="padding-left: 5px;">How many?</label>
+													<input id="PatientDataExport-howmany-1" type="text" name="howmany-1" value="1" size="4"/>
+												</div>
+												<div id="PatientDataExport-units-container-1" class="options" style="display: none;">
+													<input type="checkbox" name="units-1" id="PatientDataExport-units-1"/>
+													<label for="PatientDataExport-units-1">Include units</label>
+												</div>
+												<div id="PatientDataExport-timerange-container-1" class="options" style="display: none;">
+													<input type="checkbox" name="timerange-1" id="PatientDataExport-timerange-1"/>
+													<label for="PatientDataExport-timerange-1">Include time range</label>
+												</div>
+												<div id="PatientDataExport-aggregation-container-1" class="options" style="display: none;">
+													<input type="radio" name="aggregation-1" id="PatientDataExport-min-1" value="min" />
+													<label for="PatientDataExport-min-1" class="aggMargin">Min</label>
+													<input type="radio" name="aggregation-1" id="PatientDataExport-max-1" value="max" />
+													<label for="PatientDataExport-max-1" class="aggMargin">Max</label>
+
+													<input type="radio" name="aggregation-1" id="PatientDataExport-avg-1" value="avg" />
+													<label for="PatientDataExport-avg-1">Avg</label>
+												</div>
+											</td>
+										</tr>
+									</table>
+									<div id="PatientDataExport-addColumn"><button id="PatientDataExport-addColumnBtn">Add</button></div>
+									<div id="PatientDataExport-globalOptions" style="margin-top: 20px;">
+										<h2>Export Format Options</h2>
+										<label for="PatientDataExport-whitespace">Replace all whitespace in column names with:</label>
+										<input id="PatientDataExport-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
+										<br />
+										<label for="PatientDataExport-delimiter">Column separator:</label>
+										<!-- <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="1" value="," /> -->
+										<select id="PatientDataExport-delimiter" name="delimiter">
+											<option selected value="comma">, (comma)</option>
+											<option value="pipe">| (pipe)</option>
+											<option value="tab">Tab</option>
+										</select>
+										<br />
+										<label for="PatientDataExport-quote">Surround data with double quotes?</label>
+										<input id="PatientDataExport-quote" name="quote" type="checkbox" unchecked />
+										<br />
+										<label for="PatientDataExport-missing">Show missing values as:</label>
+										<input id="PatientDataExport-missing" name="missing" type="text" size="8" maxLength="32" value="(null)" />
+									</div>
+									<div id="PatientDataExport-preview" style="margin-top: 20px;">
+										<h2>Export Preview</h2>
+										<textarea readonly="true" spellcheck="false" id="PatientDataExport-previewText" style="width: 100%; overflow-x: scroll; overflow-y: scroll">Preview goes here</textarea>
+										<button id="PatientDataExport-previewBtn">Preview</button>
+									</div>
+									<div id="PatientDataExport-saveRunBtnPanel" style="padding: 6px;">
+										<h2>Save Configuration</h2>
+										<label for="PatientDataExport-saveas">Save output configuration as:</label>
+										<input id="PatientDataExport-saveas" type="text" name="saveas" placeholder="Name this configuration" maxLength="255" />
+										<button id="PatientDataExport-saveonly">Save</button>
+									</div>	
+								</div>
+								<div class="PatientDataExport-stepContent">
+									<h1>Step 2: Export a Patient Set</h1>
+									<div id="PatientDataExport-saveRunPanel">
+										<div style="margin-bottom: 10px;">
+											<span id="PatientDataExport-patientSetDropTrgtLbl">Patient Set:</span>
+											<span id="PatientDataExport-PRSDROP">Drop a Patient Set here</span>
+											<button id="PatientDataExport-export" disabled>Export Patient Set</button>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+				<div>
+					<div class="PatientDataExport-MainContent">
+						<div class="PatientDataExport-MainContentPad">
+							<h1>Patient Data Export</h1>
+							<hr size="1" noshade>
+							<h2>Help</h2>
+							<h3>Introduction</h3>
+							<p>This plugin allows you to export a patient set from i2b2 into a CSV file. You may onfigure the format of the CSV file in several different ways, then save your configuration for future use.</p>
+
+							<h3>Configuring an Export Format</h3>
+							<p>Before exporting patient data, you must define an export format. First, decide what each row in the CSV file will represent. You can choose from among i2b2's three data dimensions: patient, visit, and provider.</p>
+
+							<p>Next, choose the i2b2 concepts you want to see in the CSV file. Drag and drop concepts from the i2b2 term hierarchy into the concept drop area. The column name will automatically be populated with the name of the concept, but you may change it. You must next select a display format. There are three options: Existence, Value, or Aggregation. Existence will output "true" or "false" depending on whether the row entity (patient, visit, or provider) contains an instance of that concept. Value will display the actual value of the concept. Since some concepts may occur multiple times per row, you can specify how many values you want to see. You may also choose to include the start and end times of the value. Finally, Aggregation allows you to see the minimum, maximum, or average value of an observation. This format is only available for concepts that i2b2 recognizes as a measurement, so the metadata XML field of your data must be correctly filled in to enable aggregations.</p>
+
+							<p>New columns can be inserted by clicking the "Add" button, and they can be deleted by clicking the red button at the left of each column specification. Columns can be reordered by clicking the green up and down arrows.</p>
+
+							<p>The Export Format Options section lets you set file-wide options. You can choose to replace all of the whitespace in your column names with a string of characters. You can choose your column separator (comma, tab, or pipe). You can optionally surround all data with double quotes. And you can choose how to show missing values.</p>
+
+							<p>At any time, you can preview the header row of your CSV file by clicking the Preview button. It will apply all of the format options you have specified.</p>
+
+							<h3>Saving the Configuration</h3>
+							<p>You can choose to save the configuration you have defined by giving it a name and clicking Save. This will make this configuration available for your future use. Next time you open the plugin, it will appear with the name you gave it in the list of existing configurations at the top of the page. From there, you can load or delete the configuration.</p>
+
+							<p>It is not necessary to save the configuration. When you export the data set, the output will be formatted according to the configuration currently displayed.</p>
+
+							<h3>Exporting a Patient Set</h3>
+							<p>The final step is to export a patient set. First, select a patient set from the Previous Queries window. (When you initially run the query, you will have to make sure that you select the option to save the actual patient set, not just the patient count.) Drag the selected patient set into the patient set drop box. Then click the Export Patient Set button. The output will be formatted according to the configuration currently shown. In a few moments, a download dialog will appear asking you to save or open the generated CSV file.
+
+							<h2>About</h2>
+							<p>This plugin was developed at Emory University. Icons are from the Tango Icon Library.</p>
+							<p>Copyright (C) 2013 Emory University. All Rights Reserved.</p>
+						</div>
+					</div>
+				</div>
 			</div>
-		      </td>
-                      <td class="droptrgtCell">
-			<div class="droptrgtInit SDX-CONCPT" id="PatientDataExport-CONCPTDROP-1"><span class="droptrgtInit">Drop a concept here</span><div>
-		      </td>
-		      <td class="columnNameCell">
-			<input type="text" id="PatientDataExport-columnName-1" name="columnName-1" placeholder="Column name" size="16" maxLength="255" />
-		      </td>
-	              <td class="dispfmt">
-        	        <select id="PatientDataExport-dispfmt-select-1" name="dispfmt-1">
-			  <option disabled selected>Select a concept first</option>
-                        </select>
-                      </td>
-                      <td>
-                        <div id="PatientDataExport-howmany-container-1" class="options" style="display: none;">
-			  <label for="PatientDataExport-howmany-1" style="padding-left: 5px;">How many?</label>
-			  <input id="PatientDataExport-howmany-1" type="text" name="howmany-1" value="1" size="4"/>
-			</div>
-			<div id="PatientDataExport-units-container-1" class="options" style="display: none;">
-			  <input type="checkbox" name="units-1" id="PatientDataExport-units-1"/>
-			  <label for="PatientDataExport-units-1">Include units</label>
-			</div>
-			<div id="PatientDataExport-timerange-container-1" class="options" style="display: none;">
-			  <input type="checkbox" name="timerange-1" id="PatientDataExport-timerange-1"/>
-			  <label for="PatientDataExport-timerange-1">Include time range</label>
-			</div>
-			<div id="PatientDataExport-aggregation-container-1" class="options" style="display: none;">
-			  <input type="radio" name="aggregation-1" id="PatientDataExport-min-1" value="min" />
-			  <label for="PatientDataExport-min-1" class="aggMargin">Min</label>
-			  <input type="radio" name="aggregation-1" id="PatientDataExport-max-1" value="max" />
-			  <label for="PatientDataExport-max-1" class="aggMargin">Max</label>
-			  
-			  <input type="radio" name="aggregation-1" id="PatientDataExport-avg-1" value="avg" />
-			  <label for="PatientDataExport-avg-1">Avg</label>
-			</div>
-		      </td>
-                    </tr>
-                  </table>
-                  <div id="PatientDataExport-addColumn"><button id="PatientDataExport-addColumnBtn">Add</button></div>
-		  <div id="PatientDataExport-globalOptions" style="margin-top: 20px;">
-		    <h2>Export Format Options</h2>
-		    <label for="PatientDataExport-whitespace">Replace all whitespace in column names with:</label>
-		    <input id="PatientDataExport-whitespace" name="whitespace" type="text" size="2" maxLength="32" />
-		    <br />
-		    <label for="PatientDataExport-delimiter">Column separator:</label>
-		    <!-- <input id="PatientDataExport-delimiter" name="delimiter" type="text" size="2" maxLength="1" value="," /> -->
-			<select id="PatientDataExport-delimiter" name="delimiter">
-				<option selected value="comma">, (comma)</option>
-				<option value="pipe">| (pipe)</option>
-				<option value="tab">Tab</option>
-			</select>
-		    <br />
-			<label for="PatientDataExport-quote">Surround data with double quotes?</label>
-			<input id="PatientDataExport-quote" name="quote" type="checkbox" unchecked />
-			<br />
-		    <label for="PatientDataExport-missing">Show missing values as:</label>
-		    <input id="PatientDataExport-missing" name="missing" type="text" size="8" maxLength="32" value="(null)" />
-		  </div>
-		  <div id="PatientDataExport-preview" style="margin-top: 20px;">
-		    <h2>Export Preview</h2>
-		    <textarea readonly="true" spellcheck="false" id="PatientDataExport-previewText" style="width: 100%; overflow-x: scroll; overflow-y: scroll">Preview goes here</textarea>
-		    <button id="PatientDataExport-previewBtn">Preview</button>
-		  </div>
-		  <div id="PatientDataExport-saveRunBtnPanel" style="padding: 6px;">
-		    <h2>Save Configuration</h2>
-		    <label for="PatientDataExport-saveas">Save output configuration as:</label>
-		    <input id="PatientDataExport-saveas" type="text" name="saveas" placeholder="Name this configuration" maxLength="255" />
-		    <button id="PatientDataExport-saveonly">Save</button>
-		  </div>	
-		  </div>
-		  <div class="PatientDataExport-stepContent">
-		    <h1>Step 2: Export a Patient Set</h1>
-		    <div id="PatientDataExport-saveRunPanel">
-		      <div style="margin-bottom: 10px;">
-			<span id="PatientDataExport-patientSetDropTrgtLbl">Patient Set:</span>
-			<span id="PatientDataExport-PRSDROP">Drop a Patient Set here</span>
-			<button id="PatientDataExport-export" disabled>Export Patient Set</button>
-		      </div>
-		    </div>
-		  </div>
-		  </div>
 		</div>
-	      </div>
-	      <div>
-		<div class="PatientDataExport-MainContent">
-		  <div class="PatientDataExport-MainContentPad">
-		    <h1>Patient Data Export</h1>
-		    <hr size="1" noshade>
-		    <h2>Help</h2>
-                      <h3>Introduction</h3>
-		        <p>This plugin allows you to export a patient set from i2b2 into a CSV file. You may configure the format
-			 of the CSV file in several different ways, then save your configuration for future use.</p>
-                      <h3>Configuring an Export Format</h3>
-                        <p>Before exporting patient data, you must define an export format. First, decide what each row in the CSV file will represent. You can choose from among i2b2's three data dimensions: patient, visit, and provider.</p>
-
-                        <p>Next, choose the i2b2 concepts you want to see in the CSV file. Drag and drop concepts from the i2b2 term hierarchy into the concept drop area. The column name will automatically be populated with the name of the concept, but you may change it. You must next select a display format. There are three options: Existence, Value, or Aggregation. Existence will output "true" or "false" depending on whether the row entity (patient, visit, or provider) contains an instance of that concept. Value will display the actual value of the concept. Since some concepts may occur multiple times per row, you can specify how many values you want to see. You may also choose to include the start and end times of the value. Finally, Aggregation allows you to see the minimum, maximum, or average value of an observation. This format is only available for concepts that i2b2 recognizes as a measurement, so the metadata XML field of your data must be correctly filled in to enable aggregations.</p>
-
-                        <p>New columns can be inserted by clicking the "Add" button, and they can be deleted by clicking the red button at the left of each column specification. Columns can be reordered by clicking the green up and down arrows.</p>
-                       
-                        <p>The Export Format Options section lets you set file-wide options. You can choose to replace all of the whitespace in your column names with a string of characters. You can choose your column separator (comma, tab, or pipe). You can optionally surround all data with double quotes. And you can choose how to show missing values.</p>
-
-                        <p>At any time, you can preview the header row of your CSV file by clicking the Preview button. It will apply all of the format options you have specified.</p>
-                      <h3>Saving the Configuration</h3>
-                        <p>You can choose to save the configuration you have defined by giving it a name and clicking Save. This will make this configuration available for your future use. Next time you open the plugin, it will appear with the name you gave it in the list of existing configurations at the top of the page. From there, you can load or delete the configuration.</p>
-
-                        <p>It is not necessary to save the configuration. When you export the data set, the output will be formatted according to the configuration currently displayed.</p>
-                      <h3>Exporting a Patient Set</h3>
-                        <p>The final step is to export a patient set. First, select a patient set from the Previous Queries window. (When you initially run the query, you will have to make sure that you select the option to save the actual patient set, not just the patient count.) Drag the selected patient set into the patient set drop box. Then click the Export Patient Set button. The output will be formatted according to the configuration currently shown. In a few moments, a download dialog will appear asking you to save or open the generated CSV file. 
-		    <h2>About</h2>
-		      <p>This plugin was developed at Emory University. Icons are from the Tango Icon Library.</p>
-		  </div>
-		</div>
-	      </div>
-	    </div>
-	  </div>
 	</div>
-  </body>
+</body>
 </html>
