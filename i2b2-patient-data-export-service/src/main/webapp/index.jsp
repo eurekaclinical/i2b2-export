@@ -21,7 +21,7 @@
 
 <html>
 <body>
-<h2>I2b2PatientDataExportService</h2>
+<h2>i2b2-patient-data-export-service</h2>
 <b>i2b2 Proxy URL:</b> <%= I2b2CommUtil.getProxyUrl() %>
 <br/>
 <b>i2b2 Service Host URL:</b> <%= I2b2CommUtil.getI2b2ServiceHostUrl() %>
