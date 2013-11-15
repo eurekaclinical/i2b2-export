@@ -25,7 +25,9 @@ These instructions assume your i2b2 installation is rooted at /var/www/html/webc
 
 5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of the i2b2.PatientDataExport.IMG_DIR variable to the path from the web server's document root to the plugin's images directory. Assuming the installation above, this would be: '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images'.
 
-6. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
+6. IMPORTANT: In assets/injected_screens.html, find the <img> tags where the following files are used: blank16x16.png, move_up.png, and move_down.png. Change the 'src' attribute to have the same value as you used in the previous step.
+
+7. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
 
  { code: "PatientDataExport",
     forceLoading: true,
