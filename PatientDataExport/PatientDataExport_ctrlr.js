@@ -5,7 +5,7 @@
  * @author	Michel Mansour
  * @version 	1.0
  * ----------------------------------------------------------------------------------------
- * updated 2013-04-15: 	Initial Launch [Michel Mansour] 
+ * updated 2013-11-15: 	Initial Release [Michel Mansour] 
  */
 
 ////////////////////////////////////////////////////////////
