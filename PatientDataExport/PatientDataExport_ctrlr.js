@@ -839,7 +839,7 @@ i2b2.PatientDataExport.loadConfig = function() {
 				pleaseWait.hide();
 			},
 			onSuccess: function(response) {
-				$('PatientDataExport-previewText').clear();
+				$('PatientDataExport-previewText').textContent = '';
 				var config = response.responseJSON;
 				$('PatientDataExport-whitespace').value = config.whitespaceReplacement;
 				if (config.separator === '\t') {
