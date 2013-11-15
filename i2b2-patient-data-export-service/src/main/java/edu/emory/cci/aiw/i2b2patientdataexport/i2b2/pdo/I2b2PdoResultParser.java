@@ -245,7 +245,11 @@ public class I2b2PdoResultParser {
 		try {
 			return i2b2DateFormat.parse(dtTxt);
 		} catch (ParseException e) {
-			LOGGER.warn("Unable to parse date: {}", dtTxt);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Unable to parse date: {}", dtTxt);
+			} else if (null != dtTxt && !dtTxt.isEmpty()) {
+				LOGGER.warn("Unable to parse date: {}", dtTxt);
+			}
 			return null;
 		}
 	}
