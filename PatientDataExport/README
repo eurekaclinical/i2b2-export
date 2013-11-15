@@ -30,23 +30,27 @@ This location will be referred to as $I2B2_ROOT.
 2. Create a new directory inside the plugins directory. This directory will be
 referred to as $CUSTOM_PLUGIN_DIR.
 
-3. Copy the entire PatientDataExport into the directory created in the previous
+3. In cell_config_data.js, find the 'config' map and the 'category' key. Change
+the last value of the 'category' array to be $CUSTOM_PLUGIN_DIR. The plugin will
+show up under this category in the i2b2 plugin list.
+
+4. Copy the entire PatientDataExport into the directory created in the previous
 step.
 
-4. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of i2b2.PatientDataExort.SERVICE_URL
+5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of i2b2.PatientDataExort.SERVICE_URL
 variable to the location of the i2b2 Patient Data Export Service's REST methods
 that the plugin needs to call.
 
-5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of the i2b2.PatientDataExport.IMG_DIR
+6. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of the i2b2.PatientDataExport.IMG_DIR
 variable to the path from the web server's document root to the plugin's images
 directory. Assuming the installation above, this would be:
 '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images'.
 
-6. IMPORTANT: In assets/injected_screens.html, find the <img> tags where the
+7. IMPORTANT: In assets/injected_screens.html, find the <img> tags where the
 following files are used: blank16x16.png, move_up.png, and move_down.png. Change
 the 'src' attribute to have the same value as you used in the previous step.
 
-7. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of
+8. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of
 plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
 
  { code: "PatientDataExport",
@@ -56,7 +60,8 @@ plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
  }
 
  where $CUSTOM_PLUGIN_DIR is the name of the directory you created in step 2
-(where the plugin was copied to).
+(where the plugin was copied to). Where you place this block determines the
+order in which the plugin is displayed in the i2b2 plugin list.
 
 This completes the installation of the Patient Data Export plugin.
 
