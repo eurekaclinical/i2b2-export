@@ -84,8 +84,16 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 					result.add(obx.getUnits());
 				}
 				if (getColumnConfig().getIncludeTimeRange()) {
-					result.add(i2b2DateFormat.format(obx.getStartDate()));
-					result.add(i2b2DateFormat.format(obx.getEndDate()));
+					if (null != obx.getStartDate()) {
+						result.add(i2b2DateFormat.format(obx.getStartDate()));
+					} else {
+						result.add("");
+					}
+					if (null != obx.getEndDate()) {
+						result.add(i2b2DateFormat.format(obx.getEndDate()));
+					} else {
+						result.add("");
+					}
 				}
 			}
 		}

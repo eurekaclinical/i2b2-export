@@ -48,8 +48,16 @@ final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 
 		result.add(visit.getPatient().getPatientId());
 		result.add(visit.getEventId());
-		result.add(fmt.format(visit.getStartDate()));
-		result.add(fmt.format(visit.getEndDate()));
+		if (null != visit.getStartDate()) {
+			result.add(fmt.format(visit.getStartDate()));
+		} else {
+			result.add("");
+		}
+		if (null != visit.getEndDate()) {
+			result.add(fmt.format(visit.getEndDate()));
+		} else {
+			result.add("");
+		}
 
 		return result;
 	}
