@@ -1,0 +1,179 @@
+/*** CSS for main plugin wrapper ***/
+
+DIV#PatientDataExport-mainDiv {
+	padding: 0px;
+}
+
+
+
+/*** CSS for tab background ***/
+
+DIV#PatientDataExport-TABS DIV.yui-content {
+	background: #FFF;
+}
+
+DIV#PatientDataExport-TABS DIV.PatientDataExport-MainContent {
+    background:#FFF;
+    border:solid #63758C;
+    border-width:1px 0;
+    width: 100%;
+    height:100%;
+    overflow-y: scroll;
+}
+DIV#PatientDataExport-TABS DIV.PatientDataExport-MainContentPad {
+    padding:10px 10px;
+}
+
+
+
+/*** CSS for the Configure/Export tab ***/
+DIV#PatientDataExport-mainDiv DIV.PatientDataExport-stepContent {
+	border: 1px solid #42558c;
+	padding: 6px;
+	background-color: #dbe8ff;
+}
+
+DIV#PatientDataExport-mainDiv LABEL {
+	color: #666666;
+	font-weight: bold;
+	padding: 1px 0;
+	vertical-align: middle;
+	width: auto;
+}
+DIV#PatientDataExport-mainDiv SELECT {
+	width: auto;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-rowdim {
+	width: auto;
+	float: left;
+	margin-left: 5px;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable TR {
+	height: 50px;
+	border-top: 1px double black;
+	border-bottom: 1px double black;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable #PatientDataExport-headerRow {
+	height: auto;
+	border: none;
+}
+DIV#PatientDataExport-mainDiv TD.deleteBtn {
+	width: 40px;
+}
+DIV#PatientDataExport-mainDiv IMG.upBtn {
+	margin-bottom: 5px;
+}
+DIV#PatientDataExport-mainDiv TD.dispfmt {
+	padding-left: 10px;
+	width: 150px;
+}
+DIV#PatientDataExport-mainDiv TD.columnNameCell {
+	width: 150px;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable TD.lbl {
+	color: #666666;
+	font-weight: bold;
+	padding: 6px 0;
+	vertical-align: middle;
+	width: auto;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable DIV.options {
+	padding-left: 50px;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-configTable LABEL.aggMargin {
+	margin-right: 10px;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-patientSetDropTrgtLbl {
+	padding: 6px;
+	width:80px;
+	font-weight:bold;
+	color:#666;
+	vertical-align: middle;
+}
+DIV#PatientDataExport-mainDiv DIV.droptrgtInit {
+	padding: 10px;
+	background: #DEEBEF;
+	text-align:center;
+	border: 1px solid #63758C;
+	width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+DIV#PatientDataExport-mainDiv TD SPAN.droptrgtInit {
+	border: 1px dashed gray;
+	color: gray;
+	font-weight: bold;
+	padding: 3px 85px 3px 95px;
+}
+DIV#PatientDataExport-mainDiv TD.droptrgtCell {
+	width: 300px;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-globalOptions LABEL {
+	padding-left: 6px;
+}
+DIV#PatientDataExport-mainDiv DIV.droptrgt {
+	padding: 10px;
+	background: #DEEBEF;
+	font-weight: bold;
+	text-align:left;
+	border: 1px solid #63758C;
+	width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+DIV#PatientDataExport-mainDiv #PatientDataExport-PRSDROP {
+	padding: 10px;
+	background: #DEEBEF;
+	font-weight: bold;
+	text-align:left;
+	border: 1px solid #63758C;
+	width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	vertical-align: middle;
+	display: inline-block;
+}
+DIV#PatientDataExport-mainDiv droptrgt .concptItem {
+	padding: 5px 10px;
+	overflow:hidden;
+	white-space:nowrap;
+	display:block;
+	color:#000;
+	text-decoration:none;
+}
+DIV#PatientDataExport-mainDiv droptrgt .concptItem:hover {
+	background-color:#FCC;
+}
+DIV#PatientDataExport-mainDiv droptrgt .concptDiv {
+	height:1px;
+	overflow:hidden;
+	background-color:#63758C;
+}
+DIV#PatientDataExport-mainDiv .pleaseWait {
+	background-image: url("images/wait.gif");
+	background-repeat: no-repeat;
+}
+
+/*** CSS for the Plugin Help tab ***/
+
+DIV#PatientDataExport-TABS H1 {
+	margin:0 0 10px 0;
+	font-size:16px;
+	color:#42558C;
+	font-weight:bold;
+}
+DIV#PatientDataExport-TABS H2 {
+	margin:10px 0 10px 0;
+	font-size:13px;
+	color:#42558C;
+	font-weight:bold;
+}
+DIV#PatientDataExport-TABS HR {
+	margin:0;
+}
