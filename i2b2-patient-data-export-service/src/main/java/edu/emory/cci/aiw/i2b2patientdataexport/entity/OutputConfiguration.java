@@ -20,6 +20,8 @@ package edu.emory.cci.aiw.i2b2patientdataexport.entity;
  * #L%
  */
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,8 +38,8 @@ import java.util.List;
  *
  */
 @Entity
-@Table(name = "output_configurations", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"username", "name"})})
+@Table(name = "output_configs", uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"username", "config_name"})})
 public class OutputConfiguration {
 
 	@Id
@@ -45,30 +47,35 @@ public class OutputConfiguration {
 			sequenceName = "OUTPUT_CONFIG_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.AUTO,
 			generator = "OUTPUT_CONFIG_SEQ_GENERATOR")
+	@Column(name = "config_id")
 	private Long id;
 
 	@Column(nullable = false)
 	private String username;
 
+	@Column(name = "config_name")
 	private String name;
 
 	public static enum RowDimension {
 		PATIENT, VISIT, PROVIDER;
 	}
 
-	@Column(nullable = false)
+	@Column(name = "row_dimension", nullable = false)
 	private RowDimension rowDimension;
 
-	@Column(length = 1)
+	@Column(name = "separator", length = 1)
 	private String separator;
 
-	@Column(length = 1)
+	@Column(name = "quote_char", length = 1)
 	private String quoteChar;
 
+	@Column(name = "whitespace_replacement")
 	private String whitespaceReplacement;
+
+	@Column(name = "missing_value")
 	private String missingValue;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "outputConfig")
 	private List<OutputColumnConfiguration> columnConfigs;
 
 	public Long getId() {
@@ -135,6 +142,7 @@ public class OutputConfiguration {
 		this.missingValue = missingValue;
 	}
 
+	@JsonManagedReference
 	public List<OutputColumnConfiguration> getColumnConfigs() {
 		return columnConfigs;
 	}

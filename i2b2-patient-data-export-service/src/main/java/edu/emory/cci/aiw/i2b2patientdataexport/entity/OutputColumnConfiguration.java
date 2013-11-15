@@ -20,18 +20,22 @@ package edu.emory.cci.aiw.i2b2patientdataexport.entity;
  * #L%
  */
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "output_column_configurations")
+@Table(name = "column_configs")
 public class OutputColumnConfiguration implements
 		Comparable<OutputColumnConfiguration> {
 
@@ -40,36 +44,57 @@ public class OutputColumnConfiguration implements
 			sequenceName = "OUTPUT_COL_CONFIG_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.AUTO,
 			generator = "OUTPUT_COL_CONFIG_SEQ_GENERATOR")
+	@Column(name = "column_config_id")
 	private Long id;
 
-	@Column(nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "config_id")
+	private OutputConfiguration outputConfig;
+
+	@Column(name = "column_order", nullable = false)
 	private Integer columnOrder;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "i2b2_concept_id")
 	private I2b2Concept i2b2Concept;
 
-	@Column(nullable = false)
+	@Column(name = "column_name", nullable = false)
 	private String columnName;
 
 	public static enum DisplayFormat {
 		EXISTENCE, VALUE, AGGREGATION;
 	}
 
-	@Column(nullable = false)
+	@Column(name = "display_format", nullable = false)
 	private DisplayFormat displayFormat;
 
+	@Column(name = "how_many")
 	private Integer howMany;
+
+	@Column(name = "include_units")
 	private Boolean includeUnits;
+
+	@Column(name = "include_time_range")
 	private Boolean includeTimeRange;
 
 	public static enum AggregationType {
 		MIN, MAX, AVG;
 	}
 
+	@Column(name = "aggregation")
 	private AggregationType aggregation;
 
 	public Long getId() {
 		return id;
+	}
+
+	@JsonBackReference
+	public OutputConfiguration getOutputConfig() {
+		return outputConfig;
+	}
+
+	public void setOutputConfig(OutputConfiguration outputConfig) {
+		this.outputConfig = outputConfig;
 	}
 
 	public Integer getColumnOrder() {

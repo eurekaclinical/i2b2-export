@@ -38,32 +38,46 @@ public final class I2b2Concept {
 			sequenceName = "I2B2_CONCEPT_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.AUTO,
 			generator = "I2B2_CONCEPT_SEQ_GENERATOR")
+	@Column(name = "concept_id")
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(name = "i2b2_key", nullable = false)
 	private String i2b2Key;
 
-	@Column(nullable = false)
+	@Column(name = "c_hlevel", nullable = false)
 	private Integer level;
 
-	@Column(nullable = false)
+	@Column(name = "c_dimcode", nullable = false)
 	private String dimensionCode;
 
-	@Column(nullable = false)
+	@Column(name = "c_tablename", nullable = false)
 	private String tableName;
 
-	@Column(nullable = false)
+	@Column(name = "c_synonym_cd", nullable = false)
 	private String isSynonym;
 
+	@Column(name = "c_name")
 	private String name;
+
+	@Column(name = "c_columnname")
 	private String columnName;
+
+	@Column(name = "c_operator")
 	private String operator;
+
+	@Column(name = "c_displayname")
 	private String displayName;
+
+	@Column(name = "c_tooltip")
 	private String tooltip;
+
+	@Column(name = "c_children")
 	private String hasChildren;
+
+	@Column(name = "c_icd9")
 	private String icd9;
 
-	@Column(columnDefinition = "CLOB")
+	@Column(name = "c_xml_orig", columnDefinition = "CLOB")
 	@Lob
 	private String xmlOrig;
 
