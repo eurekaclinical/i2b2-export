@@ -120,6 +120,9 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 	@Transactional
 	public void create(OutputConfiguration config) {
 		LOGGER.debug("Creating configuration for user {} and with name {}", config.getUsername(), config.getName());
+		for (OutputColumnConfiguration colConfig : config.getColumnConfigs()) {
+			colConfig.setOutputConfig(config);
+		}
 		this.getEntityManager().persist(config);
 		LOGGER.debug("Created configuration with id: {}", config.getId());
 	}
@@ -137,6 +140,7 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 		oldConfig.getColumnConfigs().clear();
 		for (OutputColumnConfiguration colConfig : newConfig.getColumnConfigs()) {
 			oldConfig.getColumnConfigs().add(colConfig);
+			colConfig.setOutputConfig(oldConfig);
 		}
 		LOGGER.debug("Configuration updated");
 	}
