@@ -60,6 +60,8 @@ public class AggregationColumnOutputFormatterTest {
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
+		colConfig.setOutputConfig(config);
+
 		formatOptions = new FormatOptions(config);
 
 		Patient p = new Patient.Builder("1").build();

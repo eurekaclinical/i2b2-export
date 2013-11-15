@@ -216,6 +216,7 @@ public class DataOutputFormatterTest {
 		data = new I2b2PdoResults(patients, visits, providers, observations);
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
+		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
 		I2b2Concept concept1 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
@@ -225,6 +226,7 @@ public class DataOutputFormatterTest {
 		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
 
 		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
+		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
 		I2b2Concept concept2 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
@@ -237,6 +239,7 @@ public class DataOutputFormatterTest {
 		colConfig2.setIncludeTimeRange(false);
 
 		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
+		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
 		I2b2Concept concept3 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
@@ -248,6 +251,7 @@ public class DataOutputFormatterTest {
 		colConfig3.setIncludeUnits(true);
 
 		OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
+		colConfig4.setOutputConfig(config);
 		colConfig4.setColumnOrder(4);
 		I2b2Concept concept4 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept4", 2, "concept_dimension",
@@ -260,6 +264,7 @@ public class DataOutputFormatterTest {
 		colConfig4.setHowMany(2);
 
 		OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
+		colConfig5.setOutputConfig(config);
 		colConfig5.setColumnOrder(5);
 		I2b2Concept concept5 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept5", 2, "concept_dimension",

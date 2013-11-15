@@ -46,11 +46,13 @@ public class HeaderRowOutputFormatterTest {
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
+		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
 		colConfig1.setColumnName("Concept FOO");
 		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
 
 		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
+		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
 		colConfig2.setColumnName("Concept BAR 1");
 		colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
@@ -59,6 +61,7 @@ public class HeaderRowOutputFormatterTest {
 		colConfig2.setIncludeUnits(true);
 
 		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
+		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
 		colConfig3.setColumnName("ConceptAgg");
 		colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
@@ -66,6 +69,7 @@ public class HeaderRowOutputFormatterTest {
 		colConfig3.setIncludeUnits(true);
 
 		OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
+		colConfig4.setOutputConfig(config);
 		colConfig4.setColumnOrder(4);
 		colConfig4.setColumnName("Concept BAZ");
 		colConfig4.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
@@ -74,6 +78,7 @@ public class HeaderRowOutputFormatterTest {
 		colConfig4.setIncludeTimeRange(false);
 
 		OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
+		colConfig5.setOutputConfig(config);
 		colConfig5.setColumnOrder(5);
 		colConfig5.setColumnName("ConceptAgg2");
 		colConfig5.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
@@ -81,6 +86,7 @@ public class HeaderRowOutputFormatterTest {
 		colConfig5.setIncludeUnits(false);
 
 		OutputColumnConfiguration colConfig6 = new OutputColumnConfiguration();
+		colConfig6.setOutputConfig(config);
 		colConfig6.setColumnOrder(6);
 		colConfig6.setColumnName("Concept QUUX");
 		colConfig6.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);

@@ -117,6 +117,7 @@ public class PatientDataRowOutputFormatterTest {
 		patient.addEvent(e3);
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
+		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
 		I2b2Concept concept1 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
@@ -127,6 +128,7 @@ public class PatientDataRowOutputFormatterTest {
 		config.getColumnConfigs().add(colConfig1);
 
 		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
+		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
 		I2b2Concept concept2 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
@@ -140,6 +142,7 @@ public class PatientDataRowOutputFormatterTest {
 		config.getColumnConfigs().add(colConfig2);
 
 		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
+		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
 		I2b2Concept concept3 = new I2b2Concept
 				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
