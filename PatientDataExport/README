@@ -1,4 +1,5 @@
-i2b2 Patient Data Export plugin, 1.0 -- An i2b2 plugin for exporting patient data from i2b2 to CSV files
+i2b2 Patient Data Export plugin, ${project.version} -- An i2b2 plugin for exporting
+patient data from i2b2 to CSV files
 Department of Biomedical Informatics, Emory University
 
 OVERVIEW
@@ -34,8 +35,8 @@ referred to as $CUSTOM_PLUGIN_DIR.
 the last value of the 'category' array to be $CUSTOM_PLUGIN_DIR. The plugin will
 show up under this category in the i2b2 plugin list.
 
-4. Copy the entire PatientDataExport into the directory created in the previous
-step.
+4. Copy the entire PatientDataExport directory into the directory created in the
+previous step.
 
 5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of i2b2.PatientDataExort.SERVICE_URL
 variable to the location of the i2b2 Patient Data Export Service's REST methods
