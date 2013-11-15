@@ -1,12 +1,13 @@
-i2b2 Patient Data Export Service -- A Web Service for Exporting i2b2 Patient Data.
+i2b2 Patient Data Export Service, ${project.version} -- A Web Service for Exporting i2b2 Patient Data.
 Department of Biomedical Informatics, Emory University
 
 OVERVIEW
 
 This is the i2b2 Patient Data Export Service, a RESTful web service providing
 the backend functionality to the Patient Data Export i2b2 plugin. The plugin
-calls this service to manage configurations and export patient data. This service
+calls this service to manage configurations and export data from i2b2. This service
 communicates with your i2b2 installation to authenticate users and retrieve PDO
+data.
 
 REQUIREMENTS
 
