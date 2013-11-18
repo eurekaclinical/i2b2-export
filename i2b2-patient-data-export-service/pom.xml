@@ -1,20 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>edu.emory.cci</groupId>
-	<artifactId>i2b2-patient-data-export-service</artifactId>
+
+	<parent>
+		<groupId>edu.emory.cci</groupId>
+		<artifactId>i2b2-export</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>i2b2-export-service</artifactId>
 	<packaging>war</packaging>
-	<version>1.0</version>
-	<name>i2b2 Patient Data Export Service</name>
-	<description>A service that provides REST endpoints for the i2b2 patient
-		data export plugin. It supports exporting an i2b2 patient set with a
+
+	<name>i2b2 Export Service</name>
+	<description>A service that provides REST endpoints for the i2b2 data export
+		plugin. It supports exporting an i2b2 patient set with a
 		user-defined configuration, as well as saving configurations.
 	</description>
-	<inceptionYear>2013</inceptionYear>
-	<organization>
-		<name>Emory University</name>
-		<url>http://www.emory.edu</url>
-	</organization>
+
 
 	<build>
 		<finalName>i2b2-patient-data-export-service</finalName>
@@ -28,11 +30,6 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
