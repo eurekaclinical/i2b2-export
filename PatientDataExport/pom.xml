@@ -6,12 +6,16 @@
   
 	<modelVersion>4.0.0</modelVersion>
   
-	<groupId>edu.emory.cci.aiw</groupId>
-	<artifactId>PatientDataExport</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<parent>
+		<groupId>edu.emory.cci.aiw</groupId>
+		<artifactId>i2b2-export</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>i2b2-export-plugin</artifactId>
 	<packaging>pom</packaging>
   
-	<name>Patient Data Export Plugin</name>
+	<name>i2b2 Export Plugin</name>
 	<description>An i2b2 plugin for exporting patient data to CSV files.</description>
   
 	<properties>
