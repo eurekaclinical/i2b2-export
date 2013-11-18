@@ -22,20 +22,17 @@
 -- Database setup for Oracle 10g
 ---
 
+drop table column_configs cascade constraints;
 drop table i2b2_concepts cascade constraints;
-drop table output_column_configurations cascade constraints;
-drop table output_configurations cascade constraints;
-drop table output_configurations_output_column_configurations cascade constraints;
+drop table output_configs cascade constraints;
 drop sequence I2B2_CONCEPT_SEQ;
 drop sequence OUTPUT_COL_CONFIG_SEQ;
 drop sequence OUTPUT_CONFIG_SEQ;
-create table i2b2_concepts (id number(19,0) not null, columnName varchar2(255 char), dimensionCode varchar2(255 char) not null, displayName varchar2(255 char), hasChildren varchar2(255 char), i2b2Key varchar2(255 char) not null, icd9 varchar2(255 char), isSynonym varchar2(255 char) not null, level number(10,0) not null, name varchar2(255 char), operator varchar2(255 char), tableName varchar2(255 char) not null, tooltip varchar2(255 char), xmlOrig CLOB, primary key (id));
-create table output_column_configurations (id number(19,0) not null, aggregation number(10,0), columnName varchar2(255 char) not null, columnOrder number(10,0) not null, displayFormat number(10,0) not null, howMany number(10,0), includeTimeRange number(1,0), includeUnits number(1,0), i2b2Concept_id number(19,0), primary key (id));
-create table output_configurations (id number(19,0) not null, missingValue varchar2(255 char), name varchar2(255 char), quoteChar varchar2(1 char), rowDimension number(10,0) not null, separator varchar2(1 char), username varchar2(255 char) not null, whitespaceReplacement varchar2(255 char), primary key (id), unique (username, name));
-create table output_configurations_output_column_configurations (output_configurations_id number(19,0) not null, columnConfigs_id number(19,0) not null, unique (columnConfigs_id));
-alter table output_column_configurations add constraint FK78A321884808884F foreign key (i2b2Concept_id) references i2b2_concepts;
-alter table output_configurations_output_column_configurations add constraint FK17265E0C6501D153 foreign key (columnConfigs_id) references output_column_configurations;
-alter table output_configurations_output_column_configurations add constraint FK17265E0C5DF9429 foreign key (output_configurations_id) references output_configurations;
+create table column_configs (column_config_id number(19,0) not null, aggregation number(10,0), column_name varchar2(255 char) not null, column_order number(10,0) not null, display_format number(10,0) not null, how_many number(10,0), include_time_range number(1,0), include_units number(1,0), i2b2_concept_id number(19,0), config_id number(19,0), primary key (column_config_id));
+create table i2b2_concepts (concept_id number(19,0) not null, c_columnname varchar2(255 char), c_dimcode varchar2(255 char) not null, c_displayname varchar2(255 char), c_children varchar2(255 char), i2b2_key varchar2(255 char) not null, c_icd9 varchar2(255 char), c_synonym_cd varchar2(255 char) not null, c_hlevel number(10,0) not null, c_name varchar2(255 char), c_operator varchar2(255 char), c_tablename varchar2(255 char) not null, c_tooltip varchar2(255 char), c_xml_orig CLOB, primary key (concept_id));
+create table output_configs (config_id number(19,0) not null, missing_value varchar2(255 char), config_name varchar2(255 char), quote_char varchar2(1 char), row_dimension number(10,0) not null, separator varchar2(1 char), username varchar2(255 char) not null, whitespace_replacement varchar2(255 char), primary key (config_id), unique (username, config_name));
+alter table column_configs add constraint FK8CF9A9881EA8BCC2 foreign key (config_id) references output_configs;
+alter table column_configs add constraint FK8CF9A988FD66E1C foreign key (i2b2_concept_id) references i2b2_concepts;
 create sequence I2B2_CONCEPT_SEQ;
 create sequence OUTPUT_COL_CONFIG_SEQ;
 create sequence OUTPUT_CONFIG_SEQ;
