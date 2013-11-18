@@ -11,8 +11,8 @@
 	<version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-	<name>i2b2 Export Cell</name>
-	<description>An i2b2 plugin and service for exporting patient data to CSV files. This project includes both the web client plugin that the user interacts with and the Java service that manages users' export configurations and communicates with i2b2 to retrieve data.</description>
+	<name>i2b2 Data Export Plugin</name>
+	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. This project includes both the web client plugin that the user interacts with and the Java service that manages users' export configurations and communicates with i2b2 to retrieve data.</description>
 	<inceptionYear>2013</inceptionYear>
 	<organization>
 		<name>Emory University</name>
@@ -28,6 +28,33 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<scm>
+		<developerConnection>scm:svn:https://scm.cci.emory.edu/svn/aiw/trunk/i2b2-export</developerConnection>
+		<url>https://scm.cci.emory.edu/svn/aiw/trunk/i2b2-export</url>
+	</scm>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.cci.emory.edu:8080/jira/secure/Dashboard.jspa</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<site>
+			<id>aiw.sourceforge.net</id>
+			<url>scp://shell.sourceforge.net/home/project-web/aiw/htdocs/dev/i2b2-export-${project.version}</url>
+		</site>
+		<repository>
+			<id>aiw</id>
+			<name>AIW Repo</name>
+			<url>http://maven.cci.emory.edu/nexus/content/repositories/aiw/</url>
+		</repository>
+		<snapshotRepository>
+			<id>aiw-snapshots</id>
+			<name>AIW Snapshots Repo</name>
+			<url>http://maven.cci.emory.edu/nexus/content/repositories/aiw-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<build>
 		<pluginManagement>
