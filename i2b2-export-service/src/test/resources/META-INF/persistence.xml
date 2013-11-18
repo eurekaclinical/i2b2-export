@@ -2,15 +2,15 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
         version="2.0">
-    <persistence-unit name="i2b2-patient-data-export-persist"
+    <persistence-unit name="i2b2-export-persist"
                       transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <!-- <non-jta-data-source>java:comp/env/jdbc
             /I2b2PatientDataExportService</non-jta-data-source> -->
 
-        <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.I2b2Concept</class>
-        <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputColumnConfiguration</class>
-        <class>edu.emory.cci.aiw.i2b2patientdataexport.entity.OutputConfiguration</class>
+        <class>edu.emory.cci.aiw.i2b2export.entity.I2b2Concept</class>
+        <class>edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration</class>
+        <class>edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration</class>
 
         <properties>
             <!-- Disable the second-level cache -->

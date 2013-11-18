@@ -20,7 +20,7 @@
 <jboss-app>
 
     <loader-repository>
-        edu.emory.cci.aiw.i2b2patientdataexport:loader=I2b2PatientDataExportClassLoader
+        edu.emory.cci.aiw.i2b2export:loader=I2b2PatientDataExportClassLoader
         <loader-repository-config>
             java2ParentDelegation=false
         </loader-repository-config>
