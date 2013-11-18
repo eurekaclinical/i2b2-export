@@ -14,6 +14,7 @@
 	<packaging>pom</packaging>
 
 	<name>i2b2 Export Plugin Package</name>
+	<description>A project to package up for distribution both pieces of the i2b2 data export plugin: the Javascript front-end and the corresponding Java web service.</description>
 
 	<dependencies>
 		<dependency>
