@@ -5,34 +5,45 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-        <groupId>edu.emory.cci.aiw</groupId>
-        <artifactId>i2b2-export</artifactId>
-        <version>1.0-SNAPSHOT</version>
+		<groupId>edu.emory.cci.aiw</groupId>
+		<artifactId>i2b2-export</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>i2b2-export-package</artifactId>
-
 	<packaging>pom</packaging>
 
 	<name>i2b2 Export Plugin Package</name>
 
-	<!-- NOTE: These dependency declarations are only required to sort this project to the 
-       end of the line in the multimodule build. 
-       
-       Since we only include the child1 module in our assembly, we only need to ensure this
-       distribution project builds AFTER that one...
-	-->
 	<dependencies>
 		<dependency>
 			<groupId>edu.emory.cci.aiw</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
 			<version>1.0-SNAPSHOT</version>
+			<classifier>plugin</classifier>
+			<type>zip</type>
 		</dependency>
-        <dependency>
-            <groupId>edu.emory.cci.aiw</groupId>
-            <artifactId>i2b2-export-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>edu.emory.cci.aiw</groupId>
+			<artifactId>i2b2-export-service</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>bin</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>edu.emory.cci.aiw</groupId>
+			<artifactId>i2b2-export-plugin</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>plugin</classifier>
+			<type>tar.gz</type>
+		</dependency>
+		<dependency>
+			<groupId>edu.emory.cci.aiw</groupId>
+			<artifactId>i2b2-export-service</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>bin</classifier>
+			<type>tar.gz</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -41,14 +52,14 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>distro-assembly</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>src/assembly/bin.xml</descriptor>
+								<descriptor>assembly/bin-zip.xml</descriptor>
+								<descriptor>assembly/bin-tar.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
