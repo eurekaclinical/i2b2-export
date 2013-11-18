@@ -35,7 +35,7 @@ public class AppTestModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		install(new JpaPersistModule("i2b2-patient-data-export-persist"));
+		install(new JpaPersistModule("i2b2-export-persist"));
 		bind(OutputConfigurationDao.class).to(MockOutputConfigurationDao.class);
 		bind(OutputColumnConfigurationDao.class).to(MockOutputColumnConfigurationDao.class);
 		bind(I2b2UserAuthenticator.class).to(MockI2b2UserAuthenticator.class);

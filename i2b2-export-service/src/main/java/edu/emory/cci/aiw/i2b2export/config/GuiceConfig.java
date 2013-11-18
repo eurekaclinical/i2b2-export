@@ -30,7 +30,7 @@ public final class GuiceConfig extends GuiceServletContextListener {
 	@Override
 	protected Injector getInjector() {
 		return Guice.createInjector(new JpaPersistModule
-				("i2b2-patient-data-export-persist"), new ServletConfigModule(),
+				("i2b2-export-persist"), new ServletConfigModule(),
 				new GuiceConfigModule());
 	}
 }
