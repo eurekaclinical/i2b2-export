@@ -21,7 +21,7 @@ package edu.emory.cci.aiw.i2b2export.i2b2;
  */
 
 import edu.emory.cci.aiw.i2b2export.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2export.xml.XmlUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -43,6 +43,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of the i2b2 user authentication interface. It authenticates i2b2 users by filling out the i2b2 user
+ * authentication XML template and sending it to the i2b2 service defined in the application's properties file (see:
+ * {@link I2b2CommUtil}).
+ */
 public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(I2b2UserAuthenticatorImpl.class);
@@ -50,7 +55,7 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 	private final Configuration config;
 
 	/**
-	 * Creates a new I2b2UserAuthenticatorImpl instance based on the given XML.
+	 * Default no-arg constructor.
 	 */
 	public I2b2UserAuthenticatorImpl() {
 		this.config = new Configuration();
@@ -58,17 +63,8 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 		this.config.setObjectWrapper(new DefaultObjectWrapper());
 	}
 
-	/**
-	 * Authenticates an i2b2 user.
-	 *
-	 * @return <code>true</code> if the user was authenticated,
-	 *         <code>false</code> otherwise
-	 * @throws edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException
-	 *          if an error occurred in the parsing of the incoming or
-	 *          response XML
-	 */
-	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws
-			I2b2PatientDataExportServiceXmlException {
+	@Override
+	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws I2b2ExportServiceXmlException {
 		try {
 			LOGGER.debug("Attempting to authenticate i2b2 user: {} with password node: {} in domain {} for project {}",
 					new String[]{
@@ -102,15 +98,15 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 
 			return "DONE".equalsIgnoreCase(status);
 		} catch (IOException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (XPathExpressionException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (SAXException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (ParserConfigurationException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (TemplateException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		}
 
 	}

@@ -25,7 +25,7 @@ import edu.emory.cci.aiw.i2b2export.comm.I2b2PatientSet;
 import edu.emory.cci.aiw.i2b2export.entity.I2b2Concept;
 import edu.emory.cci.aiw.i2b2export.i2b2.pdo.I2b2PdoResultParser;
 import edu.emory.cci.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -40,20 +40,29 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of the i2b2 PDO retriever interface. It retrieves the data by filling the PDO request XML template
+ * and sending that XML to the i2b2 service as defined the application's properties file (see {@link I2b2CommUtil}).
+ *
+ * @author Michel Mansour
+ */
 public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 
 	private final Configuration config;
 
+	/**
+	 * Default no-arg constructor.
+	 */
 	public I2b2PdoRetrieverImpl() {
 		this.config = new Configuration();
 		this.config.setClassForTemplateLoading(this.getClass(), "/");
 		this.config.setObjectWrapper(new DefaultObjectWrapper());
 	}
 
+	@Override
 	public I2b2PdoResults retrieve(I2b2AuthMetadata authMetadata,
-								   Collection<I2b2Concept> concepts,
-								   I2b2PatientSet patientSet)
-			throws I2b2PatientDataExportServiceXmlException {
+								Collection<I2b2Concept> concepts,
+								I2b2PatientSet patientSet) throws I2b2ExportServiceXmlException {
 		try {
 			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "/i2b2_pdo_request.ftl");
 			StringWriter writer = new StringWriter();
@@ -77,13 +86,13 @@ public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 			I2b2PdoResultParser parser = new I2b2PdoResultParser(respXml);
 			return parser.parse();
 		} catch (IOException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (TemplateException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (SAXException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		} catch (ParserConfigurationException e) {
-			throw new I2b2PatientDataExportServiceXmlException(e);
+			throw new I2b2ExportServiceXmlException(e);
 		}
 	}
 }

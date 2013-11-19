@@ -21,10 +21,21 @@ package edu.emory.cci.aiw.i2b2export.i2b2;
  */
 
 import edu.emory.cci.aiw.i2b2export.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 
+/**
+ * Interface for authenticating an i2b2 user given authentication metadata for that user.
+ *
+ * @author Michel Mansour
+ */
 public interface I2b2UserAuthenticator {
 
-	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws
-			I2b2PatientDataExportServiceXmlException;
+	/**
+	 * Determines whether or not a user is authenticated given their authentication metadata.
+	 *
+	 * @param authMetadata the i2b2 authentication metadata to provide to i2b2 to authenticate the user
+	 * @return <code>true</code> if the user was authenticated by i2b2, <code>false</code> otherwise
+	 * @throws I2b2ExportServiceXmlException if an error occurs processing the i2b2 response XML
+	 */
+	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws I2b2ExportServiceXmlException;
 }

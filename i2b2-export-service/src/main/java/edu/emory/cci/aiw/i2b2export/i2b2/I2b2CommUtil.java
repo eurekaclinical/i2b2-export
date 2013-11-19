@@ -44,19 +44,46 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Properties;
 
+/**
+ * Class for utility methods for communicating with i2b2.
+ *
+ * @author Michel Mansour
+ */
 public final class I2b2CommUtil {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(I2b2CommUtil.class);
 
+	/*
+	 * the default name of the application's properties file
+	 */
 	private static final String DEFAULT_PROPERTIES_FILE = "i2b2export.properties";
+
+	/*
+	 * the default path to the application's properties file
+	 */
 	private static final String DEFAULT_PROPERTIES_PATH = "/etc/i2b2export/" + DEFAULT_PROPERTIES_FILE;
+
+	/*
+	 * the system property for setting the location of the application's properties file
+	 */
 	private static final String PROPERTIES_FILE_PROPERTY = "i2b2export.propertiesFile";
+
+	/*
+	 * the name of the property that defines the URL of the i2b2 proxy cell
+	 */
 	private static final String I2B2_PROXY_URL_PROPERTY = "i2b2ProxyUrl";
+
+	/*
+	 * the name of the property that defines the URL of the i2b2 services
+	 */
 	private static final String I2B2_SERVICE_HOST_URL_PROPERTY = "i2b2ServiceHostUrl";
 
 	private static String i2b2ProxyUrl = "";
 	private static String i2b2ServiceHostUrl = "";
 
+	/*
+	 * the location of the project's i2b2 messaging XML templates
+	 */
 	static final String TEMPLATES_DIR = "i2b2-xml-templates";
 
 	/*
@@ -70,6 +97,12 @@ public final class I2b2CommUtil {
 	private I2b2CommUtil() {
 	}
 
+	/**
+	 * Reads the application's properties from a properties file. It first checks if the system property has overridden
+	 * the default location of the properties file. If that is false, it then checks if the properties file exists in
+	 * the default location. If that also fails, it then looks in the classpath for the properties files. If all checks
+	 * file, it logs an error that the application will not work correctly.
+	 */
 	private static void readProperties() {
 		InputStream propFileStream = null;
 		try {
@@ -120,6 +153,11 @@ public final class I2b2CommUtil {
 		}
 	}
 
+	/**
+	 * Gets the URL of the i2b2 proxy cell. Reads from the properties file first if necessary.
+	 *
+	 * @return the URL as a String
+	 */
 	public static String getProxyUrl() {
 		if (null == i2b2ProxyUrl || i2b2ProxyUrl.isEmpty()) {
 			readProperties();
@@ -127,6 +165,11 @@ public final class I2b2CommUtil {
 		return i2b2ProxyUrl;
 	}
 
+	/**
+	 * Gets the URL of the i2b2 services. Reads from the properties file first if necessary.
+	 *
+	 * @return the URL as a String
+	 */
 	public static String getI2b2ServiceHostUrl() {
 		if (null == i2b2ServiceHostUrl || i2b2ServiceHostUrl.isEmpty()) {
 			readProperties();
@@ -143,12 +186,11 @@ public final class I2b2CommUtil {
 	 * @return the XML response from i2b2 as a {@link Document}
 	 * @throws ClientProtocolException      if an error occurs
 	 * @throws IOException                  if an error occurs
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IllegalStateException
+	 * @throws ParserConfigurationException if an error occurs
+	 * @throws SAXException                 if an error occurs
+	 * @throws IllegalStateException        if an error occurs
 	 */
-	public static Document postXmlToI2b2(String xml)
-			throws ClientProtocolException, IOException, IllegalStateException,
+	public static Document postXmlToI2b2(String xml) throws ClientProtocolException, IOException, IllegalStateException,
 			SAXException, ParserConfigurationException {
 		LOGGER.debug("POSTing XML: {}", xml);
 		HttpClient http = new DefaultHttpClient();
