@@ -32,7 +32,7 @@ import edu.emory.cci.aiw.i2b2export.i2b2.I2b2PdoRetriever;
 import edu.emory.cci.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
 import edu.emory.cci.aiw.i2b2export.output.DataOutputFormatter;
 import edu.emory.cci.aiw.i2b2export.output.HeaderRowOutputFormatter;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +49,11 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * A Jersey resource for handling requests relating to retrieving data from i2b2.
+ *
+ * @author Michel Mansour
+ */
 @Path("/export")
 public final class DataResource {
 
@@ -71,7 +76,7 @@ public final class DataResource {
 									String i2b2ProjectId,
 									Integer i2b2PatientSetCollId,
 									Integer i2b2PatientSetSize,
-									OutputConfiguration outputConfig) throws I2b2PatientDataExportServiceXmlException {
+									OutputConfiguration outputConfig) throws I2b2ExportServiceXmlException {
 		I2b2PatientSet patientSet = new I2b2PatientSet();
 		patientSet.setPatientSetCollId(i2b2PatientSetCollId);
 		patientSet.setPatientSetSize(i2b2PatientSetSize);
@@ -87,10 +92,8 @@ public final class DataResource {
 					this.pdoRetriever.retrieve(authMetadata,
 							extractConcepts(outputConfig), patientSet)).format();
 
-			return Response.ok(output, "text/csv").header
-					("Content-Disposition", "attachment;" +
-							"filename=i2b2PatientData.csv")
-					.build();
+			return Response.ok(output, "text/csv").header("Content-Disposition", "attachment;" +
+							"filename=i2b2PatientData.csv").build();
 		} else {
 			LOGGER.warn("User not authenticated: {}", i2b2Username);
 			return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -115,7 +118,7 @@ public final class DataResource {
 	 * @param i2b2PatientSetCollId the i2b2 patient set ID
 	 * @param i2b2PatientSetSize   the i2b2 patient set size
 	 * @return the formatted output or a status code indicating failure
-	 * @throws I2b2PatientDataExportServiceException
+	 * @throws I2b2ExportServiceException
 	 *          if something goes wrong
 	 */
 	@POST
@@ -134,20 +137,19 @@ public final class DataResource {
 													@FormParam
 															("patient-set-coll-id") Integer i2b2PatientSetCollId,
 													@FormParam("patient-set-size")
-													Integer i2b2PatientSetSize) throws I2b2PatientDataExportServiceException {
+													Integer i2b2PatientSetSize) throws I2b2ExportServiceException {
 		LOGGER.info("Received request to export data from config details for " +
 				"user: {}", i2b2Username);
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			OutputConfiguration outputConfig = mapper.readValue
-					(outputConfigJson, OutputConfiguration.class);
+			OutputConfiguration outputConfig = mapper.readValue(outputConfigJson, OutputConfiguration.class);
 			return generateOutput(i2b2Domain, i2b2Username, i2b2PasswordNode,
 					i2b2ProjectId, i2b2PatientSetCollId, i2b2PatientSetSize,
 					outputConfig);
 		} catch (IOException e) {
 			logError(e);
-			throw new I2b2PatientDataExportServiceException(e);
-		} catch (I2b2PatientDataExportServiceException e) {
+			throw new I2b2ExportServiceException(e);
+		} catch (I2b2ExportServiceException e) {
 			logError(e);
 			throw e;
 		}
@@ -171,33 +173,20 @@ public final class DataResource {
 	 * @param i2b2PatientSetCollId the i2b2 patient set ID
 	 * @param i2b2PatientSetSize   the i2b2 patient set size
 	 * @return the formatted output or a status code indicating failure
-	 * @throws I2b2PatientDataExportServiceException
+	 * @throws I2b2ExportServiceException
 	 *          if something goes wrong
 	 */
 	@POST
 	@Path("/configId")
 	@Produces("text/csv")
-	public Response generateOutputFromConfigId(@FormParam("i2b2-domain")
-											   String i2b2Domain,
-											   @FormParam("i2b2-user") String
-													   i2b2Username,
-											   @FormParam("i2b2-pass") String
-													   i2b2PasswordNode,
-											   @FormParam("i2b2-project")
-											   String i2b2ProjectId,
-											   @FormParam("config-id")
-											   Long outputConfigId,
-											   @FormParam
-													   ("patient-set-coll-id") Integer i2b2PatientSetCollId,
-											   @FormParam("patient-set-size")
-											   Integer i2b2PatientSetSize)
-			throws
-			I2b2PatientDataExportServiceException {
+	public Response generateOutputFromConfigId(@FormParam("i2b2-domain") String i2b2Domain, @FormParam("i2b2-user") String i2b2Username,
+											@FormParam("i2b2-pass") String i2b2PasswordNode, @FormParam("i2b2-project") String i2b2ProjectId,
+											@FormParam("config-id") Long outputConfigId, @FormParam ("patient-set-coll-id") Integer i2b2PatientSetCollId,
+											@FormParam("patient-set-size") Integer i2b2PatientSetSize) throws I2b2ExportServiceException {
 		LOGGER.info("Received request to export data from configuration id: " +
 				"{} from user: {}", i2b2Username, outputConfigId);
 
-		OutputConfiguration outputConfig = this.dao.getById
-				(outputConfigId);
+		OutputConfiguration outputConfig = this.dao.getById(outputConfigId);
 		if (null == outputConfig) {
 			LOGGER.warn("No configuration found with id: {}", outputConfigId);
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -207,16 +196,22 @@ public final class DataResource {
 						i2b2PasswordNode, i2b2ProjectId,
 						i2b2PatientSetCollId, i2b2PatientSetSize,
 						outputConfig);
-			} catch (I2b2PatientDataExportServiceException e) {
+			} catch (I2b2ExportServiceException e) {
 				logError(e);
 				throw e;
 			}
 		}
 	}
 
-	private Collection<I2b2Concept> extractConcepts(OutputConfiguration config) throws I2b2PatientDataExportServiceXmlException {
+	/**
+	 * Convenience method for pulling out the i2b2 concepts from an output configuration.
+	 *
+	 * @param config the output configuration to get the concepts from
+	 * @return a collection of {@link I2b2Concept}s
+	 */
+	private Collection<I2b2Concept> extractConcepts(OutputConfiguration config) {
 		Collection<I2b2Concept> result = new
-				HashSet<I2b2Concept>();
+				HashSet<>();
 
 		for (OutputColumnConfiguration colConfig : config.getColumnConfigs()) {
 			result.add(colConfig.getI2b2Concept());
@@ -225,6 +220,13 @@ public final class DataResource {
 		return result;
 	}
 
+	/**
+	 * Generates a preview of the CSV header row based on the provided output configuration. The preview is returned
+	 * to the client as a JSON string.
+	 *
+	 * @param config the {@link OutputConfiguration} to use to format the header row
+	 * @return the formatted header or a status code indicating failure
+	 */
 	@POST
 	@Path("/preview")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -248,6 +250,6 @@ public final class DataResource {
 	}
 
 	private static void logError(Throwable e) {
-		LOGGER.error("Exception thrown: {}, e");
+		LOGGER.error("Exception thrown: {}", e);
 	}
 }
