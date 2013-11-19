@@ -17,6 +17,31 @@
 		user-defined configuration, as well as saving configurations.
 	</description>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>mmansour</id>
+			<name>Michel Mansour</name>
+			<email>michel.mansour@emory.edu</email>
+			<roles>
+				<role>Software Developer</role>
+			</roles>
+			<organization>Department of Biomedical Informatics, Emory
+				University
+			</organization>
+		</developer>
+	</developers>
+
+	<properties>
+		<jersey-version>1.8</jersey-version>
+	</properties>
 
 	<build>
 		<finalName>i2b2-export-service</finalName>
@@ -105,31 +130,38 @@
 		</plugins>
 	</build>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-			<distribution>manual</distribution>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>mmansour</id>
-			<name>Michel Mansour</name>
-			<email>michel.mansour@emory.edu</email>
-			<roles>
-				<role>Software Developer</role>
-			</roles>
-			<organization>Department of Biomedical Informatics, Emory
-				University
-			</organization>
-		</developer>
-	</developers>
-
-	<properties>
-		<jersey-version>1.8</jersey-version>
-	</properties>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.16</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.11</version>
+				<configuration>
+					<configLocation>http://aiw.sourceforge.net/dev/aiw-checkstyle-1.0/eureka-checkstyle.xml</configLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<dependencies>
 		<dependency>
