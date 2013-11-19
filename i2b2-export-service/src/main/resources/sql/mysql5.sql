@@ -1,6 +1,6 @@
 ---
 -- #%L
--- i2b2 Patient Data Export Service
+-- i2b2 Export Service
 -- %%
 -- Copyright (C) 2013 Emory University
 -- %%
@@ -17,22 +17,13 @@
 -- limitations under the License.
 -- #L%
 ---
-
----
--- Database setup for MySQL 5.x
----
-
-alter table output_column_configurations drop foreign key FK78A321884808884F;
-alter table output_configurations_output_column_configurations drop foreign key FK17265E0C6501D153;
-alter table output_configurations_output_column_configurations drop foreign key FK17265E0C5DF9429;
+alter table column_configs drop foreign key FK8CF9A98899BE0907;
+alter table column_configs drop foreign key FK8CF9A9887A6ACF61;
+drop table if exists column_configs;
 drop table if exists i2b2_concepts;
-drop table if exists output_column_configurations;
-drop table if exists output_configurations;
-drop table if exists output_configurations_output_column_configurations;
-create table i2b2_concepts (id bigint not null auto_increment, columnName varchar(255), dimensionCode varchar(255) not null, displayName varchar(255), hasChildren varchar(255), i2b2Key varchar(255) not null, icd9 varchar(255), isSynonym varchar(255) not null, level integer not null, name varchar(255), operator varchar(255), tableName varchar(255) not null, tooltip varchar(255), xmlOrig CLOB, primary key (id));
-create table output_column_configurations (id bigint not null auto_increment, aggregation integer, columnName varchar(255) not null, columnOrder integer not null, displayFormat integer not null, howMany integer, includeTimeRange bit, includeUnits bit, i2b2Concept_id bigint, primary key (id));
-create table output_configurations (id bigint not null auto_increment, missingValue varchar(255), name varchar(255), quoteChar varchar(1), rowDimension integer not null, separator varchar(1), username varchar(255) not null, whitespaceReplacement varchar(255), primary key (id), unique (username, name));
-create table output_configurations_output_column_configurations (output_configurations_id bigint not null, columnConfigs_id bigint not null, unique (columnConfigs_id));
-alter table output_column_configurations add index FK78A321884808884F (i2b2Concept_id), add constraint FK78A321884808884F foreign key (i2b2Concept_id) references i2b2_concepts (id);
-alter table output_configurations_output_column_configurations add index FK17265E0C6501D153 (columnConfigs_id), add constraint FK17265E0C6501D153 foreign key (columnConfigs_id) references output_column_configurations (id);
-alter table output_configurations_output_column_configurations add index FK17265E0C5DF9429 (output_configurations_id), add constraint FK17265E0C5DF9429 foreign key (output_configurations_id) references output_configurations (id);
+drop table if exists output_configs;
+create table column_configs (column_config_id bigint not null auto_increment, aggregation integer, column_name varchar(255) not null, column_order integer not null, display_format integer not null, how_many integer, include_time_range bit, include_units bit, i2b2_concept_id bigint, config_id bigint, primary key (column_config_id));
+create table i2b2_concepts (concept_id bigint not null auto_increment, c_columnname varchar(255), c_dimcode varchar(255) not null, c_displayname varchar(255), c_children varchar(255), i2b2_key varchar(255) not null, c_icd9 varchar(255), c_synonym_cd varchar(255) not null, c_hlevel integer not null, c_name varchar(255), c_operator varchar(255), c_tablename varchar(255) not null, c_tooltip varchar(255), c_xml_orig CLOB, primary key (concept_id));
+create table output_configs (config_id bigint not null auto_increment, missing_value varchar(255), config_name varchar(255), quote_char varchar(1), row_dimension integer not null, separator varchar(1), username varchar(255) not null, whitespace_replacement varchar(255), primary key (config_id), unique (username, config_name));
+alter table column_configs add index FK8CF9A98899BE0907 (config_id), add constraint FK8CF9A98899BE0907 foreign key (config_id) references output_configs (config_id);
+alter table column_configs add index FK8CF9A9887A6ACF61 (i2b2_concept_id), add constraint FK8CF9A9887A6ACF61 foreign key (i2b2_concept_id) references i2b2_concepts (concept_id);
