@@ -26,6 +26,11 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
 
 import javax.persistence.EntityManager;
 
+/**
+ * JPA implementation of the output column configuration data access object.
+ *
+ * @author Michel Mansour
+ */
 public class JpaOutputColumnConfigurationDao implements OutputColumnConfigurationDao {
 
 	private final Provider<EntityManager> provider;

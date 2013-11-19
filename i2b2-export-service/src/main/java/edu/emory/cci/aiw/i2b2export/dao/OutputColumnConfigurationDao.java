@@ -22,7 +22,17 @@ package edu.emory.cci.aiw.i2b2export.dao;
 
 import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
 
+/**
+ * Data access object for {@link edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration}.
+ *
+ * @author Michel Mansour
+ */
 public interface OutputColumnConfigurationDao {
 
+	/**
+	 * Deletes the given column configuration.
+	 *
+	 * @param colConfig the {@link OutputColumnConfiguration} to delete.
+	 */
 	public void delete(OutputColumnConfiguration colConfig);
 }

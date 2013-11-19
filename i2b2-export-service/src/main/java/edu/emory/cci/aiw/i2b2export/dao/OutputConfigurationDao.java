@@ -24,18 +24,59 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
 
 import java.util.List;
 
+/**
+ * Data access object for {@link OutputConfiguration}. Defines all of the CRUD
+ * operations.
+ *
+ * @author Michel Mansour
+ */
 public interface OutputConfigurationDao {
 
+	/**
+	 * Retrieves all configurations for the given user (by username).
+	 *
+	 * @param username the username of the user whose configurations are to be retrieved
+	 * @return all of the {@link OutputConfiguration}s for the user, as a list
+	 */
 	public List<OutputConfiguration> getAllByUsername(String username);
 
+	/**
+	 * Retrieves the output configuration associated with the specified ID.
+	 *
+	 * @param configId the ID of the output configuration to retrieve
+	 * @return the {@link OutputConfiguration} having the given ID
+	 */
 	public OutputConfiguration getById(Long configId);
 
+	/**
+	 * Retrieves the output configuration belonging to the given user and having the given name.
+	 *
+	 * @param username the username of the user
+	 * @param configName the name of the configuration
+	 * @return the {@link OutputConfiguration} for the given user that has the given name
+	 */
 	public OutputConfiguration getByUsernameAndConfigName(String username,
-														  String configName);
+														String configName);
 
+	/**
+	 * Creates a new output configuration record from the given output configuration.
+	 *
+	 * @param config the output configuration to create
+	 */
 	public void create(OutputConfiguration config);
 
-	public void update(OutputConfiguration oldConfig, OutputConfiguration newConfig);
+	/**
+	 * Updates a given existing configuration record with a new configuration.
+	 *
+	 * @param existingConfig the existing configuration record to update
+	 * @param newConfig the new configuration to update with
+	 */
+	public void update(OutputConfiguration existingConfig, OutputConfiguration newConfig);
 
+	/**
+	 * Deletes the given configuration record.
+	 *
+	 * @param config the configuration to delete
+	 */
 	public void delete(OutputConfiguration config);
 }
