@@ -29,7 +29,7 @@ import edu.emory.cci.aiw.i2b2export.comm.SaveRequest;
 import edu.emory.cci.aiw.i2b2export.dao.OutputConfigurationDao;
 import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.cci.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +42,11 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Jersey resource for handling requests relating to output configurations.
+ *
+ * @author Michel Mansour
+ */
 @Path("/config")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -54,7 +59,7 @@ public class OutputConfigurationResource {
 
 	@Inject
 	public OutputConfigurationResource(OutputConfigurationDao dao,
-									   I2b2UserAuthenticator userAuthenticator) {
+									I2b2UserAuthenticator userAuthenticator) {
 		this.userAuthenticator = userAuthenticator;
 		this.dao = dao;
 	}
@@ -65,49 +70,48 @@ public class OutputConfigurationResource {
 	 * @param request the create request, containing the configuration to create
 	 *                along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws I2b2PatientDataExportServiceException
+	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 *
 	 */
 	@POST
 	@Path("/save")
-	public Response saveConfiguration(SaveRequest request) throws
-			I2b2PatientDataExportServiceException {
-		LOGGER.info("Received request to save configuration for user: {}", request.getI2b2AuthMetadata().getUsername());
+	public Response saveConfiguration(SaveRequest request) throws I2b2ExportServiceException {
+		LOGGER.info("Received request to save configuration for user: {}", request.getAuthMetadata().getUsername());
 
 		try {
-			if (this.userAuthenticator.authenticateUser(request.getI2b2AuthMetadata())) {
+			if (this.userAuthenticator.authenticateUser(request.getAuthMetadata())) {
 				OutputConfiguration config = this.dao
 						.getByUsernameAndConfigName(request
-								.getI2b2AuthMetadata().getUsername(),
+								.getAuthMetadata().getUsername(),
 								request.getOutputConfiguration().getName());
 				if (config != null) {
 					if (config.getUsername().equals(request
-							.getI2b2AuthMetadata().getUsername())) {
+							.getAuthMetadata().getUsername())) {
 						LOGGER.info("Configuration with name: {} already exists for user: {}. Updating existing configuration.",
 								config.getName(), config.getUsername());
 						this.dao.update(config, request.getOutputConfiguration());
 					} else {
 						LOGGER.warn("Usernames do not match: request username: {}, existing configuration username: {}",
-								request.getI2b2AuthMetadata().getUsername(), config.getUsername());
+								request.getAuthMetadata().getUsername(), config.getUsername());
 						return Response.status(Response.Status.UNAUTHORIZED)
 								.build();
 					}
 				} else {
-					LOGGER.info("Creating new configuration for user: {} with name: {}", request.getI2b2AuthMetadata().getUsername(),
+					LOGGER.info("Creating new configuration for user: {} with name: {}", request.getAuthMetadata().getUsername(),
 							request.getOutputConfiguration().getName());
 					request.getOutputConfiguration().setUsername(request
-							.getI2b2AuthMetadata().getUsername());
+							.getAuthMetadata().getUsername());
 					this.dao.create(request.getOutputConfiguration());
 				}
 
 				return Response.ok().build();
 			} else {
-				LOGGER.warn("User not authenticated: {}", request.getI2b2AuthMetadata().getUsername());
+				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2PatientDataExportServiceXmlException e) {
+		} catch (I2b2ExportServiceXmlException e) {
 			logError(e);
-			throw new I2b2PatientDataExportServiceException(e);
+			throw new I2b2ExportServiceException(e);
 		}
 	}
 
@@ -118,14 +122,12 @@ public class OutputConfigurationResource {
 	 *                operation, including the configuration ID and the
 	 *                i2b2 authentication tokens
 	 * @return the output configuration or a status code indicating failure
-	 * @throws I2b2PatientDataExportServiceException
+	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 *
 	 */
 	@POST
 	@Path("/load")
-	public Response loadConfiguration(LoadRequest request)
-			throws
-			I2b2PatientDataExportServiceException {
+	public Response loadConfiguration(LoadRequest request) throws I2b2ExportServiceException {
 		LOGGER.info("Received request to load configuration for user: {} with id: {}",
 				request.getAuthMetadata().getUsername(), request.getOutputConfigurationId());
 
@@ -150,9 +152,9 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2PatientDataExportServiceXmlException e) {
+		} catch (I2b2ExportServiceXmlException e) {
 			logError(e);
-			throw new I2b2PatientDataExportServiceException(e);
+			throw new I2b2ExportServiceException(e);
 		}
 	}
 
@@ -162,20 +164,17 @@ public class OutputConfigurationResource {
 	 *
 	 * @param authMetadata the i2b2 authentication tokens identifying the user
 	 * @return a list of configuration names or a status indicating failure
-	 * @throws I2b2PatientDataExportServiceException
-	 *          if an error occurs
+	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 */
 	@POST
 	@Path("/getAll")
-	public Response getConfigurationsByUser(I2b2AuthMetadata authMetadata)
-			throws I2b2PatientDataExportServiceException {
+	public Response getConfigurationsByUser(I2b2AuthMetadata authMetadata) throws I2b2ExportServiceException {
 		LOGGER.info("Received request to retrieve all configurations for user: {}", authMetadata.getUsername());
 
 		try {
 			if (this.userAuthenticator.authenticateUser(authMetadata)) {
-				List<OutputConfigurationSummary> result = new ArrayList<OutputConfigurationSummary>();
-				List<OutputConfiguration> configs = this.dao.getAllByUsername
-						(authMetadata.getUsername());
+				List<OutputConfigurationSummary> result = new ArrayList<>();
+				List<OutputConfiguration> configs = this.dao.getAllByUsername(authMetadata.getUsername());
 				for (OutputConfiguration config : configs) {
 					if (config.getUsername().equals(authMetadata.getUsername())) {
 						result.add(new OutputConfigurationSummary(config.getId(),
@@ -192,9 +191,9 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", authMetadata.getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2PatientDataExportServiceXmlException e) {
+		} catch (I2b2ExportServiceXmlException e) {
 			logError(e);
-			throw new I2b2PatientDataExportServiceException(e);
+			throw new I2b2ExportServiceException(e);
 		}
 	}
 
@@ -205,12 +204,12 @@ public class OutputConfigurationResource {
 	 *                operation, including the configuration ID and the
 	 *                i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws I2b2PatientDataExportServiceException
+	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 *
 	 */
 	@POST
 	@Path("/delete")
-	public Response deleteConfiguration(DeleteRequest request) throws I2b2PatientDataExportServiceException {
+	public Response deleteConfiguration(DeleteRequest request) throws I2b2ExportServiceException {
 		LOGGER.info("Received request to delete configuration with id: {}", request.getOutputConfigurationId());
 
 		try {
@@ -235,9 +234,9 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2PatientDataExportServiceXmlException e) {
+		} catch (I2b2ExportServiceXmlException e) {
 			logError(e);
-			throw new I2b2PatientDataExportServiceException(e);
+			throw new I2b2ExportServiceException(e);
 		}
 	}
 
