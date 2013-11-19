@@ -27,7 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Generates a DDL for the entities used by this project. The generator can be
@@ -81,7 +83,7 @@ final class DdlGenerator {
 	}
 
 	private static void generateDdl(String outputFile, String dialect) {
-		final List<Class<?>> classes = new ArrayList<Class<?>>();
+		final List<Class<?>> classes = new ArrayList<>();
 		classes.add(I2b2Concept.class);
 		classes.add(OutputColumnConfiguration.class);
 		classes.add(OutputConfiguration.class);
@@ -90,11 +92,22 @@ final class DdlGenerator {
 	}
 
 	public static void main(String[] args) {
-		if (args.length < 2) {
-			System.err.println("Usage: java DdlGenerator <hibernate-dialect> <output-file>");
-			System.exit(1);
-		} else {
-			generateDdl(args[1], args[0]);
+		final String outputPath = "i2b2-export-service/src/main/resources/sql/";
+		final String suffix = ".sql";
+
+		Map<String, String> dialects = new HashMap<>();
+		dialects.put("h2", "org.hibernate.dialect.H2Dialect");
+		dialects.put("mysql", "org.hibernate.dialect.MySQLDialect");
+		dialects.put("mysql5", "org.hibernate.dialect.MySQL5Dialect");
+		dialects.put("oracle8i", "org.hibernate.dialect.Oracle8iDialect");
+		dialects.put("oracle9i", "org.hibernate.dialect.Oracle9iDialect");
+		dialects.put("oracle10g", "org.hibernate.dialect.Oracle10gDialect");
+		dialects.put("postgresql", "org.hibernate.dialect.PostgreSQLDialect");
+		dialects.put("sqlserver", "org.hibernate.dialect.SQLServerDialect");
+		dialects.put("sqlserver2008", "org.hibernate.dialect.SQLServer2008Dialect");
+
+		for (Map.Entry<String, String> dialect : dialects.entrySet()) {
+			generateDdl(outputPath + dialect.getKey() + suffix, dialect.getValue());
 		}
 	}
 }
