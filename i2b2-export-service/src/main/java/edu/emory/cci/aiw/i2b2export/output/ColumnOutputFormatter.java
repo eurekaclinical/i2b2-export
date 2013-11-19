@@ -26,7 +26,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Interface for formatting columns for output. It defines one method, <code>format</code>, that accepts a collection
+ * of {@link Observation}s to be output.
  *
+ * @author Michel Mansour
  */
 public interface ColumnOutputFormatter {
 
