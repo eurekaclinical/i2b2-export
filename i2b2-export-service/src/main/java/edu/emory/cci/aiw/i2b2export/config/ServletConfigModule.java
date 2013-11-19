@@ -28,6 +28,11 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Jersey servlet configuration.
+ *
+ * @author Michel Mansour
+ */
 public class ServletConfigModule extends JerseyServletModule {
 
 	@Override

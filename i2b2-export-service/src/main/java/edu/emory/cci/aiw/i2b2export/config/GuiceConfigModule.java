@@ -30,7 +30,11 @@ import edu.emory.cci.aiw.i2b2export.i2b2.I2b2PdoRetrieverImpl;
 import edu.emory.cci.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
 import edu.emory.cci.aiw.i2b2export.i2b2.I2b2UserAuthenticatorImpl;
 
-
+/**
+ * Configuration for Guice interface bindings.
+ *
+ * @author Michel Mansour
+ */
 public class GuiceConfigModule extends AbstractModule {
 
 	@Override
