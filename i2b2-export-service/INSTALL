@@ -1,11 +1,11 @@
-i2b2 Patient Data Export Service -- A Web Service for Exporting i2b2 Patient Data.
+i2b2 Export Service, ${project.version} -- A Web Service for Exporting i2b2 Patient Data.
 Department of Biomedical Informatics, Emory University
 
 INSTALLATION
 
-The i2b2 Patient Data Export Service runs as a standard Java web application.
-It has been tested with Tomcat 7 and JBoss 4.2.2, but it is expected to work
-with any standards-compliant Java application server.
+The i2b2 Export Service runs as a standard Java web application. It has been
+tested with Tomcat 7 and JBoss 4.2.2, but it is expected to work with any
+standards-compliant Java application server.
 
 To install, simply deploy the WAR file included in this distribution to the
 Java application server of your choice.
@@ -36,15 +36,15 @@ etc/i2b2export.properties.
 
 DATABASE CONFIGURATION
 
-The i2b2 Patient Data Export Service is configured to look for a database using
-the JNDI name: I2b2PatientDataExportService. You must configure your application
+The i2b2 Export Service is configured to look for a database using
+the JNDI name: i2b2-export-service. You must configure your application
 server to specify the connection information for the database this name maps to.
 
 For example, in Tomcat 7, this configuration goes in the context.xml:
 
 <Context>
 ...
-    <Resource name="jdbc/I2b2PatientDataExportService" auth="Container"
+    <Resource name="jdbc/i2b2-export-service" auth="Container"
             type="javax.sql.DataSource"
             driverClassName="JDBC_DRIVER_CLASS_NAME"
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
