@@ -143,7 +143,8 @@ public class OutputConfiguration {
 
 	/**
 	 * Sets the name of the configuration
-	 * @param name
+	 *
+	 * @param name the name
 	 */
 	public void setName(String name) {
 		this.name = name;

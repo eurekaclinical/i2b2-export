@@ -57,6 +57,12 @@ public class OutputConfigurationResource {
 	private final I2b2UserAuthenticator userAuthenticator;
 	private final OutputConfigurationDao dao;
 
+	/**
+	 * Default constructor.
+	 *
+	 * @param dao the output configuration DAO
+	 * @param userAuthenticator the user authenticator
+	 */
 	@Inject
 	public OutputConfigurationResource(OutputConfigurationDao dao,
 									I2b2UserAuthenticator userAuthenticator) {

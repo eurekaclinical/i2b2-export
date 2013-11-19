@@ -35,6 +35,11 @@ public class JpaOutputColumnConfigurationDao implements OutputColumnConfiguratio
 
 	private final Provider<EntityManager> provider;
 
+	/**
+	 * Default constructor.
+	 *
+	 * @param provider the entity manager provider
+	 */
 	@Inject
 	public JpaOutputColumnConfigurationDao(Provider<EntityManager> provider) {
 		this.provider = provider;

@@ -63,6 +63,13 @@ public final class DataResource {
 	private final I2b2PdoRetriever pdoRetriever;
 	private final OutputConfigurationDao dao;
 
+	/**
+	 * Default constructor for the resource.
+	 *
+	 * @param dao the output configuration DAO
+	 * @param userAuthenticator the user authenticator
+	 * @param pdoRetriever the i2b2 PDO retriever
+	 */
 	@Inject
 	public DataResource(OutputConfigurationDao dao, I2b2UserAuthenticator
 			userAuthenticator, I2b2PdoRetriever pdoRetriever) {
