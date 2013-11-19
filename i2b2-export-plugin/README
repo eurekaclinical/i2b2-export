@@ -1,10 +1,10 @@
-i2b2 Patient Data Export plugin, ${project.version} -- An i2b2 plugin for exporting
-patient data from i2b2 to CSV files
+i2b2 Export plugin, ${project.version} -- An i2b2 plugin for exporting patient
+data from i2b2 to CSV files
 Department of Biomedical Informatics, Emory University
 
 OVERVIEW
 
-This is the Patient Data Export plugin, an i2b2 plugin for exporting patient data
+This is the i2b2 Export plugin, an i2b2 plugin for exporting patient data
 from i2b2 to CSV files. Users can configure the format of the CSV file using the
 plugin's interface, as well as save, load, and delete configurations. More
 information on doing so is available in the plugin's Help tab. The plugin
@@ -14,8 +14,11 @@ as well as providing authentication.
 
 REQUIREMENTS
 
-The only requirement is an installation of i2b2 1.5. This plugin has only been
+This plugin requires an installation of i2b2 1.5. This plugin has only been
 tested to work with i2b2 1.5. It has NOT been tested with any later versions.
+
+It also requires the corresponding i2b2 Export Service in order to be fully
+functional.
 
 INSTALLATION
 
@@ -72,8 +75,8 @@ Please send an email to aiwhelp@emory.edu for support or questions.
 
 LICENSING
 
-i2b2 Patient Data Export plugin is freely available as open source software under
-the Apache License, Version 2.0. A copy of the license is in the LICENSE file
-provided in this distribution.
+i2b2 Export plugin is freely available as open source software under the Apache
+License, Version 2.0. A copy of the license is in the LICENSE file provided in
+this distribution.
 
-i2b2 Patient Data Export plugin is Copyright (C) 2013 Emory University
+i2b2 Export plugin is Copyright (C) 2013 Emory University
