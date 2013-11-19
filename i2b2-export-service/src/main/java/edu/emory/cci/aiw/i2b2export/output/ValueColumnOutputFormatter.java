@@ -32,16 +32,30 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Column formatter for value columns.
+ *
+ * @author Michel Mansour
+ */
 public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 
+	/*
+	 * the i2b2 date format
+	 */
 	private final DateFormat i2b2DateFormat;
 
+	/**
+	 * Default constructor.
+	 *
+	 * @param columnConfig the configuration of the column to format
+	 * @param formatOptions the global format options to apply to the column
+	 */
 	public ValueColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 		i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 	}
 
-	private static final Comparator<Observation> obxComp = new Comparator<Observation>() {
+	private static final Comparator<Observation> OBX_COMP = new Comparator<Observation>() {
 
 		@Override
 		public int compare(Observation o1, Observation o2) {
@@ -55,9 +69,9 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 
 	@Override
 	public List<String> format(Collection<Observation> data) {
-		List<String> result = new ArrayList<String>();
-		List<Observation> dataList = new ArrayList<Observation>(data);
-		Collections.sort(dataList, obxComp);
+		List<String> result = new ArrayList<>();
+		List<Observation> dataList = new ArrayList<>(data);
+		Collections.sort(dataList, OBX_COMP);
 
 		int numCols = 1;
 		if (getColumnConfig().getIncludeUnits()) {
@@ -74,8 +88,7 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 				}
 			} else {
 				final Observation obx = dataList.get(i);
-				if (obx.getValuetype() != null && obx.getValuetype().equals
-						("N")) {
+				if (obx.getValuetype() != null && obx.getValuetype().equals("N")) {
 					result.add(obx.getNval());
 				} else {
 					result.add(obx.getTval());

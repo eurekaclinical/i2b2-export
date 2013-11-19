@@ -28,15 +28,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Column formatter for aggregation columns.
+ *
+ * @author Michel Mansour
+ */
 public final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatter {
 
+	/**
+	 * Default constructor
+	 *
+	 * @param columnConfig the configuration of the column to format
+	 * @param formatOptions the global format options to apply to the column
+	 */
 	public AggregationColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 	}
 
 	@Override
 	public List<String> format(Collection<Observation> data) {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		String units = "";
 
 		if (data == null || data.isEmpty()) {

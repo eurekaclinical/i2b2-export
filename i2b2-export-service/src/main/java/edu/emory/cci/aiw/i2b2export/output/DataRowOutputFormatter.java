@@ -29,6 +29,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Abstract class for formatting a row of output. Depending on what a row represents (patient, visit, or provider),
+ * the first columns of the row will differ, as well as which observations should be displayed. Methods for computing
+ * those values are defined as abstract in this class. However, the actual formatting of the row is the same across
+ * all implementations.
+ *
+ * @author Michel Mansour
+ */
 public abstract class DataRowOutputFormatter {
 
 	private final OutputConfiguration config;
@@ -65,6 +73,12 @@ public abstract class DataRowOutputFormatter {
 	 */
 	protected abstract List<String> rowPrefix();
 
+	/**
+	 * Formats a row of data according to the instance's column configurations and format options. The result is
+	 * returned as an array of strings that can be joined together later with the correct delimiter.
+	 *
+	 * @return an array of {@link String}s representing a single row of output
+	 */
 	public final String[] format() {
 		List<String> result = new ArrayList<String>();
 

@@ -27,13 +27,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Formatter for the header row of an entire result set.
+ *
+ * @author Michel Mansour
+ */
 public final class HeaderRowOutputFormatter {
 	private final OutputConfiguration outputConfiguration;
 
+	/**
+	 * Default constructor. Accepts the output configuration to use to format the header.
+	 *
+	 * @param outputConfiguration the {@link OutputConfiguration} to use to format the header
+	 */
 	public HeaderRowOutputFormatter(OutputConfiguration outputConfiguration) {
 		this.outputConfiguration = outputConfiguration;
 	}
 
+	/**
+	 * Formats the header row according to the instance's output configuration. The row is returned as an array
+	 * of strings that will be joined later using the correct delimiter.
+	 *
+	 * @return an array of <code>String</code>s representing the fields of the header row
+	 */
 	public String[] formatHeader() {
 		List<String> result = new ArrayList<String>();
 		switch (outputConfiguration.getRowDimension()) {

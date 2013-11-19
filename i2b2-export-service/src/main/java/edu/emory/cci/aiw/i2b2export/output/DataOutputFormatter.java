@@ -28,16 +28,39 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Output formatter for an entire i2b2 result set.
+ *
+ * @author Michel Mansour
+ */
 public final class DataOutputFormatter {
 
+	/*
+	 * the output configuration to use to format the output
+	 */
 	private final OutputConfiguration config;
+
+	/*
+	 * the i2b2 result set
+	 */
 	private final I2b2PdoResults pdoResults;
 
+	/**
+	 * Default constructor. Sets the output configuration and result set to the given parameters.
+	 *
+	 * @param config the output configuration to use format the result set for output
+	 * @param pdoResults the i2b2 result set to format
+	 */
 	public DataOutputFormatter(OutputConfiguration config, I2b2PdoResults pdoResults) {
 		this.config = config;
 		this.pdoResults = pdoResults;
 	}
 
+	/**
+	 * Returns the instance's i2b2 results formatted according to the instance's output configuration.
+	 *
+	 * @return the formatted results as a {@link String}
+	 */
 	public String format() {
 		List<String[]> result = new ArrayList<String[]>();
 		result.add(new HeaderRowOutputFormatter(config).formatHeader());

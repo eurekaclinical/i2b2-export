@@ -28,11 +28,21 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Column formatter for existence columns. Displays true or false depending on whether the data to be formatted is
+ * empty or not.
  *
+ * @author Michel Mansour
  */
 public final class ExistenceColumnOutputFormatter extends
 		AbstractColumnOutputFormatter {
 
+	/**
+	 * Default constructor. Requires the configuration for this column as well as the format options for the entire
+	 * output configuration.
+	 *
+	 * @param columnConfig the configuration of the column to format
+	 * @param formatOptions the global format options to apply to the column
+	 */
 	public ExistenceColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 	}

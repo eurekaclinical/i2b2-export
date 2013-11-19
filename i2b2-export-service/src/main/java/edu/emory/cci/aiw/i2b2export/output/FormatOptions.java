@@ -23,15 +23,28 @@ package edu.emory.cci.aiw.i2b2export.output;
 import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
 
 /**
+ * Container for the formatting options that apply to the entire output configuration but that must be applied at
+ * the individual column level. Currently, this only includes the string to use when data is missing for the column.
  *
+ * @author Michel Mansour
  */
 public final class FormatOptions {
 	private final String missingData;
 
+	/**
+	 * Default constructor. Accepts an output configuration containing the formatting options.
+	 *
+	 * @param config the output configuration
+	 */
 	public FormatOptions(OutputConfiguration config) {
 		this.missingData = config.getMissingValue();
 	}
 
+	/**
+	 * Returns the string to be used in cases where data is not available for a column.
+	 *
+	 * @return the string to use for missing data
+	 */
 	public String getMissingData() {
 		return missingData;
 	}
