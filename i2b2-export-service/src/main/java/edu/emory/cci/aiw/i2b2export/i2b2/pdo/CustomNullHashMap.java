@@ -22,14 +22,30 @@ package edu.emory.cci.aiw.i2b2export.i2b2.pdo;
 
 import java.util.HashMap;
 
+/**
+ * A hash map that will return a specified value if a key is not in the map.
+ *
+ * @param <K> the type of the map's keys
+ * @param <V> the type of the map's values
+ *
+ * @author Michel Mansour
+ */
 public class CustomNullHashMap<K, V> extends HashMap<K, V> {
 	private final V missingKeyValue;
 
+	/**
+	 * Accepts the value that should be returned if {@link #get(Object)} is called with a key that the map does not contain.
+	 *
+	 * @param missingKeyValue the value that {@link #get(Object)} should return if a key is not in the map
+	 */
 	public CustomNullHashMap(V missingKeyValue) {
 		super();
 		this.missingKeyValue = missingKeyValue;
 	}
 
+	/**
+	 * Default constructor. Sets the missing value to <code>null</code>.
+	 */
 	public CustomNullHashMap() {
 		this(null);
 	}

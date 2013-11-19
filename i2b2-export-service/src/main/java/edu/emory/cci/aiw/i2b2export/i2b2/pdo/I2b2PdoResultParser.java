@@ -21,7 +21,7 @@ package edu.emory.cci.aiw.i2b2export.i2b2.pdo;
  */
 
 import edu.emory.cci.aiw.i2b2export.i2b2.I2b2CommUtil;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import edu.emory.cci.aiw.i2b2export.xml.XmlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,39 +41,73 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Parser for i2b2 PDO result XML.
+ *
+ * @author Michel Mansour
+ */
 public class I2b2PdoResultParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger
-			(I2b2PdoResultParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(I2b2PdoResultParser.class);
 
+	/*
+	 * the i2b2 date format
+	 */
 	private final DateFormat i2b2DateFormat;
 
-	private Map<String, Patient> patients;
-	private Map<String, Event> events;
-	private Map<String, Observer> observers;
-	private Set<Observation> observations;
+	/*
+	 * maps from IDs to patients, events, and observers (providers)
+	 */
+	private final Map<String, Patient> patients;
+	private final Map<String, Event> events;
+	private final Map<String, Observer> observers;
 
-	private Document d;
+	/*
+	 * the set of observations in the result XML
+	 */
+	private final Set<Observation> observations;
 
+	/*
+	 * the XML document to parse
+	 */
+	private final Document d;
+
+	/**
+	 * Default constructor. Accepts an XML document for parsing.
+	 *
+	 * @param xmlDoc an XML {@link Document} to parse
+	 */
 	public I2b2PdoResultParser(Document xmlDoc) {
 		d = xmlDoc;
 		i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
-		patients = new HashMap<String, Patient>();
-		events = new HashMap<String, Event>();
-		observers = new HashMap<String, Observer>();
-		observations = new HashSet<Observation>();
+		patients = new HashMap<>();
+		events = new HashMap<>();
+		observers = new HashMap<>();
+		observations = new HashSet<>();
 	}
 
-	public I2b2PdoResults parse() throws I2b2PatientDataExportServiceXmlException {
+	/**
+	 * Parses the instance's XML document and returns the PDO results contained in it.
+	 *
+	 * @return an {@link I2b2PdoResults} containing all of the PDO results found in the XML
+	 * @throws I2b2ExportServiceXmlException if there is a parsing error
+	 */
+	public I2b2PdoResults parse() throws I2b2ExportServiceXmlException {
 		try {
 			parseAll();
 		} catch (XPathExpressionException e) {
-			throw new I2b2PatientDataExportServiceXmlException("Unable to parse i2b2 PDO result XML", e);
+			throw new I2b2ExportServiceXmlException("Unable to parse i2b2 PDO result XML", e);
 		}
 
 		return new I2b2PdoResults(patients.values(), events.values(), observers.values(), observations);
 	}
 
+	/**
+	 * Parses all of the patients, events, observers and observations from the result XML and ties together all
+	 * related entities.
+	 *
+	 * @throws XPathExpressionException if there is an XPath error
+	 */
 	private void parseAll() throws XPathExpressionException {
 		parsePatients();
 		parseEvents();
@@ -94,8 +128,7 @@ public class I2b2PdoResultParser {
 		}
 	}
 
-	private NodeList pdoElement(String dataName)
-			throws XPathExpressionException {
+	private NodeList pdoElement(String dataName) throws XPathExpressionException {
 		return (NodeList) XmlUtil.evalXPath(d, "//" + dataName,
 				XPathConstants.NODESET);
 	}
