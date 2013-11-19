@@ -1,17 +1,16 @@
-i2b2 Patient Data Export Service, ${project.version} -- A Web Service for Exporting i2b2 Patient Data.
+i2b2 Export Service, ${project.version} -- A Web Service for Exporting i2b2 Patient Data.
 Department of Biomedical Informatics, Emory University
 
 OVERVIEW
 
-This is the i2b2 Patient Data Export Service, a RESTful web service providing
-the backend functionality to the Patient Data Export i2b2 plugin. The plugin
-calls this service to manage configurations and export data from i2b2. This service
-communicates with your i2b2 installation to authenticate users and retrieve PDO
-data.
+This is the i2b2 Export Service, a RESTful web service providing the backend
+functionality to the i2b2 Data Export plugin. The plugin calls this service to
+manage configurations and export data from i2b2. This service communicates with
+your i2b2 installation to authenticate users and retrieve PDO data.
 
 REQUIREMENTS
 
-The current version is known to work with Oracle Java 6 and has been deployed
+The current version is known to work with Oracle Java 7 and has been deployed
 using JBoss 4.2.2 and Tomcat 7. Later versions of Java are expected to work, as
 are any other Java application servers.
 
@@ -32,8 +31,8 @@ Please send an email to aiwhelp@emory.edu for support or questions.
 
 LICENSING
 
-i2b2 Patient Data Export Service is freely available as open source software
-under the Apache License, Version 2.0. A copy of the license is in the LICENSE
-file provided in this distribution.
+i2b2 Export Service is freely available as open source software under the Apache
+License, Version 2.0. A copy of the license is in the LICENSE file provided in
+this distribution.
 
-i2b2 Patient Data Export Service is Copyright (C) 2013 Emory University
+i2b2 Export Service is Copyright (C) 2013 Emory University
