@@ -22,24 +22,58 @@ package edu.emory.cci.aiw.i2b2export.comm;
 
 import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
 
+/**
+ * A bean to communicate save requests from the client. It will generally populated from a JSON object.
+ * Encapsulates the i2b2 authentication metadata and the output configuration ID required to complete the request.
+ *
+ * @author Michel Mansour
+ */
 public class SaveRequest {
 
-	private OutputConfiguration outputConfiguration;
-	private I2b2AuthMetadata i2b2AuthMetadata;
+	/*
+	 * i2b2 authentication metadata of the user making the request
+	 */
+	private I2b2AuthMetadata authMetadata;
 
+	/*
+	 * the output configuration to save
+	 */
+	private OutputConfiguration outputConfiguration;
+
+	/**
+	 * Gets the i2b2 authentication metadata of the user making the request.
+	 *
+	 * @return {@link I2b2AuthMetadata} object containing the metadata of the user making the request
+	 */
+	public I2b2AuthMetadata getAuthMetadata() {
+		return authMetadata;
+	}
+
+	/**
+	 * Sets the i2b2 authentication metadata of the user making the request.
+	 *
+	 * @param authMetadata contains the i2b2 authentication metadata of the user making the request
+	 */
+	public void setAuthMetadata(I2b2AuthMetadata authMetadata) {
+		this.authMetadata = authMetadata;
+	}
+
+	/**
+	 * Gets the output configuration to save.
+	 *
+	 * @return the {@link OutputConfiguration} to save
+	 */
 	public OutputConfiguration getOutputConfiguration() {
 		return outputConfiguration;
 	}
 
+	/**
+	 * Sets the output configuration to save.
+	 *
+	 * @param outputConfiguration the output configuration to save
+	 */
 	public void setOutputConfiguration(OutputConfiguration outputConfiguration) {
 		this.outputConfiguration = outputConfiguration;
 	}
 
-	public I2b2AuthMetadata getI2b2AuthMetadata() {
-		return i2b2AuthMetadata;
-	}
-
-	public void setI2b2AuthMetadata(I2b2AuthMetadata i2b2AuthMetadata) {
-		this.i2b2AuthMetadata = i2b2AuthMetadata;
-	}
 }

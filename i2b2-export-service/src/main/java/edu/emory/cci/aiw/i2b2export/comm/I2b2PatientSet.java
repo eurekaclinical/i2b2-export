@@ -20,23 +20,56 @@ package edu.emory.cci.aiw.i2b2export.comm;
  * #L%
  */
 
+/**
+ * A bean for i2b2 patient sets. Used for retrieving PDO results for formatting from i2b2. Instances of this class will
+ * generally be created and populated using JSON objects sent by the client.
+ *
+ * @author Michel Mansour
+ */
 public final class I2b2PatientSet {
 
+	/*
+	 * the i2b2 patient set collection ID
+	 */
 	private Integer patientSetCollId;
+
+	/*
+	 * the size of the patient set
+	 */
 	private Integer patientSetSize;
 
+	/**
+	 * Gets the i2b2 patient set collection ID.
+	 *
+	 * @return the patient set collection ID
+	 */
 	public Integer getPatientSetCollId() {
 		return patientSetCollId;
 	}
 
+	/**
+	 * Sets the i2b2 patient set collection ID
+	 *
+	 * @param patientSetCollId the patient set collection ID
+	 */
 	public void setPatientSetCollId(Integer patientSetCollId) {
 		this.patientSetCollId = patientSetCollId;
 	}
 
+	/**
+	 * Gets the patient set size.
+	 *
+	 * @return the patient set size
+	 */
 	public Integer getPatientSetSize() {
 		return patientSetSize;
 	}
 
+	/**
+	 * Sets the patient set size
+	 *
+	 * @param patientSetSize the patient set size
+	 */
 	public void setPatientSetSize(Integer patientSetSize) {
 		this.patientSetSize = patientSetSize;
 	}

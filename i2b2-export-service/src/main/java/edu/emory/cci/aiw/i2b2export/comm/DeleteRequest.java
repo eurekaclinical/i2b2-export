@@ -20,23 +20,56 @@ package edu.emory.cci.aiw.i2b2export.comm;
  * #L%
  */
 
+/**
+ * A bean to communicate deletion requests from the client. It will generally populated from a JSON object.
+ * Encapsulates the i2b2 authentication metadata and the output configuration ID required to complete the request.
+ *
+ * @author Michel Mansour
+ */
 public class DeleteRequest {
 
+	/*
+	 * i2b2 authentication metadata of the user making the request
+	 */
 	private I2b2AuthMetadata authMetadata;
+
+	/*
+	 * ID of the configuration to delete
+	 */
 	private Long outputConfigurationId;
 
+	/**
+	 * Gets the i2b2 authentication metadata of the user making the request.
+	 *
+	 * @return {@link I2b2AuthMetadata} object containing the metadata of the user making the request
+	 */
 	public I2b2AuthMetadata getAuthMetadata() {
 		return authMetadata;
 	}
 
+	/**
+	 * Sets the i2b2 authentication metadata of the user making the request.
+	 *
+	 * @param authMetadata contains the i2b2 authentication metadata of the user making the request
+	 */
 	public void setAuthMetadata(I2b2AuthMetadata authMetadata) {
 		this.authMetadata = authMetadata;
 	}
 
+	/**
+	 * Gets the ID of the output configuration to delete.
+	 *
+	 * @return the output configuration ID to delete as a {@link Long}
+	 */
 	public Long getOutputConfigurationId() {
 		return outputConfigurationId;
 	}
 
+	/**
+	 * Sets the ID of the output configuration to delete.
+	 *
+	 * @param outputConfigurationId the ID of the output configuration to delete
+	 */
 	public void setOutputConfigurationId(Long outputConfigurationId) {
 		this.outputConfigurationId = outputConfigurationId;
 	}

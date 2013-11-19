@@ -20,32 +20,75 @@ package edu.emory.cci.aiw.i2b2export.comm;
  * #L%
  */
 
+/**
+ * A bean to communicate output configuration summaries to the client. The summary consists only of the ID and name of
+ * the configuration, which is used, for example, in displaying a list of them.
+ *
+ * @author Michel Mansour
+ */
 public class OutputConfigurationSummary {
 
+	/*
+	 * configuration ID
+	 */
 	private Long configurationId;
+
+	/*
+	 * name of the configuration
+	 */
 	private String configurationName;
 
+	/**
+	 * Default constructor. Sets the ID and name to unusable values. Should be called only if the modifiers will be
+	 * called immediately after, for instance by a JSON deserializer.
+	 */
 	public OutputConfigurationSummary() {
 		this(-1L, "");
 	}
 
+	/**
+	 * Constructs an instance with the given configuration ID and name.
+	 *
+	 * @param id the configuration ID
+	 * @param name the configuration name
+	 */
 	public OutputConfigurationSummary(Long id, String name) {
 		this.configurationId = id;
 		this.configurationName = name;
 	}
 
+	/**
+	 * Gets the configuration ID.
+	 *
+	 * @return the configuration ID
+	 */
 	public Long getConfigurationId() {
 		return configurationId;
 	}
 
+	/**
+	 * Sets the configuration ID
+	 *
+	 * @param configurationId the configuration ID
+	 */
 	public void setConfigurationId(Long configurationId) {
 		this.configurationId = configurationId;
 	}
 
+	/**
+	 * Gets the configuration name.
+	 *
+	 * @return the configuration name
+	 */
 	public String getConfigurationName() {
 		return configurationName;
 	}
 
+	/**
+	 * Sets the configuration name.
+	 *
+	 * @param configurationName the configuration name
+	 */
 	public void setConfigurationName(String configurationName) {
 		this.configurationName = configurationName;
 	}
