@@ -242,7 +242,7 @@ public class OutputConfigurationResourceTest extends AbstractResourceTest {
 		authMetadata.setUsername("test-user");
 		authMetadata.setPasswordNode("<password>test-password</password>");
 		authMetadata.setProjectId("test-project");
-		request.setI2b2AuthMetadata(authMetadata);
+		request.setAuthMetadata(authMetadata);
 
 		OutputConfiguration config = new OutputConfiguration();
 		config.setUsername("test-user");
@@ -265,7 +265,7 @@ public class OutputConfigurationResourceTest extends AbstractResourceTest {
 		authMetadata.setUsername("test-user");
 		authMetadata.setPasswordNode("<password>test-password</password>");
 		authMetadata.setProjectId("test-project");
-		request.setI2b2AuthMetadata(authMetadata);
+		request.setAuthMetadata(authMetadata);
 
 		OutputConfiguration config = new OutputConfiguration();
 		config.setUsername("test-user");
@@ -288,7 +288,7 @@ public class OutputConfigurationResourceTest extends AbstractResourceTest {
 		authMetadata.setUsername("test-user");
 		authMetadata.setPasswordNode("<password>test-password</password>");
 		authMetadata.setProjectId("test-project");
-		request.setI2b2AuthMetadata(authMetadata);
+		request.setAuthMetadata(authMetadata);
 
 		OutputConfiguration config = new OutputConfiguration();
 		config.setUsername("test-user");
@@ -311,7 +311,7 @@ public class OutputConfigurationResourceTest extends AbstractResourceTest {
 		authMetadata.setUsername("bad-user");
 		authMetadata.setPasswordNode("<password>test-password</password>");
 		authMetadata.setProjectId("test-project");
-		request.setI2b2AuthMetadata(authMetadata);
+		request.setAuthMetadata(authMetadata);
 
 		OutputConfiguration config = new OutputConfiguration();
 		config.setUsername("test-user");
