@@ -41,44 +41,74 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+/**
+ * Utility methods for handling XPaths and converting between XML document objects and strings.
+ *
+ * @author Michel Mansour
+ */
 public final class XmlUtil {
-	public static Object evalXPath(Node d, String expr, QName returnType)
-			throws XPathExpressionException {
+
+	private XmlUtil() {
+		// to prevent instantiation
+	}
+
+	/**
+	 * Gets the object at the given XPath in the given XML node. See also: {@link #evalXPath(String, String, javax.xml.namespace.QName)}.
+	 *
+	 * @param d the node to look in
+	 * @param expr the XPath expression to evaluate
+	 * @param returnType the expected return type of the object
+	 * @return the object at the specified XPath in the node
+	 * @throws XPathExpressionException if an error occurs processing the XPath expression
+	 */
+	public static Object evalXPath(Node d, String expr, QName returnType) throws XPathExpressionException {
 		return XPathFactory.newInstance().newXPath().compile(expr)
 				.evaluate(d, returnType);
 	}
 
-	public static Object evalXPath(String xml, String expr, QName returnType)
-			throws XPathExpressionException, SAXException, IOException,
-			ParserConfigurationException {
+	/**
+	 * Gets the object at the given XPath in the given XML string. See also: {@link #evalXPath(org.w3c.dom.Node, String, javax.xml.namespace.QName)}.
+	 *
+	 * @param xml the XML string to look in
+	 * @param expr the XPath expression to evaluate
+	 * @param returnType expected return type of the object
+	 * @return the object at the specified XPath in the XML string
+	 * @throws XPathExpressionException if an error occurs while processing the XPath expression
+	 * @throws SAXException if an error occurs converting the XML string to an XML node
+	 * @throws IOException if a general IO error occurs
+	 * @throws ParserConfigurationException if an error occurs configuring the parser
+	 */
+	public static Object evalXPath(String xml, String expr, QName returnType) throws XPathExpressionException,
+			SAXException, IOException, ParserConfigurationException {
 		return evalXPath(xmlStringToDocument(xml), expr, returnType);
 	}
 
-	public static String xmlDocumentToString(Node d)
-			throws TransformerFactoryConfigurationError, TransformerException {
+	/**
+	 * Converts an XML document or node to an equivalent string. Applies the reverse operation of {@link #xmlDocumentToString(org.w3c.dom.Node)}.
+	 *
+	 * @param d the node to convert
+	 * @return a String representation of the XML node
+	 * @throws TransformerFactoryConfigurationError if an error occurs configuring the transformer factory
+	 * @throws TransformerException if an error occurs during the transformation
+	 */
+	public static String xmlDocumentToString(Node d) throws TransformerFactoryConfigurationError, TransformerException {
 		StringWriter writer = new StringWriter();
 		Transformer t = TransformerFactory.newInstance().newTransformer();
 		t.transform(new DOMSource(d), new StreamResult(writer));
 		return writer.toString();
 	}
 
-	public static Document xmlStringToDocument(String xml) throws SAXException,
-			IOException, ParserConfigurationException {
+	/**
+	 * Converts an XML string into an equivalent XML document. Applies the reverse operation of {@link #xmlDocumentToString(org.w3c.dom.Node)}.
+	 *
+	 * @param xml the XML string to convert
+	 * @return a {@link Document} equivalent to the specified XML string
+	 * @throws SAXException if an error occurs building the XML document
+	 * @throws IOException if a general IO error occurs
+	 * @throws ParserConfigurationException if an error occurs configuring the XML parser
+	 */
+	public static Document xmlStringToDocument(String xml) throws SAXException, IOException, ParserConfigurationException {
 		return DocumentBuilderFactory.newInstance().newDocumentBuilder()
 				.parse(new InputSource(new StringReader(xml)));
-	}
-
-	public static void main(String[] args) throws XPathExpressionException, SAXException, IOException, ParserConfigurationException {
-		String xml = "<message_header>" + " <security>"
-				+ "     <username>user</username>"
-				+ "     <password isSession=\"true\" valid=\"false\">pass</password>"
-				+ "     <domain>domain.com</domain>" + " </security>"
-				+ "</message_header>";
-		Node secNode = (Node) evalXPath(xml,
-				"//message_header/security/password", XPathConstants.NODE);
-		for (int i = 0; i < secNode.getAttributes().getLength(); i++) {
-			Node node = secNode.getAttributes().item(i);
-			System.out.println(node.getNodeName() + "|" + node.getNodeValue());
-		}
 	}
 }
