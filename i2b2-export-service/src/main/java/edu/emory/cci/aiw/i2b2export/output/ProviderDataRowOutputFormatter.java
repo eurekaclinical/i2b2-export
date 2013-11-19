@@ -39,14 +39,14 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 
 	@Override
 	protected List<String> rowPrefix() {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		result.add(provider.getName());
 		return result;
 	}
 
 	@Override
 	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
-		Collection<Observation> result = new ArrayList<Observation>();
+		Collection<Observation> result = new ArrayList<>();
 
 		for (Observation o : provider.getObservations()) {
 			if (o.getConceptPath().equals(i2b2Concept.getI2b2Key())) {

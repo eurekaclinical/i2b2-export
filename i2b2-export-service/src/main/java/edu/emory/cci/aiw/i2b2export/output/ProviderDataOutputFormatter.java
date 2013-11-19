@@ -38,7 +38,7 @@ final class ProviderDataOutputFormatter {
 	}
 
 	public List<String[]> format() {
-		List<String[]> result = new ArrayList<String[]>();
+		List<String[]> result = new ArrayList<>();
 
 		for (Observer provider : this.providers) {
 			result.add(new ProviderDataRowOutputFormatter(this.config, provider).format());

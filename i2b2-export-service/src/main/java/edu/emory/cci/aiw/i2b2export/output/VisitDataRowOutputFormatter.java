@@ -43,7 +43,7 @@ final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 
 	@Override
 	public List<String> rowPrefix() {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
 		result.add(visit.getPatient().getPatientId());
@@ -64,7 +64,7 @@ final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 
 	@Override
 	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
-		Collection<Observation> result = new ArrayList<Observation>();
+		Collection<Observation> result = new ArrayList<>();
 
 		for (Observation o : visit.getObservations()) {
 			if (o.getConceptPath().equals(i2b2Concept.getI2b2Key())) {

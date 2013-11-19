@@ -38,7 +38,7 @@ final class PatientDataOutputFormatter {
 	}
 
 	public List<String[]> format() {
-		List<String[]> result = new ArrayList<String[]>();
+		List<String[]> result = new ArrayList<>();
 
 		for (Patient patient : this.patients) {
 			result.add(new PatientDataRowOutputFormatter(this.config, patient).format());

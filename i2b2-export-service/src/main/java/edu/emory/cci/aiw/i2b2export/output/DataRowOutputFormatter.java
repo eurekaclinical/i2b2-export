@@ -80,7 +80,7 @@ public abstract class DataRowOutputFormatter {
 	 * @return an array of {@link String}s representing a single row of output
 	 */
 	public final String[] format() {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 
 		result.addAll(rowPrefix());
 		for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {

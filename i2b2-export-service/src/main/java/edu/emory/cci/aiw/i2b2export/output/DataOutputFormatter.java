@@ -62,7 +62,7 @@ public final class DataOutputFormatter {
 	 * @return the formatted results as a {@link String}
 	 */
 	public String format() {
-		List<String[]> result = new ArrayList<String[]>();
+		List<String[]> result = new ArrayList<>();
 		result.add(new HeaderRowOutputFormatter(config).formatHeader());
 		switch (this.config.getRowDimension()) {
 			case PATIENT:

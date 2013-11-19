@@ -38,7 +38,7 @@ final class VisitDataOutputFormatter {
 	}
 
 	public List<String[]> format() {
-		List<String[]> result = new ArrayList<String[]>();
+		List<String[]> result = new ArrayList<>();
 
 		for (Patient patient : this.patients) {
 			for (Event visit : patient.getEvents()) {

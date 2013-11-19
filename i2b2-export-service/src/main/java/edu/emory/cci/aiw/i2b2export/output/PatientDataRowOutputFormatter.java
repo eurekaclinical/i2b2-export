@@ -46,7 +46,7 @@ final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 
 	@Override
 	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
-		Collection<Observation> result = new ArrayList<Observation>();
+		Collection<Observation> result = new ArrayList<>();
 
 		for (Event e : patient.getEvents()) {
 			for (Observation o : e.getObservations()) {

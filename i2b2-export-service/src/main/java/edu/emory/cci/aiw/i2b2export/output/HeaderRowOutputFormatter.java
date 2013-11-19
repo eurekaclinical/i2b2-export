@@ -51,7 +51,7 @@ public final class HeaderRowOutputFormatter {
 	 * @return an array of <code>String</code>s representing the fields of the header row
 	 */
 	public String[] formatHeader() {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		switch (outputConfiguration.getRowDimension()) {
 			case PROVIDER:
 				result.add("Provider_name");
