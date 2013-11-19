@@ -28,7 +28,7 @@ import edu.emory.cci.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observer;
 import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Patient;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +37,7 @@ import java.util.List;
 public class MockI2b2PdoRetriever implements I2b2PdoRetriever {
 
 	@Override
-	public I2b2PdoResults retrieve(I2b2AuthMetadata authMetadata, Collection<I2b2Concept> concepts, I2b2PatientSet patientSet) throws I2b2PatientDataExportServiceXmlException {
+	public I2b2PdoResults retrieve(I2b2AuthMetadata authMetadata, Collection<I2b2Concept> concepts, I2b2PatientSet patientSet) throws I2b2ExportServiceXmlException {
 		Patient patient = new Patient.Builder("1").build();
 		Event event = new Event.Builder("1", patient).build();
 		Observation obx = new Observation.Builder(event).conceptPath

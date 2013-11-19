@@ -21,12 +21,12 @@ package edu.emory.cci.aiw.i2b2export.i2b2;
  */
 
 import edu.emory.cci.aiw.i2b2export.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2PatientDataExportServiceXmlException;
+import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 
 public class MockI2b2UserAuthenticator implements I2b2UserAuthenticator {
 
 	@Override
-	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws I2b2PatientDataExportServiceXmlException {
+	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws I2b2ExportServiceXmlException {
 		if (authMetadata.getUsername().equals("test-user")) {
 			return true;
 		} else {
