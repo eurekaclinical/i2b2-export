@@ -26,6 +26,7 @@ import edu.emory.cci.aiw.i2b2export.resource.I2b2ExportServiceException;
  * An exception for errors that occur when dealing with i2b2 XML messaging.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class I2b2ExportServiceXmlException extends I2b2ExportServiceException {
 

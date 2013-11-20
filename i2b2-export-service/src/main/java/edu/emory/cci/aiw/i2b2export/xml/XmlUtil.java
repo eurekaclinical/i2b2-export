@@ -45,6 +45,7 @@ import java.io.StringWriter;
  * Utility methods for handling XPaths and converting between XML document objects and strings.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class XmlUtil {
 
