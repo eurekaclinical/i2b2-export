@@ -32,6 +32,7 @@ import java.util.Map;
  * Jersey servlet configuration.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class ServletConfigModule extends JerseyServletModule {
 

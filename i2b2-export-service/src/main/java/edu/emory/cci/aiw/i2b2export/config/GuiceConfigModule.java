@@ -34,6 +34,7 @@ import edu.emory.cci.aiw.i2b2export.i2b2.I2b2UserAuthenticatorImpl;
  * Configuration for Guice interface bindings.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class GuiceConfigModule extends AbstractModule {
 

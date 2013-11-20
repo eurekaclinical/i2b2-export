@@ -29,6 +29,7 @@ import com.google.inject.servlet.GuiceServletContextListener;
  * Configuration for Guice dependency injection.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class GuiceConfig extends GuiceServletContextListener {
 
