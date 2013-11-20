@@ -24,6 +24,7 @@ package edu.emory.cci.aiw.i2b2export.resource;
  * General exception thrown from the application. It wraps any lower level exceptions.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class I2b2ExportServiceException extends Exception {
 

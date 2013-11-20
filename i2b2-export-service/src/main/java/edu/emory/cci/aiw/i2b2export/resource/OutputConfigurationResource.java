@@ -46,6 +46,7 @@ import java.util.List;
  * A Jersey resource for handling requests relating to output configurations.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 @Path("/config")
 @Produces(MediaType.APPLICATION_JSON)

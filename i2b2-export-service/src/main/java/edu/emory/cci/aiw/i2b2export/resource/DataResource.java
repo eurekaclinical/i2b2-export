@@ -53,6 +53,7 @@ import java.util.HashSet;
  * A Jersey resource for handling requests relating to retrieving data from i2b2.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 @Path("/export")
 public final class DataResource {
