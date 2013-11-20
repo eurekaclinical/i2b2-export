@@ -2,7 +2,7 @@ package edu.emory.cci.aiw.i2b2export.i2b2.pdo;
 
 /*
  * #%L
- * i2b2 Patient Data Export Service
+ * i2b2 Export Service
  * %%
  * Copyright (C) 2013 Emory University
  * %%
