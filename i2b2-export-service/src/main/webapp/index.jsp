@@ -17,11 +17,11 @@
   limitations under the License.
   #L%
   --%>
-<%@ page import="edu.emory.cci.aiw.i2b2patientdataexport.i2b2.I2b2CommUtil" %>
+<%@ page import="edu.emory.cci.aiw.i2b2export.i2b2.I2b2CommUtil" %>
 
 <html>
 <body>
-<h2>i2b2-patient-data-export-service</h2>
+<h2>i2b2-export-service</h2>
 <b>i2b2 Proxy URL:</b> <%= I2b2CommUtil.getProxyUrl() %>
 <br/>
 <b>i2b2 Service Host URL:</b> <%= I2b2CommUtil.getI2b2ServiceHostUrl() %>
