@@ -36,6 +36,9 @@ import java.util.Map;
  * run via this class's main method, which accepts two parameters: the name of
  * the Hibernate dialect to generate the DDL for, and the location of the output
  * file.
+ *
+ * @author Michel Mansour
+ * @since 1.0
  */
 final class DdlGenerator {
 
