@@ -25,6 +25,7 @@ package edu.emory.cci.aiw.i2b2export.comm;
  * populated using JSON objects sent from the client.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class I2b2AuthMetadata {
 

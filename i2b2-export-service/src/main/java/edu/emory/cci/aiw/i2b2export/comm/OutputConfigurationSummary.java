@@ -25,6 +25,7 @@ package edu.emory.cci.aiw.i2b2export.comm;
  * the configuration, which is used, for example, in displaying a list of them.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class OutputConfigurationSummary {
 

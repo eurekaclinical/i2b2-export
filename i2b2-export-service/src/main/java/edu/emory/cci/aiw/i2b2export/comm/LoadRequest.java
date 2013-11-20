@@ -25,6 +25,7 @@ package edu.emory.cci.aiw.i2b2export.comm;
  * Encapsulates the i2b2 authentication metadata and the output configuration ID required to complete the request.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class LoadRequest {
 
