@@ -37,14 +37,15 @@ etc/i2b2export.properties.
 DATABASE CONFIGURATION
 
 The i2b2 Export Service is configured to look for a database using
-the JNDI name: i2b2-export-service. You must configure your application
-server to specify the connection information for the database this name maps to.
+the JNDI name: I2b2ExportServiceDS (this can be changed in the persistence.xml
+found in the unpacked WAR file). You must configure your application server to
+specify the connection information for the database this name maps to.
 
 For example, in Tomcat 7, this configuration goes in the context.xml:
 
 <Context>
 ...
-    <Resource name="jdbc/i2b2-export-service" auth="Container"
+    <Resource name="jdbc/I2b2ExportServiceDS" auth="Container"
             type="javax.sql.DataSource"
             driverClassName="JDBC_DRIVER_CLASS_NAME"
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
