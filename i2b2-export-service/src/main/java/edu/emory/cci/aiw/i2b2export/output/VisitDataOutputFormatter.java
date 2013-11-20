@@ -28,6 +28,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Output formatter for when each row represents a visit.
+ *
+ * @author Michel Mansour
+ * @version 1.0
+ */
 final class VisitDataOutputFormatter {
 	private final OutputConfiguration config;
 	private final Collection<Patient> patients;

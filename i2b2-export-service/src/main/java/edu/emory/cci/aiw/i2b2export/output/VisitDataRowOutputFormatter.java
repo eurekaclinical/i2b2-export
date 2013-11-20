@@ -32,13 +32,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Output formatter for visit rows.
+ *
+ * @author Michel Mansour
+ * @since 1.0
+ */
 final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Event visit;
 
 	public VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
 		super(config);
 		this.visit = visit;
-
 	}
 
 	@Override

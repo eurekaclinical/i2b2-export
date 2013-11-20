@@ -31,6 +31,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Output formatter for a patient row.
+ *
+ * @author Michel Mansour
+ * @since 1.0
+ */
 final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Patient patient;
 

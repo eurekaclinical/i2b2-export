@@ -29,6 +29,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Output formatter for a provider row.
+ *
+ * @author Michel Mansour
+ * @since 1.0
+ */
 final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Observer provider;
 

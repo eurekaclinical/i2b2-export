@@ -27,6 +27,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Output formatter for when each row represents a provider.
+ *
+ * @author Michel Mansour
+ * @since 1.0
+ */
 final class ProviderDataOutputFormatter {
 
 	private final OutputConfiguration config;
