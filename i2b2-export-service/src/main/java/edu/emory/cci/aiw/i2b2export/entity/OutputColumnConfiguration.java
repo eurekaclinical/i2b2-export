@@ -38,6 +38,7 @@ import javax.persistence.Table;
  * A JPA entity representing an output column configuration.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 @Entity
 @Table(name = "column_configs")

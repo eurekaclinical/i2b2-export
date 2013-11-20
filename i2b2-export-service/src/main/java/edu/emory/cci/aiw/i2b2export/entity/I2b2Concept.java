@@ -33,6 +33,7 @@ import javax.persistence.Table;
  * A JPA entity representing an i2b2 concept.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 @Entity
 @Table(name = "i2b2_concepts")

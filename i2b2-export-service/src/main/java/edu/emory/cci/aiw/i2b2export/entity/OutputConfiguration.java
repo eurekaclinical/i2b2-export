@@ -38,6 +38,7 @@ import java.util.List;
  * A JPA entity for representing output configurations.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 @Entity
 @Table(name = "output_configs", uniqueConstraints = {
