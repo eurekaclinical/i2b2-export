@@ -45,6 +45,7 @@ import java.util.Set;
  * Parser for i2b2 PDO result XML.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class I2b2PdoResultParser {
 

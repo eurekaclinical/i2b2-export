@@ -28,6 +28,7 @@ import java.util.List;
  * Represents a patient in i2b2's Patient Data Object model. Follows the builder pattern. Patients are ordered by ID.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class Patient implements Comparable<Patient> {
 

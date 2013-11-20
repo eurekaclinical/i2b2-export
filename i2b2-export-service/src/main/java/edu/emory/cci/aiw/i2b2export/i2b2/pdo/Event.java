@@ -30,6 +30,7 @@ import java.util.List;
  * ordered according their IDs.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class Event implements Comparable<Event> {
 

@@ -26,6 +26,7 @@ import java.util.Date;
  * Represents an observation in i2b2's Patient Data Object model. Follows the builder pattern for construction.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class Observation {
 

@@ -28,6 +28,7 @@ import java.util.Collections;
  * result XML response.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class I2b2PdoResults {
 

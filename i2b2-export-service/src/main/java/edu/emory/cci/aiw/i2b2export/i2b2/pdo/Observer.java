@@ -28,6 +28,7 @@ import java.util.Set;
  * Represents an observer (or provider) in i2b2's Patient Data Object model. Follows the builder pattern.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class Observer {
 

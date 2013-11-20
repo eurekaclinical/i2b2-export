@@ -29,6 +29,7 @@ import java.util.HashMap;
  * @param <V> the type of the map's values
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class CustomNullHashMap<K, V> extends HashMap<K, V> {
 	private final V missingKeyValue;
