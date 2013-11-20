@@ -47,6 +47,9 @@ import java.util.Map;
  * Implementation of the i2b2 user authentication interface. It authenticates i2b2 users by filling out the i2b2 user
  * authentication XML template and sending it to the i2b2 service defined in the application's properties file (see:
  * {@link I2b2CommUtil}).
+ *
+ * @author Michel Mansour
+ * @since 1.0
  */
 public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 
