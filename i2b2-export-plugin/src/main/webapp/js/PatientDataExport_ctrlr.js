@@ -14,8 +14,8 @@
 // THESE NEED TO BE SET CORRECTLY FOR THIS PLUGIN TO WORK //
 ////////////////////////////////////////////////////////////
 
-// the URL of the I2b2PatientDataExportService's REST methods
-// it should look something like: http://hostname/path/to/deployment/directory/i2b2-export-service/rest
+// the URL of the i2b2 Export Service REST methods
+// it should look something like: http://hostname/path/to/i2b2-export-service/rest
 // the hostname must be the external hostname of the machine; 'localhost' or any variation will not work
 i2b2.PatientDataExport.SERVICE_URL = 'http://hostname/i2b2-export-service/rest';
 
