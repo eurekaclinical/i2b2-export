@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.output;
+package edu.emory.bmi.aiw.i2b2export.output;
 
 /*
  * #%L
@@ -20,8 +20,8 @@ package edu.emory.cci.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import junit.framework.Assert;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;

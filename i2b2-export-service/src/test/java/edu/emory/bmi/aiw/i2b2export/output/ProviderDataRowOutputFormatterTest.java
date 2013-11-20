@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.output;
+package edu.emory.bmi.aiw.i2b2export.output;
 
 /*
  * #%L
@@ -20,15 +20,16 @@ package edu.emory.cci.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
-import edu.emory.cci.aiw.i2b2export.i2b2.I2b2CommUtil;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Event;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observation;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Patient;
-import junit.framework.Assert;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -36,12 +37,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class VisitDataRowOutputFormatterTest {
+public class ProviderDataRowOutputFormatterTest {
 
 	private OutputConfiguration config;
-	private Event visit;
+	private Observer provider;
 
-	public VisitDataRowOutputFormatterTest() throws ParseException {
+	public ProviderDataRowOutputFormatterTest() throws ParseException {
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
 		config = new OutputConfiguration();
@@ -55,62 +56,70 @@ public class VisitDataRowOutputFormatterTest {
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
 		Patient patient = new Patient.Builder("P1").build();
-		visit = new Event.Builder("visit", patient).startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T14:00:00.000-0500")).build();
+		Event e1 = new Event.Builder("E1", patient).startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T14:00:00.000-0500")).build();
+		Event e2 = new Event.Builder("E2", patient).startDate(fmt.parse("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse("2013-02-02T14:00:00.000-0500")).build();
+		Event e3 = new Event.Builder("E3", patient).startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T14:00:00.000-0500")).build();
 
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider = new Observer.Builder("\\i2b2INTERNAL|Provider\\i2b2INTERNAL|Provider|S\\i2b2INTERNAL|Provider:SMITH, JOHN\\", "i2b2INTERNAL|Provider:SMITH, JOHN").name("SMITH, JOHN").build();
+
+		provider.addObservation(new Observation.Builder(e1).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
 				("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse
 				("2013-01-01T10:00:00.000-0500")).tval("100").nval("100")
 				.valuetype("N")
 				.units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e2).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
 				("2013-02-02T10:00:00.000-0500")).endDate(fmt.parse
 				("2013-02-02T11:00:00.000-0500")).tval("200").nval("200")
 				.valuetype("N")
 				.units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e3).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
 				("2013-03-03T11:00:00.000-0500")).endDate(fmt.parse
 				("2013-03-03T12:00:00.000-0500")).tval("300").nval("300")
 				.valuetype("N")
 				.units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e1).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
 				("2013-01-01T12:00:00.000-0500")).endDate(fmt.parse
 				("2013-04-04T13:00:00.000-0500")).tval("400").nval("400")
 				.valuetype("N")
 				.units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e2).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
 				("2013-02-02T13:00:00.000-0500")).endDate(fmt.parse
 				("2013-05-05T14:00:00.000-0500")).tval("500").nval("500")
 				.valuetype("N")
 				.units("U").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e3).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
-				("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse
+				("2013-03-03T10:00:00.000-0500")).endDate(fmt.parse
 				("2013-03-03T09:05:00.000-0500")).tval("1.0").nval("1.0")
 				.valuetype("N")
 				.units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e1).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
 				("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse
 				("2013-01-01T09:05:00.000-0500")).tval("1.5").nval("1.5")
 				.valuetype("N")
 				.units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e2).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
 				("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse
 				("2013-02-02T09:05:00.000-0500")).tval("1.8").nval("1.8")
 				.valuetype("N")
 				.units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath
+		provider.addObservation(new Observation.Builder(e3).conceptPath
 				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
 				("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse
 				("2013-03-03T09:05:00.000-0500")).tval("1.75").nval("1.75")
 				.valuetype("N").units("X").build());
-		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept3").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).build());
+		provider.addObservation(new Observation.Builder(e1).conceptPath("\\\\i2b2\\Concepts\\MyConcept3").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).build());
+
+		patient.addEvent(e1);
+		patient.addEvent(e2);
+		patient.addEvent(e3);
 
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
 		colConfig1.setOutputConfig(config);
@@ -153,7 +162,9 @@ public class VisitDataRowOutputFormatterTest {
 
 	@Test
 	public void testFormat() {
-		VisitDataRowOutputFormatter formatter = new VisitDataRowOutputFormatter(config, visit);
-		Assert.assertEquals("P1,visit,2013-01-01T09:00:00.000-0500,2013-01-01T14:00:00.000-0500,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", StringUtils.join(formatter.format(), ','));
+		ProviderDataRowOutputFormatter formatter = new ProviderDataRowOutputFormatter(config, provider);
+		Assert.assertEquals("SMITH, JOHN,true,1.0," +
+				"2013-03-03T10:00:00.000-0500,2013-03-03T09:05:00.000-0500," +
+				"1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", StringUtils.join(formatter.format(), ','));
 	}
 }

@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.dao;
+package edu.emory.bmi.aiw.i2b2export.dao;
 
 /*
  * #%L
@@ -20,7 +20,7 @@ package edu.emory.cci.aiw.i2b2export.dao;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 
 public class MockOutputColumnConfigurationDao implements OutputColumnConfigurationDao {
 

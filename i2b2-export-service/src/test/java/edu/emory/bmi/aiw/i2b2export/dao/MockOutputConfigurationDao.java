@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.dao;
+package edu.emory.bmi.aiw.i2b2export.dao;
 
 /*
  * #%L
@@ -20,8 +20,8 @@ package edu.emory.cci.aiw.i2b2export.dao;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashMap;

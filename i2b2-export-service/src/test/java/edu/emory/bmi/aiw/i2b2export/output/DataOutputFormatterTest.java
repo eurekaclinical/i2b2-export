@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.output;
+package edu.emory.bmi.aiw.i2b2export.output;
 
 /*
  * #%L
@@ -20,15 +20,15 @@ package edu.emory.cci.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
-import edu.emory.cci.aiw.i2b2export.i2b2.I2b2CommUtil;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Event;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observation;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observer;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Patient;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import junit.framework.Assert;
 import org.junit.Test;
 

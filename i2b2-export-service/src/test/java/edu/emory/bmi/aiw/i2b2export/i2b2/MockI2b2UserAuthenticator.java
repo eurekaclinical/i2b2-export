@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.i2b2;
+package edu.emory.bmi.aiw.i2b2export.i2b2;
 
 /*
  * #%L
@@ -20,8 +20,8 @@ package edu.emory.cci.aiw.i2b2export.i2b2;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
+import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
+import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 
 public class MockI2b2UserAuthenticator implements I2b2UserAuthenticator {
 

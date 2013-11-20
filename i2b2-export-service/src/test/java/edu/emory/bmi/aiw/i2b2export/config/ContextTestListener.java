@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.config;
+package edu.emory.bmi.aiw.i2b2export.config;
 
 /*
  * #%L

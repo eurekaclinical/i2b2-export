@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.resource;
+package edu.emory.bmi.aiw.i2b2export.resource;
 
 /*
  * #%L

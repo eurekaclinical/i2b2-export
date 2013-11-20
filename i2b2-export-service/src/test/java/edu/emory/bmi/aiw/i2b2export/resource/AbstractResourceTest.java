@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.resource;
+package edu.emory.bmi.aiw.i2b2export.resource;
 
 /*
  * #%L
@@ -31,8 +31,8 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
-import edu.emory.cci.aiw.i2b2export.config.AppTestModule;
-import edu.emory.cci.aiw.i2b2export.config.ContextTestListener;
+import edu.emory.bmi.aiw.i2b2export.config.AppTestModule;
+import edu.emory.bmi.aiw.i2b2export.config.ContextTestListener;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletContextListener;

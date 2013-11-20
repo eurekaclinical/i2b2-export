@@ -1,4 +1,4 @@
-package edu.emory.cci.aiw.i2b2export.i2b2;
+package edu.emory.bmi.aiw.i2b2export.i2b2;
 
 /*
  * #%L
@@ -20,15 +20,15 @@ package edu.emory.cci.aiw.i2b2export.i2b2;
  * #L%
  */
 
-import edu.emory.cci.aiw.i2b2export.comm.I2b2AuthMetadata;
-import edu.emory.cci.aiw.i2b2export.comm.I2b2PatientSet;
-import edu.emory.cci.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Event;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observation;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Observer;
-import edu.emory.cci.aiw.i2b2export.i2b2.pdo.Patient;
-import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
+import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
+import edu.emory.bmi.aiw.i2b2export.comm.I2b2PatientSet;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
+import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 
 import java.util.ArrayList;
 import java.util.Collection;
