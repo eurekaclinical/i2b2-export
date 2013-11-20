@@ -19,10 +19,6 @@
 // the hostname must be the external hostname of the machine; 'localhost' or any variation will not work
 i2b2.PatientDataExport.SERVICE_URL = 'http://hostname/i2b2-export-service/rest';
 
-// the path from the web server's document root to this plugin's images directory
-// for most i2b2 installations, the default value should work
-i2b2.PatientDataExport.IMG_DIR = '/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images/'
-
 ///////////////////////////////////////
 // END CONFIGURATION SECTION         //
 //                                   //
@@ -32,7 +28,7 @@ i2b2.PatientDataExport.IMG_DIR = '/webclient/js-i2b2/cells/plugins/local/Patient
 
 // global row index counter because the concept drop handlers
 // seem to fail if a handler is applied to the same object twice in the same session
-i2b2.PatientDataExport.ROW_INDEX = 1;
+i2b2.PatientDataExport.ROW_INDEX = 0;
 
 i2b2.PatientDataExport.Init = function(loadedDiv) {
 	// register DIV as valid DragDrop target for Patient Record Sets (PRS) objects
@@ -43,17 +39,22 @@ i2b2.PatientDataExport.Init = function(loadedDiv) {
 	i2b2.sdx.Master.setHandlerCustom('PatientDataExport-CONCPTDROP-1', 'CONCPT', 'DropHandler', function(sdxData) { i2b2.PatientDataExport.conceptDropped(sdxData, 1); });
 	i2b2.sdx.Master.setHandlerCustom('PatientDataExport-PRSDROP', 'PRS', 'DropHandler', i2b2.PatientDataExport.prsDropped);
 
+	// set the assets directory
+	var code = i2b2.PatientDataExport.cellCode;
+	var pluginDir = i2b2.hive.cfg.lstCells[code].forceDir;
+	if (!pluginDir) {
+		pluginDir = 'cells'
+	}
+	i2b2.PatientDataExport.IMG_DIR = i2b2.hive.cfg.urlFramework + pluginDir + '/' + code + '/assets/images/';
+
 	// initialize configuration object
 	i2b2.PatientDataExport.model.configuration = {};
 	i2b2.PatientDataExport.model.configuration.columnConfigs = [];
 	
 	// initialize the first configuration
-	i2b2.PatientDataExport.initColumnConfig('1');
+	i2b2.PatientDataExport.addColumnConfig();
 	
 	$('PatientDataExport-userConfigsList').addEventListener('change', i2b2.PatientDataExport.userConfigSelected);
-	$('PatientDataExport-upBtn-1').addEventListener('click', i2b2.PatientDataExport.moveUp);
-	$('PatientDataExport-dnBtn-1').addEventListener('click', i2b2.PatientDataExport.moveDown);
-	$('PatientDataExport-dispfmt-select-1').addEventListener('change', i2b2.PatientDataExport.onDispFmtChange);
 	$('PatientDataExport-addColumnBtn').addEventListener('click', i2b2.PatientDataExport.addColumnConfig);
 	$('PatientDataExport-previewBtn').addEventListener('click', i2b2.PatientDataExport.generatePreview);
 	$('PatientDataExport-saveonly').addEventListener('click', i2b2.PatientDataExport.saveConfig);

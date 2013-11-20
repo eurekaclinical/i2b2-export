@@ -8,7 +8,7 @@ This is the i2b2 Export plugin, an i2b2 plugin for exporting patient data
 from i2b2 to CSV files. Users can configure the format of the CSV file using the
 plugin's interface, as well as save, load, and delete configurations. More
 information on doing so is available in the plugin's Help tab. The plugin
-communicates with i2b2's cells via the i2b2 Patient Data Export Service, a RESTful
+communicates with i2b2's cells via the i2b2 Export Service, a RESTful
 web service that routes requests from the plugin to the appropriate i2b2 cell,
 as well as providing authentication.
 
@@ -32,29 +32,20 @@ This location will be referred to as $I2B2_ROOT.
 1. Locate your i2b2 insallation's plugins directory: $I2B2_ROOT/js-i2b2/cells/plugins.
 
 2. Create a new directory inside the plugins directory. This directory will be
-referred to as $CUSTOM_PLUGIN_DIR.
+referred to as $CUSTOM_PLUGIN_DIR. The plugin will show up under this category
+in the i2b2 plugin list.
 
 3. In cell_config_data.js, find the 'config' map and the 'category' key. Change
-the last value of the 'category' array to be $CUSTOM_PLUGIN_DIR. The plugin will
-show up under this category in the i2b2 plugin list.
+the last value of the 'category' array to be $CUSTOM_PLUGIN_DIR.
 
 4. Copy the entire PatientDataExport directory into the directory created in the
 previous step.
 
 5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of i2b2.PatientDataExort.SERVICE_URL
-variable to the location of the i2b2 Patient Data Export Service's REST methods
-that the plugin needs to call.
+variable to the location of the i2b2 Export Service's REST methods that the
+plugin needs to call.
 
-6. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of the i2b2.PatientDataExport.IMG_DIR
-variable to the path from the web server's document root to the plugin's images
-directory. Assuming the installation above, this would be:
-'/webclient/js-i2b2/cells/plugins/local/PatientDataExport/assets/images'.
-
-7. IMPORTANT: In assets/injected_screens.html, find the <img> tags where the
-following files are used: blank16x16.png, move_up.png, and move_down.png. Change
-the 'src' attribute to have the same value as you used in the previous step.
-
-8. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of
+6. Modify $I2B2_ROOT/js-i2b2/i2b2_loader.js to add the plugin to the list of
 plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
 
  { code: "PatientDataExport",
@@ -67,7 +58,7 @@ plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
 (where the plugin was copied to). Where you place this block determines the
 order in which the plugin is displayed in the i2b2 plugin list.
 
-This completes the installation of the Patient Data Export plugin.
+This completes the installation of the i2b2 Export plugin.
 
 CONTACTING US
 
