@@ -32,6 +32,7 @@ import java.util.Collection;
  * Interface for retrieving PDO results from i2b2.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public interface I2b2PdoRetriever {
 

@@ -27,6 +27,7 @@ import edu.emory.cci.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
  * Interface for authenticating an i2b2 user given authentication metadata for that user.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public interface I2b2UserAuthenticator {
 

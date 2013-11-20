@@ -45,6 +45,7 @@ import java.util.Map;
  * and sending that XML to the i2b2 service as defined the application's properties file (see {@link I2b2CommUtil}).
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 

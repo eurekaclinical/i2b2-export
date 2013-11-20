@@ -48,6 +48,7 @@ import java.util.Properties;
  * Class for utility methods for communicating with i2b2.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class I2b2CommUtil {
 
