@@ -29,6 +29,7 @@ import java.util.List;
  * operations.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public interface OutputConfigurationDao {
 

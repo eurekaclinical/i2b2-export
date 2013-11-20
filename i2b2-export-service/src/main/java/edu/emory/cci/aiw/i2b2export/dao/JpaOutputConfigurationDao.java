@@ -42,6 +42,7 @@ import java.util.List;
  * JPA implementation of the output configuration data access object.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 

@@ -30,6 +30,7 @@ import javax.persistence.EntityManager;
  * JPA implementation of the output column configuration data access object.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public class JpaOutputColumnConfigurationDao implements OutputColumnConfigurationDao {
 

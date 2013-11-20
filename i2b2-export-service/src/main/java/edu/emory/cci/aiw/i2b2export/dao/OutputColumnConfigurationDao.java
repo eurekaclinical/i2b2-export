@@ -26,6 +26,7 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
  * Data access object for {@link edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration}.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public interface OutputColumnConfigurationDao {
 
