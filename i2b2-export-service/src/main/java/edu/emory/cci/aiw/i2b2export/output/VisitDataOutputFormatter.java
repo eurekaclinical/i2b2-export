@@ -38,7 +38,7 @@ final class VisitDataOutputFormatter {
 	private final OutputConfiguration config;
 	private final Collection<Patient> patients;
 
-	public VisitDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
+	VisitDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
 		this.config = config;
 		this.patients = patients;
 	}

@@ -32,7 +32,7 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public interface ColumnOutputFormatter {
+interface ColumnOutputFormatter {
 
 	/**
 	 * Generates output for patient data based on a column configuration.
@@ -40,5 +40,5 @@ public interface ColumnOutputFormatter {
 	 * @param data The observations to format. This collection should include all of the observations matching a particular i2b2 concept.
 	 * @return The formatted output
 	 */
-	public List<String> format(Collection<Observation> data);
+	List<String> format(Collection<Observation> data);
 }

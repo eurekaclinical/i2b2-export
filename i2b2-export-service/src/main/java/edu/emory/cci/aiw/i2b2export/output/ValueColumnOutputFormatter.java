@@ -38,7 +38,7 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
+final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 
 	/*
 	 * the i2b2 date format
@@ -51,7 +51,7 @@ public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormat
 	 * @param columnConfig the configuration of the column to format
 	 * @param formatOptions the global format options to apply to the column
 	 */
-	public ValueColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	ValueColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 		i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 	}

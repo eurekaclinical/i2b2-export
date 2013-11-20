@@ -28,20 +28,20 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
  * @author Michel Mansour
  * @since 1.0
  */
-public abstract class AbstractColumnOutputFormatter implements ColumnOutputFormatter {
+abstract class AbstractColumnOutputFormatter implements ColumnOutputFormatter {
 	private final OutputColumnConfiguration columnConfig;
 	private final FormatOptions formatOptions;
 
-	protected AbstractColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	AbstractColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		this.columnConfig = columnConfig;
 		this.formatOptions = formatOptions;
 	}
 
-	protected OutputColumnConfiguration getColumnConfig() {
+	OutputColumnConfiguration getColumnConfig() {
 		return columnConfig;
 	}
 
-	protected FormatOptions getFormatOptions() {
+	FormatOptions getFormatOptions() {
 		return formatOptions;
 	}
 

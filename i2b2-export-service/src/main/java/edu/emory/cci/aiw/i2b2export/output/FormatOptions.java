@@ -29,7 +29,7 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
  * @author Michel Mansour
  * @since 1.0
  */
-public final class FormatOptions {
+final class FormatOptions {
 	private final String missingData;
 
 	/**
@@ -37,7 +37,7 @@ public final class FormatOptions {
 	 *
 	 * @param config the output configuration
 	 */
-	public FormatOptions(OutputConfiguration config) {
+	FormatOptions(OutputConfiguration config) {
 		this.missingData = config.getMissingValue();
 	}
 
@@ -46,7 +46,7 @@ public final class FormatOptions {
 	 *
 	 * @return the string to use for missing data
 	 */
-	public String getMissingData() {
+	String getMissingData() {
 		return missingData;
 	}
 

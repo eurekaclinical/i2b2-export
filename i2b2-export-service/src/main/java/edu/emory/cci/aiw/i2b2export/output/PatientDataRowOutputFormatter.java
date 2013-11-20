@@ -40,7 +40,7 @@ import java.util.List;
 final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Patient patient;
 
-	public PatientDataRowOutputFormatter(OutputConfiguration config, Patient patient) {
+	PatientDataRowOutputFormatter(OutputConfiguration config, Patient patient) {
 		super(config);
 		this.patient = patient;
 	}

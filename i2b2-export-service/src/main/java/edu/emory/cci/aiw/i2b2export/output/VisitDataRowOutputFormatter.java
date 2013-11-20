@@ -41,7 +41,7 @@ import java.util.List;
 final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Event visit;
 
-	public VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
+	VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
 		super(config);
 		this.visit = visit;
 	}

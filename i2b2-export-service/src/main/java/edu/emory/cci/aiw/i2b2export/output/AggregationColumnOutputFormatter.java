@@ -34,7 +34,7 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatter {
+final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatter {
 
 	/**
 	 * Default constructor
@@ -42,7 +42,7 @@ public final class AggregationColumnOutputFormatter extends AbstractColumnOutput
 	 * @param columnConfig the configuration of the column to format
 	 * @param formatOptions the global format options to apply to the column
 	 */
-	public AggregationColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	AggregationColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 	}
 

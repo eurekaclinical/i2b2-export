@@ -38,7 +38,7 @@ import java.util.List;
 final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Observer provider;
 
-	public ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {
+	ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {
 		super(config);
 		this.provider = provider;
 	}

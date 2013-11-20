@@ -38,7 +38,7 @@ final class ProviderDataOutputFormatter {
 	private final OutputConfiguration config;
 	private final Collection<Observer> providers;
 
-	public ProviderDataOutputFormatter(OutputConfiguration config, Collection<Observer> providers) {
+	ProviderDataOutputFormatter(OutputConfiguration config, Collection<Observer> providers) {
 		this.config = config;
 		this.providers = providers;
 	}

@@ -34,7 +34,7 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public final class ExistenceColumnOutputFormatter extends
+final class ExistenceColumnOutputFormatter extends
 		AbstractColumnOutputFormatter {
 
 	/**
@@ -44,7 +44,7 @@ public final class ExistenceColumnOutputFormatter extends
 	 * @param columnConfig the configuration of the column to format
 	 * @param formatOptions the global format options to apply to the column
 	 */
-	public ExistenceColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	ExistenceColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 	}
 

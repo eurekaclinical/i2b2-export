@@ -38,21 +38,21 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public abstract class DataRowOutputFormatter {
+abstract class DataRowOutputFormatter {
 
 	private final OutputConfiguration config;
 	private final FormatOptions formatOptions;
 
-	protected DataRowOutputFormatter(OutputConfiguration config) {
+	DataRowOutputFormatter(OutputConfiguration config) {
 		this.config = config;
 		this.formatOptions = new FormatOptions(config);
 	}
 
-	protected final OutputConfiguration getConfig() {
+	final OutputConfiguration getConfig() {
 		return config;
 	}
 
-	protected final FormatOptions getFormatOptions() {
+	final FormatOptions getFormatOptions() {
 		return formatOptions;
 	}
 
@@ -62,7 +62,7 @@ public abstract class DataRowOutputFormatter {
 	 * @param i2b2Concept the i2b2 concept to match
 	 * @return a {@link Collection} of {@link Observation}s that match the given concept path
 	 */
-	protected abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept);
+	abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept);
 
 	/**
 	 * Generates the first fields of the row that depend on the row dimension rather than the data,
@@ -72,7 +72,7 @@ public abstract class DataRowOutputFormatter {
 	 * @return the first fields of the row, as a {@link String}, joined by the column separator specified in the
 	 *         output configuration
 	 */
-	protected abstract List<String> rowPrefix();
+	abstract List<String> rowPrefix();
 
 	/**
 	 * Formats a row of data according to the instance's column configurations and format options. The result is
@@ -80,7 +80,7 @@ public abstract class DataRowOutputFormatter {
 	 *
 	 * @return an array of {@link String}s representing a single row of output
 	 */
-	public final String[] format() {
+	final String[] format() {
 		List<String> result = new ArrayList<>();
 
 		result.addAll(rowPrefix());
