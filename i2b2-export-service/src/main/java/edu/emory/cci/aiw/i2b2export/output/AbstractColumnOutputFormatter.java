@@ -26,6 +26,7 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputColumnConfiguration;
  * Abstract class for formatting an output column based on a {@link OutputColumnConfiguration} and {@link FormatOptions}.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public abstract class AbstractColumnOutputFormatter implements ColumnOutputFormatter {
 	private final OutputColumnConfiguration columnConfig;

@@ -32,6 +32,7 @@ import java.util.List;
  * empty or not.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class ExistenceColumnOutputFormatter extends
 		AbstractColumnOutputFormatter {

@@ -32,6 +32,7 @@ import java.util.List;
  * Column formatter for aggregation columns.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatter {
 

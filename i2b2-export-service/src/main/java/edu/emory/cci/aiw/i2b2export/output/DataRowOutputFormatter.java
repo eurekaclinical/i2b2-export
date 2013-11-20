@@ -36,6 +36,7 @@ import java.util.List;
  * all implementations.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public abstract class DataRowOutputFormatter {
 

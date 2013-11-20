@@ -31,6 +31,7 @@ import java.util.List;
  * Formatter for the header row of an entire result set.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class HeaderRowOutputFormatter {
 	private final OutputConfiguration outputConfiguration;

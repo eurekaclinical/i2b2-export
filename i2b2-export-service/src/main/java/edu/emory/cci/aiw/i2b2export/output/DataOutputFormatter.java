@@ -32,6 +32,7 @@ import java.util.List;
  * Output formatter for an entire i2b2 result set.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class DataOutputFormatter {
 

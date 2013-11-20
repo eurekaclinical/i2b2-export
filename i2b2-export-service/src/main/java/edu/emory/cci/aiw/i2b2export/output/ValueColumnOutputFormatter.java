@@ -36,6 +36,7 @@ import java.util.List;
  * Column formatter for value columns.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 

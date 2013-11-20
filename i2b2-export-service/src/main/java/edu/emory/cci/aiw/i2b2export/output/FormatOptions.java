@@ -27,6 +27,7 @@ import edu.emory.cci.aiw.i2b2export.entity.OutputConfiguration;
  * the individual column level. Currently, this only includes the string to use when data is missing for the column.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public final class FormatOptions {
 	private final String missingData;

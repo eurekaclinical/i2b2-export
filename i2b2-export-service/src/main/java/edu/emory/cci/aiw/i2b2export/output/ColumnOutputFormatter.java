@@ -30,6 +30,7 @@ import java.util.List;
  * of {@link Observation}s to be output.
  *
  * @author Michel Mansour
+ * @since 1.0
  */
 public interface ColumnOutputFormatter {
 
