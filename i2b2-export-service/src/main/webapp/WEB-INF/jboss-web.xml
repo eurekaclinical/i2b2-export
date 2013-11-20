@@ -20,7 +20,7 @@
 <jboss-app>
 
     <loader-repository>
-        edu.emory.cci.aiw.i2b2export:loader=I2b2ExportClassLoader
+        edu.emory.bmi.aiw.i2b2export:loader=I2b2ExportClassLoader
         <loader-repository-config>
             java2ParentDelegation=false
         </loader-repository-config>

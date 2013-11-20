@@ -17,7 +17,7 @@
   limitations under the License.
   #L%
   --%>
-<%@ page import="edu.emory.cci.aiw.i2b2export.i2b2.I2b2CommUtil" %>
+<%@ page import="edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil" %>
 
 <html>
 <body>
