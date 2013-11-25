@@ -84,7 +84,7 @@ public class OutputColumnConfiguration implements
 		/**
 		 * an aggregation of all of the data for this concept
 		 */
-		AGGREGATION;
+		AGGREGATION
 	}
 
 	@Column(name = "display_format", nullable = false)
@@ -116,7 +116,7 @@ public class OutputColumnConfiguration implements
 		/**
 		 * the average value of data for this concept
 		 */
-		AVG;
+		AVG
 	}
 
 	@Column(name = "aggregation")

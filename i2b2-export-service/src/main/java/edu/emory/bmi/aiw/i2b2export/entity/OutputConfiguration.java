@@ -76,7 +76,7 @@ public class OutputConfiguration {
 		/**
 		 * each row represents a provider
 		 */
-		PROVIDER;
+		PROVIDER
 	}
 
 	@Column(name = "row_dimension", nullable = false)

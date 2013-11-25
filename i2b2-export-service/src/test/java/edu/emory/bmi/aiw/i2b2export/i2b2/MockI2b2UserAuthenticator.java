@@ -27,10 +27,6 @@ public class MockI2b2UserAuthenticator implements I2b2UserAuthenticator {
 
 	@Override
 	public boolean authenticateUser(I2b2AuthMetadata authMetadata) throws I2b2ExportServiceXmlException {
-		if (authMetadata.getUsername().equals("test-user")) {
-			return true;
-		} else {
-			return false;
-		}
+		return authMetadata.getUsername().equals("test-user");
 	}
 }

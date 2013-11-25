@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class AggregationColumnOutputFormatterTest {
-	private OutputConfiguration config;
 	private OutputColumnConfiguration colConfig;
 	private FormatOptions formatOptions;
 	private Collection<Observation> obxs = new ArrayList<>();
@@ -50,7 +49,7 @@ public class AggregationColumnOutputFormatterTest {
 		colConfig.setColumnOrder(0);
 		colConfig.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
 
-		config = new OutputConfiguration();
+		OutputConfiguration config = new OutputConfiguration();
 		config.setName("foo");
 		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);

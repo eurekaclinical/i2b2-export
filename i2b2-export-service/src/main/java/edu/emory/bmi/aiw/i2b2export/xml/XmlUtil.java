@@ -84,7 +84,7 @@ public final class XmlUtil {
 	}
 
 	/**
-	 * Converts an XML document or node to an equivalent string. Applies the reverse operation of {@link #xmlDocumentToString(org.w3c.dom.Node)}.
+	 * Converts an XML document or node to an equivalent string. Applies the reverse operation of {@link #xmlStringToDocument(String)}.
 	 *
 	 * @param d the node to convert
 	 * @return a String representation of the XML node
