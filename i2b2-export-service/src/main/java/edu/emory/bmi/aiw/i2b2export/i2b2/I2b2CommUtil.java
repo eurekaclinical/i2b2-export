@@ -37,7 +37,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -139,8 +138,6 @@ public final class I2b2CommUtil {
 					i2b2ServiceHostUrl = p.getProperty(I2B2_SERVICE_HOST_URL_PROPERTY);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			LOGGER.error(e.getMessage(), e);
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} finally {

@@ -100,15 +100,7 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 			LOGGER.debug("Received authentication status: {}", status);
 
 			return "DONE".equalsIgnoreCase(status);
-		} catch (IOException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (XPathExpressionException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (SAXException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (ParserConfigurationException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (TemplateException e) {
+		} catch (IOException | XPathExpressionException | SAXException | ParserConfigurationException | TemplateException e) {
 			throw new I2b2ExportServiceXmlException(e);
 		}
 

@@ -86,13 +86,7 @@ public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 			Document respXml = I2b2CommUtil.postXmlToI2b2(writer.toString());
 			I2b2PdoResultParser parser = new I2b2PdoResultParser(respXml);
 			return parser.parse();
-		} catch (IOException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (TemplateException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (SAXException e) {
-			throw new I2b2ExportServiceXmlException(e);
-		} catch (ParserConfigurationException e) {
+		} catch (IOException | TemplateException | SAXException | ParserConfigurationException e) {
 			throw new I2b2ExportServiceXmlException(e);
 		}
 	}
