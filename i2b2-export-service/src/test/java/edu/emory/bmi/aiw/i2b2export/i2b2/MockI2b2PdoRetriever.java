@@ -43,13 +43,13 @@ public class MockI2b2PdoRetriever implements I2b2PdoRetriever {
 		Observation obx = new Observation.Builder(event).conceptPath
 				("\\\\i2b2\\Concept").build();
 
-		List<Patient> patients = new ArrayList<Patient>();
+		List<Patient> patients = new ArrayList<>();
 		patients.add(patient);
 
-		List<Event> events = new ArrayList<Event>();
+		List<Event> events = new ArrayList<>();
 		events.add(event);
 
-		List<Observation> obxs = new ArrayList<Observation>();
+		List<Observation> obxs = new ArrayList<>();
 		obxs.add(obx);
 
 		I2b2PdoResults results = new I2b2PdoResults(patients, events,

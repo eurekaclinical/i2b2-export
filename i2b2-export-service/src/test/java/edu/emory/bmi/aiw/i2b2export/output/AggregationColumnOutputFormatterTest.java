@@ -41,7 +41,7 @@ public class AggregationColumnOutputFormatterTest {
 	private OutputConfiguration config;
 	private OutputColumnConfiguration colConfig;
 	private FormatOptions formatOptions;
-	private Collection<Observation> obxs = new ArrayList<Observation>();
+	private Collection<Observation> obxs = new ArrayList<>();
 
 	public AggregationColumnOutputFormatterTest() throws ParseException {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
@@ -111,7 +111,7 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("100.17");
 		expected.add("U");
 		Assert.assertEquals(expected, formatter.format(obxs));
@@ -124,7 +124,7 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500.51");
 		expected.add("U");
 		Assert.assertEquals(expected, formatter.format(obxs));
@@ -137,7 +137,7 @@ public class AggregationColumnOutputFormatterTest {
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("300.35");
 		expected.add("U");
 		Assert.assertEquals(expected, formatter.format(obxs));

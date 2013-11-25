@@ -40,7 +40,7 @@ public class ServletConfigModule extends JerseyServletModule {
 	protected void configureServlets() {
 		filter("/rest/*").through(PersistFilter.class);
 
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
 		params.put(PackagesResourceConfig.PROPERTY_PACKAGES,
 				"edu.emory.bmi.aiw.i2b2export.resource");

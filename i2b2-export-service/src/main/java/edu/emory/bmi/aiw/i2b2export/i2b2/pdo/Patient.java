@@ -105,7 +105,7 @@ public class Patient implements Comparable<Patient> {
 		this.zipCode = builder.zipCode;
 		this.stateCityZip = builder.stateCityZip;
 
-		this.events = new ArrayList<Event>();
+		this.events = new ArrayList<>();
 	}
 
 	@Override

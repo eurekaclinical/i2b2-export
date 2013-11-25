@@ -173,7 +173,7 @@ public class I2b2PdoResultParser {
 		String id = text(patientXml, "patient_id");
 		NodeList params = patientXml.getElementsByTagName("param");
 		Patient.Builder pb = new Patient.Builder(id);
-		Map<String, String> pm = new CustomNullHashMap<String, String>("N/A");
+		Map<String, String> pm = new CustomNullHashMap<>("N/A");
 		for (int i = 0; i < params.getLength(); i++) {
 			Node paramNode = params.item(i);
 			Node nameAttr = paramNode.getAttributes().getNamedItem("column");
@@ -204,7 +204,7 @@ public class I2b2PdoResultParser {
 				.startDate(date(eventXml, "start_date")).endDate(
 						date(eventXml, "end_date"));
 		NodeList params = eventXml.getElementsByTagName("param");
-		Map<String, String> pm = new CustomNullHashMap<String, String>("N/A");
+		Map<String, String> pm = new CustomNullHashMap<>("N/A");
 		for (int i = 0; i < params.getLength(); i++) {
 			Node paramNode = params.item(i);
 			Node nameAttr = paramNode.getAttributes().getNamedItem("column");

@@ -42,7 +42,7 @@ public class ValueColumnOutputFormatterTest {
 	private OutputConfiguration config;
 	private OutputColumnConfiguration colConfig;
 	private FormatOptions formatOptions;
-	private Collection<Observation> obxs = new ArrayList<Observation>();
+	private Collection<Observation> obxs = new ArrayList<>();
 
 	public ValueColumnOutputFormatterTest() throws ParseException {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
@@ -93,7 +93,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("Y");
 		Assert.assertEquals(expected, formatter.format(obxs));
@@ -107,7 +107,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("2013-05-05T13:00:00.000-0400");
 		expected.add("2013-05-05T14:00:00.000-0400");
@@ -122,7 +122,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("Y");
 		expected.add("2013-05-05T13:00:00.000-0400");
@@ -138,7 +138,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("400");
 		expected.add("300");
@@ -155,7 +155,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("400");
 		expected.add("300");
@@ -170,7 +170,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("400");
 		expected.add("300");
@@ -189,7 +189,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("500");
 		expected.add("Y");
 		expected.add("2013-05-05T13:00:00.000-0400");
@@ -229,7 +229,7 @@ public class ValueColumnOutputFormatterTest {
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<String>();
+		List<String> expected = new ArrayList<>();
 		expected.add("(NULL)");
 		expected.add("(NULL)");
 		expected.add("(NULL)");

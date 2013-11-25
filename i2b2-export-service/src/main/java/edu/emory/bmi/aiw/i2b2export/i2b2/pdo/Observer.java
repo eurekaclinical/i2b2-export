@@ -57,7 +57,7 @@ public final class Observer {
 		this.observerCode = builder.observerCode;
 		this.name = builder.name;
 
-		this.observations = new HashSet<Observation>();
+		this.observations = new HashSet<>();
 	}
 
 	/**

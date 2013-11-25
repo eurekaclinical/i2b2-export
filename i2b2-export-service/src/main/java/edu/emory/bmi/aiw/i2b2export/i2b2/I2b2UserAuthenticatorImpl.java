@@ -81,7 +81,7 @@ public final class I2b2UserAuthenticatorImpl implements I2b2UserAuthenticator {
 			Date now = new Date();
 			String messageId = I2b2CommUtil.generateMessageId();
 
-			Map<String, Object> params = new HashMap<String, Object>();
+			Map<String, Object> params = new HashMap<>();
 			params.put("redirectHost", I2b2CommUtil.getI2b2ServiceHostUrl());
 			params.put("domain", authMetadata.getDomain());
 			params.put("username", authMetadata.getUsername());

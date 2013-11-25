@@ -88,7 +88,7 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 		List<OutputConfiguration> result = typedQuery.getResultList();
 
 		if (LOGGER.isDebugEnabled()) {
-			List<String> names = new ArrayList<String>();
+			List<String> names = new ArrayList<>();
 			for (OutputConfiguration config : result) {
 				names.add(config.getName());
 			}

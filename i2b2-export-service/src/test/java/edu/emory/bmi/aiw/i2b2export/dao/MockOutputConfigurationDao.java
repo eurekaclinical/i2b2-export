@@ -30,8 +30,7 @@ import java.util.Map;
 
 public class MockOutputConfigurationDao implements OutputConfigurationDao {
 
-	private Map<Integer, OutputConfiguration> configs = new HashMap<Integer,
-			OutputConfiguration>();
+	private Map<Integer, OutputConfiguration> configs = new HashMap<>();
 
 	@Override
 	public List<OutputConfiguration> getAllByUsername(String username) {
@@ -39,7 +38,7 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 			return null;
 		} else {
 			List<OutputConfiguration> result = new
-					ArrayList<OutputConfiguration>();
+					ArrayList<>();
 			OutputConfiguration config1 = new OutputConfiguration();
 			config1.setId(1L);
 			config1.setUsername(username);

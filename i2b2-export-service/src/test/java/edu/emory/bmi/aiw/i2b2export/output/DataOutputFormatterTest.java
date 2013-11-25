@@ -56,7 +56,7 @@ public class DataOutputFormatterTest {
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
-		Collection<Patient> patients = new ArrayList<Patient>();
+		Collection<Patient> patients = new ArrayList<>();
 		Patient p1 = new Patient.Builder("P1").build();
 		Patient p2 = new Patient.Builder("P2").build();
 		Patient p3 = new Patient.Builder("P3").build();
@@ -65,7 +65,7 @@ public class DataOutputFormatterTest {
 		patients.add(p2);
 		patients.add(p3);
 
-		Collection<Event> visits = new ArrayList<Event>();
+		Collection<Event> visits = new ArrayList<>();
 		// patient 1
 		Event e11 = new Event.Builder("E11", p1).startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T14:00:00.000-0500")).build();
 		Event e12 = new Event.Builder("E12", p1).startDate(fmt.parse("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse("2013-02-02T14:00:00.000-0500")).build();
@@ -99,7 +99,7 @@ public class DataOutputFormatterTest {
 
 		p3.addEvent(e31);
 
-		Collection<Observer> providers = new ArrayList<Observer>();
+		Collection<Observer> providers = new ArrayList<>();
 
 		Observer o1 = new Observer.Builder("\\i2b2INTERNAL|Provider\\i2b2INTERNAL|Provider|S\\i2b2INTERNAL|Provider:SMITH, JOHN", "i2b2INTERNAL|Provider:SMITH, JOHN").name("SMITH, JOHN").build();
 		Observer o2 = new Observer.Builder("\\i2b2INTERNAL|Provider\\i2b2INTERNAL|Provider|D\\i2b2INTERNAL|Provider:DOE, JANE", "i2b2INTERNAL|Provider:DOE, JANE").name("DOE, JANE").build();
@@ -111,7 +111,7 @@ public class DataOutputFormatterTest {
 		providers.add(o3);
 		providers.add(o4);
 
-		Collection<Observation> observations = new ArrayList<Observation>();
+		Collection<Observation> observations = new ArrayList<>();
 
 		// patient 1
 		Observation obx1 = new Observation.Builder(e11).conceptPath

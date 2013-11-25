@@ -70,7 +70,7 @@ public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 
 			String messageId = I2b2CommUtil.generateMessageId();
 
-			Map<String, Object> params = new HashMap<String, Object>();
+			Map<String, Object> params = new HashMap<>();
 			params.put("redirectHost", I2b2CommUtil.getI2b2ServiceHostUrl());
 			params.put("domain", authMetadata.getDomain());
 			params.put("username", authMetadata.getUsername());

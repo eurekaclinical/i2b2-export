@@ -83,7 +83,7 @@ public class Event implements Comparable<Event> {
 		this.activeStatus = builder.activeStatus;
 		this.patient = builder.patient;
 
-		this.observations = new ArrayList<Observation>();
+		this.observations = new ArrayList<>();
 	}
 
 	@Override
