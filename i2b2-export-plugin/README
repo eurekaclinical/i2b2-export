@@ -22,24 +22,21 @@ functional.
 
 INSTALLATION
 
-This plugin is installed using the standard i2b2 plugin installation procedure.
-For more information, see:
-https://community.i2b2.org/wiki/display/webclient/Web+Client+Plug-in+Developers+Guide.
-
 These instructions assume your i2b2 installation is rooted at /var/www/html/webclient.
 This location will be referred to as $I2B2_ROOT.
 
-1. Locate your i2b2 insallation's plugins directory: $I2B2_ROOT/js-i2b2/cells/plugins.
+1. Locate your i2b2 installation's plugins directory: $I2B2_ROOT/js-i2b2/cells/plugins.
 
-2. Create a new directory inside the plugins directory. This directory will be
-referred to as $CUSTOM_PLUGIN_DIR. The plugin will show up under this category
-in the i2b2 plugin list.
+2. Create a new directory inside the plugins directory. This directory defines
+a new plugin category and will be referred to as $CUSTOM_PLUGIN_DIR. The 
+plugin will show up under a category with the name of this directory in the 
+i2b2 plugin list.
 
 3. In cell_config_data.js, find the 'config' map and the 'category' key. Change
 the last value of the 'category' array to be $CUSTOM_PLUGIN_DIR.
 
-4. Copy the entire PatientDataExport directory into the directory created in the
-previous step.
+4. Copy the entire PatientDataExport directory and its contents into the directory
+created in step 2, $CUSTOM_PLUGIN_DIR.
 
 5. IMPORTANT: In PatientDataExport_ctrlr.js, change the value of i2b2.PatientDataExort.SERVICE_URL
 variable to the location of the i2b2 Export Service's REST methods that the
@@ -59,6 +56,9 @@ plugins. Add the following JavaScript map to the i2b2.hive.tempCellsList array:
 order in which the plugin is displayed in the i2b2 plugin list.
 
 This completes the installation of the i2b2 Export plugin.
+
+For more information about i2b2 plugins, see:
+https://community.i2b2.org/wiki/display/webclient/Web+Client+Plug-in+Developers+Guide.
 
 CONTACTING US
 
