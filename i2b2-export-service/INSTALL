@@ -21,8 +21,8 @@ i2b2ProxyUrl - The full URL of the i2b2 proxy cell. This is usually something li
  especially when using HTTPS.
 
 i2b2ServiceHostUrl - The URL where the core i2b2 services are hosted. The i2b2
- Patient Data Export Service will specify this URL as the location the i2b2 proxy
- should redirect the request to. Under most i2b2 installations, this is usually:
+ Export Service will specify this URL as the location the i2b2 proxy should 
+ redirect the request to. Under most i2b2 installations, this is usually:
  http://localhost:9090.
 
 
