@@ -17,7 +17,7 @@ are any other Java application servers.
 A relational database system is required for managing user configurations. See
 the INSTALL file for database configuration instructions.
 
-i2b2 Patient Data Export Service uses the Maven build system, available from
+i2b2 Export Service uses the Maven build system, available from
 http://maven.apache.org. You must install Maven, if you do not already have it,
 to work with the source code. Maven 3 is required.
 
