@@ -669,7 +669,7 @@ i2b2.PatientDataExport.createRequestObject = function() {
 
 		var request = {};
 		request.outputConfiguration = config;
-		request.i2b2AuthMetadata = i2b2AuthMetadata;
+		request.authMetadata = i2b2AuthMetadata;
 
 		return request;
 	} else {
