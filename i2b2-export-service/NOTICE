@@ -38,6 +38,7 @@ This project includes:
   grizzly-http-servlet under CDDL+GPL
   grizzly-rcm under CDDL+GPL
   H2 Database Engine under The H2 License, Version 1.0
+  Hamcrest Core under New BSD License
   Hibernate Commons Annotations under GNU LESSER GENERAL PUBLIC LICENSE
   Hibernate Core under GNU Lesser General Public License
   Hibernate Entity Manager under GNU Lesser General Public License
