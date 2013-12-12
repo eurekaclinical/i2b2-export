@@ -20,28 +20,28 @@
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 			<classifier>plugin</classifier>
 			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-service</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 			<classifier>bin</classifier>
 			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 			<classifier>plugin</classifier>
 			<type>tar.gz</type>
 		</dependency>
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-service</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 			<classifier>bin</classifier>
 			<type>tar.gz</type>
 		</dependency>
