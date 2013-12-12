@@ -9,7 +9,7 @@
 	<groupId>edu.emory.bmi.aiw</groupId>
 	<artifactId>i2b2-export</artifactId>
 	<version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	<packaging>pom</packaging>
 
 	<name>i2b2 Data Export Plugin</name>
 	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. This project includes both the web client plugin that the user interacts with and the Java service that manages users' export configurations and communicates with i2b2 to retrieve data.</description>
@@ -30,8 +30,8 @@
 	</properties>
 
 	<scm>
-		<developerConnection>scm:svn:https://scm.cci.emory.edu/svn/aiw/trunk/i2b2-export</developerConnection>
-		<url>https://scm.cci.emory.edu/svn/aiw/trunk/i2b2-export</url>
+		<developerConnection>scm:git:ssh://git.cci.emory.edu:/opt/git/aiw/i2b2-export.git</developerConnection>
+		<url>ssh://git.cci.emory.edu:/opt/git/aiw/i2b2-export.git</url>
 	</scm>
 
 	<issueManagement>
