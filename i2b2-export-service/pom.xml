@@ -27,6 +27,15 @@
 
 	<developers>
 		<developer>
+			<id>arpost</id>
+			<name>Andrew Post</name>
+			<email>arpost@emory.edu</email>
+			<roles>
+				<role>Faculty Project Lead</role>
+			</roles>
+			<organization>Department of Biomedical Informatics, Emory University</organization>
+		</developer>
+		<developer>
 			<id>mmansour</id>
 			<name>Michel Mansour</name>
 			<email>michel.mansour@emory.edu</email>
