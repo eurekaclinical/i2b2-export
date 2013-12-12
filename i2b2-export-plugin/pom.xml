@@ -6,11 +6,11 @@
   
 	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>edu.emory.bmi.aiw</groupId>
-        <artifactId>i2b2-export</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>edu.emory.bmi.aiw</groupId>
+		<artifactId>i2b2-export</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
 	<artifactId>i2b2-export-plugin</artifactId>
 	<packaging>pom</packaging>
