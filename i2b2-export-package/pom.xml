@@ -61,6 +61,7 @@
 							<descriptors>
 								<descriptor>assembly/bin-zip.xml</descriptor>
 								<descriptor>assembly/bin-tar.xml</descriptor>
+								<descriptor>assembly/src.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
