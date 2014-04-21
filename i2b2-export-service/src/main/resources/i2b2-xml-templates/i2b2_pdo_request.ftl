@@ -23,7 +23,7 @@
 	xmlns:ns2="http://www.i2b2.org/xsd/hive/pdo/1.1/" xmlns:ns6="http://www.i2b2.org/xsd/hive/msg/1.1/">
 	<message_header>
 		<proxy>
-			<redirect_url>${redirectHost}/i2b2/rest/QueryToolService/pdorequest
+			<redirect_url>${redirectHost}/i2b2/services/QueryToolService/pdorequest
 			</redirect_url>
 		</proxy>
 		<sending_application>
