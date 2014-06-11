@@ -21,7 +21,7 @@ package edu.emory.bmi.aiw.i2b2export.resource;
  */
 
 import com.sun.jersey.api.client.ClientResponse;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;

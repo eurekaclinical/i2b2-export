@@ -26,7 +26,7 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.text.DateFormat;

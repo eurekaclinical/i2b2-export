@@ -26,7 +26,7 @@ import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.LoadRequest;
 import edu.emory.bmi.aiw.i2b2export.comm.SaveRequest;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
