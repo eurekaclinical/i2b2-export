@@ -58,6 +58,10 @@ public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 		this.config = new Configuration();
 		this.config.setClassForTemplateLoading(this.getClass(), "/");
 		this.config.setObjectWrapper(new DefaultObjectWrapper());
+		this.config.setNumberFormat("0.######");  // to prevent addition of commas to numbers
+		                                          // FreeMarker uses the locale to format numbers
+		                                          // in a human-readable way, but this XML is not
+		                                          // for humans.
 	}
 
 	@Override
