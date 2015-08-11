@@ -51,6 +51,7 @@
 	</properties>
 
 	<build>
+		<finalName>i2b2-export-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

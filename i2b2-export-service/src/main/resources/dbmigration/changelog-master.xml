@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  #%L
+  i2b2 Export Service
+  %%
+  Copyright (C) 2013 - 2015 Emory University
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+	<property name="date.type" value="DATE" dbms="oracle"/>
+	<property name="date.type" value="DATETIME" dbms="h2"/>
+	<property name="date.type" value="DATETIME" dbms="sqlserver"/>
+	<property name="date.type" value="DATETIME" dbms="postgresql"/>
+		
+	<changeSet author="arpost" id="I2B2-EXPORT-1">
+		<createTable tableName="COLUMN_CONFIGS">
+			<column name="COLUMN_CONFIG_ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="AGGREGATION" type="INT"/>
+			<column name="COLUMN_NAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="COLUMN_ORDER" type="INT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DISPLAY_FORMAT" type="INT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="HOW_MANY" type="INT"/>
+			<column name="INCLUDE_TIME_RANGE" type="BOOLEAN"/>
+			<column name="INCLUDE_UNITS" type="BOOLEAN"/>
+			<column name="I2B2_CONCEPT_ID" type="BIGINT"/>
+			<column name="CONFIG_ID" type="BIGINT"/>
+		</createTable>
+		<createTable tableName="I2B2_CONCEPTS">
+			<column name="CONCEPT_ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="C_COLUMNNAME" type="VARCHAR(255)"/>
+			<column name="C_DIMCODE" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="C_DISPLAYNAME" type="VARCHAR(255)"/>
+			<column name="C_CHILDREN" type="VARCHAR(255)"/>
+			<column name="I2B2_KEY" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="C_ICD9" type="VARCHAR(255)"/>
+			<column name="C_SYNONYM_CD" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="C_HLEVEL" type="INT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="C_NAME" type="VARCHAR(255)"/>
+			<column name="C_OPERATOR" type="VARCHAR(255)"/>
+			<column name="C_TABLENAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="C_TOOLTIP" type="VARCHAR(255)"/>
+			<column name="C_XML_ORIG" type="CLOB"/>
+		</createTable>
+		<createTable tableName="OUTPUT_CONFIGS">
+			<column name="CONFIG_ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="MISSING_VALUE" type="VARCHAR(255)"/>
+			<column name="CONFIG_NAME" type="VARCHAR(255)"/>
+			<column name="QUOTE_CHAR" type="VARCHAR(1)"/>
+			<column name="ROW_DIMENSION" type="INT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="SEPARATOR" type="VARCHAR(1)"/>
+			<column name="USERNAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="WHITESPACE_REPLACEMENT" type="VARCHAR(255)"/>
+		</createTable>
+		<addUniqueConstraint tableName="OUTPUT_CONFIGS" columnNames="USERNAME,CONFIG_NAME"/>
+		<addForeignKeyConstraint baseTableName="COLUMN_CONFIGS" baseColumnNames="CONFIG_ID" constraintName="FK8CF9A98899BE0907" referencedTableName="OUTPUT_CONFIGS" referencedColumnNames="CONFIG_ID"/>
+		<addForeignKeyConstraint baseTableName="COLUMN_CONFIGS" baseColumnNames="I2B2_CONCEPT_ID" constraintName="FK8CF9A9887A6ACF61" referencedTableName="I2B2_CONCEPTS" referencedColumnNames="CONCEPT_ID"/>
+		<createSequence sequenceName="I2B2_CONCEPT_SEQ"/>
+		<createSequence sequenceName="OUTPUT_COL_CONFIG_SEQ"/>
+		<createSequence sequenceName="OUTPUT_CONFIG_SEQ"/>
+	</changeSet>
+</databaseChangeLog>

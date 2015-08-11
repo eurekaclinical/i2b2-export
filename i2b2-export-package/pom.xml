@@ -11,38 +11,41 @@
 	<artifactId>i2b2-export-package</artifactId>
 	<packaging>pom</packaging>
 
-	<name>i2b2 Export Plugin Package</name>
+	<name>i2b2 Export Package</name>
 	<description>A project to package up for distribution both pieces of the i2b2 data export plugin: the Javascript front-end and the corresponding Java web service.</description>
+	
+	<properties>
+		<oracle-version>11.2.0.3</oracle-version>
+		<i2b2-export-version>1.1-SNAPSHOT</i2b2-export-version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>${i2b2-export-version}</version>
 			<classifier>plugin</classifier>
 			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-service</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<classifier>bin</classifier>
-			<type>zip</type>
+			<version>${i2b2-export-version}</version>
+			<type>war</type>
 		</dependency>
 		<dependency>
 			<groupId>edu.emory.bmi.aiw</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>${i2b2-export-version}</version>
 			<classifier>plugin</classifier>
 			<type>tar.gz</type>
 		</dependency>
 		<dependency>
-			<groupId>edu.emory.bmi.aiw</groupId>
-			<artifactId>i2b2-export-service</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<classifier>bin</classifier>
-			<type>tar.gz</type>
-		</dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>${oracle-version}</version>
+            <scope>compile</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -57,10 +60,10 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>assembly/bin-zip.xml</descriptor>
-								<descriptor>assembly/bin-tar.xml</descriptor>
+								<descriptor>assembly/bin.xml</descriptor>
 								<descriptor>assembly/src.xml</descriptor>
 							</descriptors>
+							<tarLongFileMode>gnu</tarLongFileMode>
 						</configuration>
 					</execution>
 				</executions>

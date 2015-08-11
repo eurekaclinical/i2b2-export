@@ -8,7 +8,7 @@
 	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>i2b2 Data Export Plugin</name>
+	<name>i2b2 Export</name>
 	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. This project includes both the web client plugin that the user interacts with and the Java service that manages users' export configurations and communicates with i2b2 to retrieve data.</description>
 	<inceptionYear>2013</inceptionYear>
 	<organization>
@@ -60,7 +60,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.5.5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
