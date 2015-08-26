@@ -94,7 +94,7 @@
 			<output_option>
 				<patient_set select="using_input_list" onlykeys="false" />
 				<event_set select="using_input_list" onlykeys="false" />
-				<observation_set blob="false" onlykeys="false" />
+				<observation_set blob="false" onlykeys="false" withmodifiers="false"/>
 				<observer_set_using_filter_list onlykeys="false" />
 			</output_option>
 		</ns3:request>
