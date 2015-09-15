@@ -26,6 +26,7 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.sql.Connection;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,8 +44,8 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Observer provider;
 	private final Map<String, List<Observation>> keyToObx;
 
-	ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {
-		super(config);
+	ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider, Connection con) {
+		super(con, config);
 		this.provider = provider;
 		this.keyToObx = new HashMap<>();
 		

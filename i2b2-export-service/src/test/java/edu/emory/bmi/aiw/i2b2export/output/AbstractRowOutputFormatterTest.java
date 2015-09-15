@@ -23,6 +23,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.SQLException;
 
 /**
  *
@@ -30,7 +31,7 @@ import java.io.StringWriter;
  */
 public class AbstractRowOutputFormatterTest {
 	
-	String formatString(RowOutputFormatter formatter) throws IOException {
+	String formatString(RowOutputFormatter formatter) throws IOException, SQLException {
 		StringWriter sw = new StringWriter();
 		boolean succeeded = false;
 		try {

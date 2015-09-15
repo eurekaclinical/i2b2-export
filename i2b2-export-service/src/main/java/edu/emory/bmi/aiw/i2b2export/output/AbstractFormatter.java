@@ -39,10 +39,16 @@ public abstract class AbstractFormatter {
 	 * format the header
 	 */
 	AbstractFormatter(OutputConfiguration outputConfiguration) {
+		assert outputConfiguration != null : "outputConfiguration cannot be null";
 		this.outputConfiguration = outputConfiguration;
+	}
+
+	public OutputConfiguration getOutputConfiguration() {
+		return outputConfiguration;
 	}
 	
 	protected void write(String str, BufferedWriter writer, int colNum) throws IOException {
+		assert writer != null : "writer cannot be null";
 		if (colNum > 0) {
 			writer.write(this.outputConfiguration.getSeparator());
 		}

@@ -249,7 +249,6 @@ public class OutputConfiguration {
 	 *
 	 * @return a list of {@link OutputColumnConfiguration}s
 	 */
-	@JsonManagedReference
 	public List<OutputColumnConfiguration> getColumnConfigs() {
 		return columnConfigs;
 	}
@@ -259,6 +258,7 @@ public class OutputConfiguration {
 	 *
 	 * @param columnConfigs the output column configurations
 	 */
+	@JsonManagedReference
 	public void setColumnConfigs(List<OutputColumnConfiguration> columnConfigs) {
 		this.columnConfigs = columnConfigs;
 	}

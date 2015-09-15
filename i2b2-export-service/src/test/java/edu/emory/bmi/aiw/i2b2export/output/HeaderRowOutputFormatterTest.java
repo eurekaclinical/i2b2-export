@@ -23,6 +23,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import java.io.IOException;
+import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ import org.apache.commons.io.IOUtils;
 public class HeaderRowOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
 	@Test
-	public void testFormatHeader() throws IOException {
+	public void testFormatHeader() throws IOException, SQLException {
 		OutputConfiguration config = new OutputConfiguration();
 		config.setName("foo");
 		config.setUsername("i2b2");

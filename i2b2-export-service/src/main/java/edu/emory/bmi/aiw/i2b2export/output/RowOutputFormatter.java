@@ -22,11 +22,12 @@ package edu.emory.bmi.aiw.i2b2export.output;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  *
  * @author Andrew Post
  */
 public interface RowOutputFormatter {
-	void format(BufferedWriter writer) throws IOException;
+	void format(BufferedWriter writer) throws IOException, SQLException;
 }

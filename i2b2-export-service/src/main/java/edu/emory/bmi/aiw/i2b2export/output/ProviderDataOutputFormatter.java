@@ -19,11 +19,13 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import java.util.Collection;
 import org.apache.commons.io.IOUtils;
@@ -45,9 +47,18 @@ final class ProviderDataOutputFormatter {
 	}
 
 	public void format(BufferedWriter writer) throws IOException {
-		for (Observer provider : this.providers) {
-			new ProviderDataRowOutputFormatter(this.config, provider).format(writer);
-			writer.write(IOUtils.LINE_SEPARATOR);
+		try {
+			Class.forName("org.h2.Driver");
+		} catch (ClassNotFoundException ex) {
+			throw new AssertionError("Error parsing i2b2 metadata: " + ex);
+		}
+		try (Connection con = DriverManager.getConnection("jdbc:h2:mem:ProviderDataOutputFormatter")) {
+			for (Observer provider : this.providers) {
+				new ProviderDataRowOutputFormatter(this.config, provider, con).format(writer);
+				writer.write(IOUtils.LINE_SEPARATOR);
+			}
+		} catch (SQLException ex) {
+			throw new IOException("Error parsing i2b2 metadata: " + ex.getMessage());
 		}
 
 	}

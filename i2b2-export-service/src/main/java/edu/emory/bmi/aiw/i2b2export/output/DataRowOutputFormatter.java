@@ -24,10 +24,18 @@ import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.util.Collection;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract class for formatting a row of output. Depending on what a row represents (patient, visit, or provider),
@@ -40,13 +48,17 @@ import java.util.Collection;
  */
 abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOutputFormatter {
 
-	final OutputConfiguration config;
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataRowOutputFormatter.class);
+	
+	private final OutputConfiguration config;
 	private final FormatOptions formatOptions;
+	private final Connection con;
 
-	DataRowOutputFormatter(OutputConfiguration config) {
+	DataRowOutputFormatter(Connection con, OutputConfiguration config) {
 		super(config);
 		this.config = config;
 		this.formatOptions = new FormatOptions(config);
+		this.con = con;
 	}
 
 	final OutputConfiguration getConfig() {
@@ -63,7 +75,7 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 	 * @param i2b2Concept the i2b2 concept to match
 	 * @return an unmodifiable {@link Collection} of {@link Observation}s that match the given concept path
 	 */
-	abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept);
+	abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) throws SQLException;
 
 	/**
 	 * Generates the first fields of the row that depend on the row dimension rather than the data,
@@ -82,7 +94,7 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 	 * @return an array of {@link String}s representing a single row of output
 	 */
 	@Override
-	public final void format(BufferedWriter writer) throws IOException {
+	public final void format(BufferedWriter writer) throws IOException, SQLException {
 		int colNum = rowPrefix(writer);
 		for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {
 			Collection<Observation> obxs = matchingObservations(colConfig
@@ -102,5 +114,80 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 			}
 		}
 
+	}
+	
+	boolean compareDimensionColumnValue(I2b2Concept i2b2Concept, Patient patient) throws SQLException {
+		String op = i2b2Concept.getOperator();
+		String columnDataType = i2b2Concept.getColumnDataType();
+		String dimCode = i2b2Concept.getDimensionCode();
+		boolean dimCodeNeedsQuotes = needsQuotes(columnDataType, dimCode);
+		String stmtFrag = op + 
+				" " + 
+				("IN".equalsIgnoreCase(op) ? 
+					"(" : 
+					"") + 
+				("BETWEEN".equalsIgnoreCase(op) ? 
+					dimCode : 
+					quoteIfNeeded(dimCodeNeedsQuotes, dimCode)) + 
+				("IN".equalsIgnoreCase(op) ? 
+					")" : 
+					"") + 
+				" FROM DUAL";
+		String birthDate = patient.getBirthDate();
+		String stmt = "SELECT " + 
+				("birth_date".equalsIgnoreCase(i2b2Concept.getColumnName()) && birthDate != null ? 
+					"parsedatetime('" + birthDate + "', 'yyyy-MM-dd''T''HH:mm:ss.SSSX')" : 
+					quoteIfNeeded(columnDataType, getParam(patient, i2b2Concept))) + 
+				" " + 
+				stmtFrag;
+		LOGGER.debug("SQL statement {}", stmt);
+		try (Statement statement = con.createStatement();
+				ResultSet rs = statement.executeQuery(stmt)) {
+			if (rs.next()) {
+				return rs.getBoolean(1);
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	String getParam(Patient patient, I2b2Concept i2b2Concept) {
+		switch (StringUtils.lowerCase(i2b2Concept.getColumnName())) {
+			case "age_in_years_num":
+				return patient.getAgeInYears();
+			case "birth_date":
+				return patient.getBirthDate();
+			case "language_cd":
+				return patient.getLanguage();
+			case "marital_status_cd":
+				return patient.getMaritalStatus();
+			case "religion_cd":
+				return patient.getReligion();
+			case "race_cd":
+				return patient.getRace();
+			case "sex_cd":
+				return patient.getSex();
+			case "statecityzip_path_char":
+				return patient.getStateCityZip();
+			case "vital_status_cd":
+				return patient.getVitalStatus();
+			case "zipcode_char":
+				return patient.getZipCode();
+			default:
+				return "";
+		}
+	}
+	
+	private boolean needsQuotes(String columnDataType, String str) {
+		return "T".equals(columnDataType) && str != null && !str.startsWith("'");
+	}
+
+	private String quoteIfNeeded(boolean needsQuotes, String str) {
+		return (needsQuotes ? "'" : "") + str + (needsQuotes ? "'" : "");
+	}
+
+	private String quoteIfNeeded(String columnDataType, String str) {
+		boolean needsQuotes = needsQuotes(columnDataType, str);
+		return (needsQuotes ? "'" : "") + str + (needsQuotes ? "'" : "");
 	}
 }

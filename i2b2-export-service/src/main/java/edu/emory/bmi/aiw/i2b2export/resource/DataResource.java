@@ -20,7 +20,6 @@ package edu.emory.bmi.aiw.i2b2export.resource;
  * #L%
  */
 
-import au.com.bytecode.opencsv.CSVWriter;
 import com.google.inject.Inject;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2PatientSet;
@@ -30,7 +29,6 @@ import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import edu.emory.bmi.aiw.i2b2export.output.DataOutputFormatter;
 import edu.emory.bmi.aiw.i2b2export.output.HeaderRowOutputFormatter;
 import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
@@ -49,7 +47,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import javax.ws.rs.WebApplicationException;

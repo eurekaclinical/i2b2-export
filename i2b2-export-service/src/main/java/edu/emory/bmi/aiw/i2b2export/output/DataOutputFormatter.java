@@ -35,11 +35,6 @@ import java.io.IOException;
 public final class DataOutputFormatter extends AbstractFormatter implements RowOutputFormatter {
 
 	/*
-	 * the output configuration to use to format the output
-	 */
-	private final OutputConfiguration config;
-
-	/*
 	 * the i2b2 result set
 	 */
 	private final I2b2PdoResults pdoResults;
@@ -52,7 +47,6 @@ public final class DataOutputFormatter extends AbstractFormatter implements RowO
 	 */
 	public DataOutputFormatter(OutputConfiguration config, I2b2PdoResults pdoResults) {
 		super(config);
-		this.config = config;
 		this.pdoResults = pdoResults;
 	}
 
@@ -65,16 +59,17 @@ public final class DataOutputFormatter extends AbstractFormatter implements RowO
 	 */
 	@Override
 	public void format(BufferedWriter writer) throws IOException {
+		OutputConfiguration config = getOutputConfiguration();
 		new HeaderRowOutputFormatter(config).format(writer);
-		switch (this.config.getRowDimension()) {
+		switch (config.getRowDimension()) {
 			case PATIENT:
-				new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format(writer);
+				new PatientDataOutputFormatter(config, pdoResults.getPatients()).format(writer);
 				break;
 			case VISIT:
-				new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format(writer);
+				new VisitDataOutputFormatter(config, pdoResults.getPatients()).format(writer);
 				break;
 			case PROVIDER:
-				new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format(writer);
+				new ProviderDataOutputFormatter(config, pdoResults.getObservers()).format(writer);
 				break;
 			default:
 				throw new AssertionError("no row dimension provided");

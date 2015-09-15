@@ -146,6 +146,7 @@ public class OutputColumnConfiguration implements
 	 *
 	 * @param outputConfig the output configuration
 	 */
+	@JsonBackReference
 	public void setOutputConfig(OutputConfiguration outputConfig) {
 		this.outputConfig = outputConfig;
 	}

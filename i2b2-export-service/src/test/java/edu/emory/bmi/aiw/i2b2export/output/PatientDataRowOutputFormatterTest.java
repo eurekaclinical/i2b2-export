@@ -19,7 +19,6 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
@@ -28,6 +27,9 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -58,56 +60,29 @@ public class PatientDataRowOutputFormatterTest extends AbstractRowOutputFormatte
 		Event e2 = new Event.Builder("E2", patient).startDate(fmt.parse("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse("2013-02-02T14:00:00.000-0500")).build();
 		Event e3 = new Event.Builder("E3", patient).startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T14:00:00.000-0500")).build();
 
-		e1.addObservation(new Observation.Builder(e1).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
-				("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse
-				("2013-01-01T10:00:00.000-0500")).tval("100").nval("100")
+		e1.addObservation(new Observation.Builder(e1).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).tval("100").nval("100")
 				.valuetype("N")
 				.units("U").build());
-		e2.addObservation(new Observation.Builder(e2).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
-				("2013-02-02T10:00:00.000-0500")).endDate(fmt.parse
-				("2013-02-02T11:00:00.000-0500")).tval("200").nval("200")
+		e2.addObservation(new Observation.Builder(e2).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-02-02T10:00:00.000-0500")).endDate(fmt.parse("2013-02-02T11:00:00.000-0500")).tval("200").nval("200")
 				.valuetype("N").units("U").build());
-		e3.addObservation(new Observation.Builder(e3).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
-				("2013-03-03T11:00:00.000-0500")).endDate(fmt.parse
-				("2013-03-03T12:00:00.000-0500")).tval("300").nval("300")
+		e3.addObservation(new Observation.Builder(e3).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-03-03T11:00:00.000-0500")).endDate(fmt.parse("2013-03-03T12:00:00.000-0500")).tval("300").nval("300")
 				.valuetype("N")
 				.units("U").build());
-		e1.addObservation(new Observation.Builder(e1).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
-				("2013-01-01T12:00:00.000-0500")).endDate(fmt.parse
-				("2013-04-04T13:00:00.000-0500")).tval("400").nval("400")
+		e1.addObservation(new Observation.Builder(e1).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-01-01T12:00:00.000-0500")).endDate(fmt.parse("2013-04-04T13:00:00.000-0500")).tval("400").nval("400")
 				.valuetype("N")
 				.units("U").build());
-		e2.addObservation(new Observation.Builder(e2).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse
-				("2013-02-02T13:00:00.000-0500")).endDate(fmt.parse
-				("2013-05-05T14:00:00.000-0500")).tval("500").nval("500")
+		e2.addObservation(new Observation.Builder(e2).conceptPath("\\\\i2b2\\Concepts\\MyConcept1").startDate(fmt.parse("2013-02-02T13:00:00.000-0500")).endDate(fmt.parse("2013-05-05T14:00:00.000-0500")).tval("500").nval("500")
 				.valuetype("N")
 				.units("U").build());
-		e3.addObservation(new Observation.Builder(e3).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
-				("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse
-				("2013-03-03T09:05:00.000-0500")).tval("1.0").nval("1.0")
+		e3.addObservation(new Observation.Builder(e3).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T09:05:00.000-0500")).tval("1.0").nval("1.0")
 				.valuetype("N")
 				.units("X").build());
-		e1.addObservation(new Observation.Builder(e1).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
-				("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse
-				("2013-01-01T09:05:00.000-0500")).tval("1.5").nval("1.5")
+		e1.addObservation(new Observation.Builder(e1).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T09:05:00.000-0500")).tval("1.5").nval("1.5")
 				.valuetype("N")
 				.units("X").build());
-		e2.addObservation(new Observation.Builder(e2).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
-				("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse
-				("2013-02-02T09:05:00.000-0500")).tval("1.8").nval("1.8").
+		e2.addObservation(new Observation.Builder(e2).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-02-02T09:00:00.000-0500")).endDate(fmt.parse("2013-02-02T09:05:00.000-0500")).tval("1.8").nval("1.8").
 				valuetype("N").units("X").build());
-		e3.addObservation(new Observation.Builder(e3).conceptPath
-				("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse
-				("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse
-				("2013-03-03T09:05:00.000-0500")).tval("1.75").nval("1.75")
+		e3.addObservation(new Observation.Builder(e3).conceptPath("\\\\i2b2\\Concepts\\MyConcept2").startDate(fmt.parse("2013-03-03T09:00:00.000-0500")).endDate(fmt.parse("2013-03-03T09:05:00.000-0500")).tval("1.75").nval("1.75")
 				.valuetype("N").units("X").build());
 		e1.addObservation(new Observation.Builder(e1).conceptPath("\\\\i2b2\\Concepts\\MyConcept3").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).build());
 
@@ -118,9 +93,8 @@ public class PatientDataRowOutputFormatterTest extends AbstractRowOutputFormatte
 		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
 		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
-		I2b2Concept concept1 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
-						"MyConcept3", "N");
+		I2b2Concept concept1 = new I2b2Concept("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
+				"MyConcept3", "N");
 		colConfig1.setI2b2Concept(concept1);
 		colConfig1.setColumnName("MyConcept3");
 		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
@@ -129,9 +103,8 @@ public class PatientDataRowOutputFormatterTest extends AbstractRowOutputFormatte
 		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
 		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
-		I2b2Concept concept2 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
-						"MyConcept2", "N");
+		I2b2Concept concept2 = new I2b2Concept("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
+				"MyConcept2", "N");
 		colConfig2.setI2b2Concept(concept2);
 		colConfig2.setColumnName("MyConcept2");
 		colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
@@ -143,9 +116,8 @@ public class PatientDataRowOutputFormatterTest extends AbstractRowOutputFormatte
 		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
 		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
-		I2b2Concept concept3 = new I2b2Concept
-				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
-						"MyConcept1", "N");
+		I2b2Concept concept3 = new I2b2Concept("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
+				"MyConcept1", "N");
 		colConfig3.setI2b2Concept(concept3);
 		colConfig3.setColumnName("MyConcept1");
 		colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
@@ -155,8 +127,10 @@ public class PatientDataRowOutputFormatterTest extends AbstractRowOutputFormatte
 	}
 
 	@Test
-	public void testFormat() throws IOException {
-		PatientDataRowOutputFormatter formatter = new PatientDataRowOutputFormatter(config, patient);
-		Assert.assertEquals("P1,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", formatString(formatter));
+	public void testFormat() throws IOException, SQLException {
+		try (Connection con = DriverManager.getConnection("jdbc:h2:mem:PatientDataRowOutputFormatterTest")) {
+			PatientDataRowOutputFormatter formatter = new PatientDataRowOutputFormatter(config, patient, con);
+			Assert.assertEquals("P1,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", formatString(formatter));
+		}
 	}
 }

@@ -30,6 +30,7 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.IOException;
+import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -285,7 +286,7 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 	}
 
 	@Test
-	public void testPatientOutputFormatter() throws IOException {
+	public void testPatientOutputFormatter() throws IOException, SQLException {
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		formatter = new DataOutputFormatter(config, data);
 
@@ -298,7 +299,7 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 	}
 
 	@Test
-	public void testVisitOutputFormatter() throws IOException {
+	public void testVisitOutputFormatter() throws IOException, SQLException {
 		config.setRowDimension(OutputConfiguration.RowDimension.VISIT);
 		formatter = new DataOutputFormatter(config, data);
 
@@ -314,7 +315,7 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 	}
 
 	@Test
-	public void testProviderOutputFormatter() throws IOException {
+	public void testProviderOutputFormatter() throws IOException, SQLException {
 		config.setRowDimension(OutputConfiguration.RowDimension.PROVIDER);
 		formatter = new DataOutputFormatter(config, data);
 
