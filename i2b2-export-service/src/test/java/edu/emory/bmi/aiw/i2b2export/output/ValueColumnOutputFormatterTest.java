@@ -26,6 +26,9 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,14 +37,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
-public class ValueColumnOutputFormatterTest {
+public class ValueColumnOutputFormatterTest extends AbstractColumnFormatterTest {
 
 	private OutputColumnConfiguration colConfig;
 	private FormatOptions formatOptions;
-	private Collection<Observation> obxs = new ArrayList<>();
 
 	public ValueColumnOutputFormatterTest() throws ParseException {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
@@ -66,88 +68,68 @@ public class ValueColumnOutputFormatterTest {
 		Patient p = new Patient.Builder("1").build();
 		Event e = new Event.Builder("1", p).build();
 
+		Collection<Observation> obxs = new ArrayList<>();
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-01-01T09:00:00.000-0500")).endDate(i2b2DateFormat.parse("2013-01-01T10:00:00.000-0500")).tval("100").units("U").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-02-02T10:00:00.000-0500")).endDate(i2b2DateFormat.parse("2013-02-02T11:00:00.000-0500")).tval("200").units("V").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-03-03T11:00:00.000-0500")).endDate(i2b2DateFormat.parse("2013-03-03T12:00:00.000-0500")).tval("300").units("W").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-04-04T12:00:00.000-0400")).endDate(i2b2DateFormat.parse("2013-04-04T13:00:00.000-0400")).tval("400").units("X").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-05-05T13:00:00.000-0400")).endDate(i2b2DateFormat.parse("2013-05-05T14:00:00.000-0400")).tval("500").units("Y").build());
+		setObxs(obxs);
 	}
 
 	@Test
-	public void testFormatSimple() {
+	public void testFormatSimple() throws IOException {
 		colConfig.setHowMany(1);
 		colConfig.setIncludeUnits(false);
 		colConfig.setIncludeTimeRange(false);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
 
-		Assert.assertEquals(Collections.singletonList("500"), formatter.format(obxs));
+		Assert.assertEquals("\"500\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatUnits() {
+	public void testFormatUnits() throws IOException {
 		colConfig.setHowMany(1);
 		colConfig.setIncludeUnits(true);
 		colConfig.setIncludeTimeRange(false);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
-
-		List<String> expected = new ArrayList<>();
-		expected.add("500");
-		expected.add("Y");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500\",\"Y\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatDateRange() {
+	public void testFormatDateRange() throws IOException {
 		colConfig.setHowMany(1);
 		colConfig.setIncludeUnits(false);
 		colConfig.setIncludeTimeRange(true);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
-
-		List<String> expected = new ArrayList<>();
-		expected.add("500");
-		expected.add("2013-05-05T13:00:00.000-0400");
-		expected.add("2013-05-05T14:00:00.000-0400");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500\",\"2013-05-05T13:00:00.000-0400\",\"2013-05-05T14:00:00.000-0400\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatUnitsDateRange() {
+	public void testFormatUnitsDateRange() throws IOException {
 		colConfig.setHowMany(1);
 		colConfig.setIncludeUnits(true);
 		colConfig.setIncludeTimeRange(true);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
-
-		List<String> expected = new ArrayList<>();
-		expected.add("500");
-		expected.add("Y");
-		expected.add("2013-05-05T13:00:00.000-0400");
-		expected.add("2013-05-05T14:00:00.000-0400");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500\",\"Y\",\"2013-05-05T13:00:00.000-0400\",\"2013-05-05T14:00:00.000-0400\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMultEqual() {
+	public void testFormatMultEqual() throws IOException {
 		colConfig.setHowMany(5);
 		colConfig.setIncludeUnits(false);
 		colConfig.setIncludeTimeRange(false);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
-
-		List<String> expected = new ArrayList<>();
-		expected.add("500");
-		expected.add("400");
-		expected.add("300");
-		expected.add("200");
-		expected.add("100");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500\",\"400\",\"300\",\"200\",\"100\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMultLess() {
+	public void testFormatMultLess() throws IOException {
 		colConfig.setHowMany(3);
 		colConfig.setIncludeUnits(false);
 		colConfig.setIncludeTimeRange(false);
@@ -158,30 +140,21 @@ public class ValueColumnOutputFormatterTest {
 		expected.add("500");
 		expected.add("400");
 		expected.add("300");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500\",\"400\",\"300\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMultMore() {
+	public void testFormatMultMore() throws IOException {
 		colConfig.setHowMany(7);
 		colConfig.setIncludeUnits(false);
 		colConfig.setIncludeTimeRange(false);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
-
-		List<String> expected = new ArrayList<>();
-		expected.add("500");
-		expected.add("400");
-		expected.add("300");
-		expected.add("200");
-		expected.add("100");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500\",\"400\",\"300\",\"200\",\"100\",\"(NULL)\",\"(NULL)\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMultUnitsDateRange() {
+	public void testFormatMultUnitsDateRange() throws IOException {
 		colConfig.setHowMany(7);
 		colConfig.setIncludeUnits(true);
 		colConfig.setIncludeTimeRange(true);
@@ -217,26 +190,37 @@ public class ValueColumnOutputFormatterTest {
 		expected.add("(NULL)");
 		expected.add("(NULL)");
 		expected.add("(NULL)");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"" + StringUtils.join(expected, "\",\"") + "\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatEmpty() {
+	public void testFormatEmpty() throws IOException {
 		colConfig.setHowMany(2);
 		colConfig.setIncludeTimeRange(true);
 		colConfig.setIncludeUnits(true);
 
 		ValueColumnOutputFormatter formatter = new ValueColumnOutputFormatter(colConfig, formatOptions);
-
-		List<String> expected = new ArrayList<>();
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		expected.add("(NULL)");
-		Assert.assertEquals(expected, formatter.format(new ArrayList<Observation>()));
+		
+		Assert.assertEquals("\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"", formatStringTestFormatEmpty(formatter));
+	}
+	
+	String formatStringTestFormatEmpty(ValueColumnOutputFormatter formatter) throws IOException {
+		StringWriter sw = new StringWriter();
+		boolean succeeded = false;
+		try {
+			try (BufferedWriter w = new BufferedWriter(sw)) {
+				formatter.format(new ArrayList<Observation>(), w, 0);
+			}
+			sw.close();
+			succeeded = true;
+		} finally {
+			if (!succeeded) {
+				try {
+					sw.close();
+				} catch (IOException ignore) {
+				}
+			}
+		}
+		return sw.toString();
 	}
 }

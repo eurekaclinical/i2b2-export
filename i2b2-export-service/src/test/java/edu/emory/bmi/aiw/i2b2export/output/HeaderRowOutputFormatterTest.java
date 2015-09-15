@@ -22,25 +22,25 @@ package edu.emory.bmi.aiw.i2b2export.output;
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
-import org.apache.commons.lang3.StringUtils;
+import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
  */
-public class HeaderRowOutputFormatterTest {
+public class HeaderRowOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
 	@Test
-	public void testFormatHeader() {
+	public void testFormatHeader() throws IOException {
 		OutputConfiguration config = new OutputConfiguration();
 		config.setName("foo");
 		config.setUsername("i2b2");
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setSeparator(",");
-		config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
@@ -103,6 +103,6 @@ public class HeaderRowOutputFormatterTest {
 
 		HeaderRowOutputFormatter formatter = new HeaderRowOutputFormatter(config);
 		Assert.assertEquals("Patient_id,Concept_FOO,Concept_BAR_1_value,Concept_BAR_1_units,Concept_BAR_1_start,Concept_BAR_1_end,Concept_BAR_1_value,Concept_BAR_1_units,Concept_BAR_1_start,Concept_BAR_1_end,Concept_BAR_1_value,Concept_BAR_1_units,Concept_BAR_1_start,Concept_BAR_1_end," +
-				"ConceptAgg_max,ConceptAgg_units,Concept_BAZ_value,ConceptAgg2_avg,Concept_QUUX_value,Concept_QUUX_start,Concept_QUUX_end", StringUtils.join(formatter.formatHeader(), ','));
+				"ConceptAgg_max,ConceptAgg_units,Concept_BAZ_value,ConceptAgg2_avg,Concept_QUUX_value,Concept_QUUX_start,Concept_QUUX_end" + IOUtils.LINE_SEPARATOR, formatString(formatter));
 	}
 }

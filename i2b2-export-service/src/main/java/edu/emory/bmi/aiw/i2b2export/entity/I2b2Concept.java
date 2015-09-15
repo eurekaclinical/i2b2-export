@@ -28,6 +28,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A JPA entity representing an i2b2 concept.
@@ -353,6 +354,21 @@ public final class I2b2Concept {
 	 */
 	public void setXmlOrig(String xmlOrig) {
 		this.xmlOrig = xmlOrig;
+	}
+	
+	public String getColumnDataType() {
+		return "T";
+	}
+	
+	public String getFactTableColumn() {
+		String tableNameUC = StringUtils.upperCase(this.tableName);
+		if ("CONCEPT_DIMENSION".equals(tableNameUC)) {
+			return "concept_cd";
+		} else if ("PATIENT_DIMENSION".equals(tableNameUC)) {
+			return "patient_num";
+		} else {
+			throw new IllegalStateException("Unexpected table name " + this.tableName);
+		}
 	}
 
 	@Override

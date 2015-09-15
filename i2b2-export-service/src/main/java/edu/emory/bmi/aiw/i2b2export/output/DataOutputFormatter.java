@@ -20,13 +20,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import au.com.bytecode.opencsv.CSVWriter;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Output formatter for an entire i2b2 result set.
@@ -34,7 +32,7 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public final class DataOutputFormatter {
+public final class DataOutputFormatter extends AbstractFormatter implements RowOutputFormatter {
 
 	/*
 	 * the output configuration to use to format the output
@@ -53,6 +51,7 @@ public final class DataOutputFormatter {
 	 * @param pdoResults the i2b2 result set to format
 	 */
 	public DataOutputFormatter(OutputConfiguration config, I2b2PdoResults pdoResults) {
+		super(config);
 		this.config = config;
 		this.pdoResults = pdoResults;
 	}
@@ -60,34 +59,26 @@ public final class DataOutputFormatter {
 	/**
 	 * Returns the instance's i2b2 results formatted according to the instance's output configuration.
 	 *
+	 * @param writer
 	 * @return the formatted results as a {@link String}
+	 * @throws java.io.IOException
 	 */
-	public String format() {
-		List<String[]> result = new ArrayList<>();
-		result.add(new HeaderRowOutputFormatter(config).formatHeader());
+	@Override
+	public void format(BufferedWriter writer) throws IOException {
+		new HeaderRowOutputFormatter(config).format(writer);
 		switch (this.config.getRowDimension()) {
 			case PATIENT:
-				result.addAll(new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+				new PatientDataOutputFormatter(this.config, pdoResults.getPatients()).format(writer);
 				break;
 			case VISIT:
-				result.addAll(new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format());
+				new VisitDataOutputFormatter(this.config, pdoResults.getPatients()).format(writer);
 				break;
 			case PROVIDER:
-				result.addAll(new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format());
+				new ProviderDataOutputFormatter(this.config, pdoResults.getObservers()).format(writer);
 				break;
 			default:
 				throw new AssertionError("no row dimension provided");
 		}
 
-		StringWriter resultStr = new StringWriter();
-		CSVWriter writer;
-		if (null == config.getQuoteChar() || config.getQuoteChar().isEmpty()) {
-			writer = new CSVWriter(resultStr, config.getSeparator().charAt(0));
-		} else {
-			writer = new CSVWriter(resultStr, config.getSeparator().charAt(0), config.getQuoteChar().charAt(0));
-		}
-		writer.writeAll(result);
-
-		return resultStr.toString();
 	}
 }

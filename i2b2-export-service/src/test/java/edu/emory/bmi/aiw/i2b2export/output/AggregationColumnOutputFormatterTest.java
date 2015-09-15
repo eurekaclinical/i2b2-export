@@ -19,13 +19,13 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
+import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,14 +34,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
-public class AggregationColumnOutputFormatterTest {
+public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatterTest {
+
 	private OutputColumnConfiguration colConfig;
 	private FormatOptions formatOptions;
-	private Collection<Observation> obxs = new ArrayList<>();
-
+	
 	public AggregationColumnOutputFormatterTest() throws ParseException {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
@@ -66,79 +64,70 @@ public class AggregationColumnOutputFormatterTest {
 		Patient p = new Patient.Builder("1").build();
 		Event e = new Event.Builder("1", p).build();
 
+		Collection<Observation> obxs = new ArrayList<>();
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-01-01T09:00:00.000-0500")).endDate(i2b2DateFormat.parse("2013-01-01T10:00:00.000-0500")).nval("100.17").units("U").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-02-02T10:00:00.000-0500")).endDate(i2b2DateFormat.parse("2013-02-02T11:00:00.000-0500")).nval("200.28").units("U").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-03-03T11:00:00.000-0500")).endDate(i2b2DateFormat.parse("2013-03-03T12:00:00.000-0500")).nval("300.39").units("U").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-04-04T12:00:00.000-0400")).endDate(i2b2DateFormat.parse("2013-04-04T13:00:00.000-0400")).nval("400.40").units("U").build());
 		obxs.add(new Observation.Builder(e).conceptPath("\\\\i2b2\\Concepts\\MyConcept").startDate(i2b2DateFormat.parse("2013-05-05T13:00:00.000-0400")).endDate(i2b2DateFormat.parse("2013-05-05T14:00:00.000-0400")).nval("500.51").units("U").build());
+		setObxs(obxs);
 	}
 
 	@Test
-	public void testFormatMin() {
+	public void testFormatMin() throws IOException {
 		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MIN);
 		colConfig.setIncludeUnits(false);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
-
-		Assert.assertEquals(Collections.singletonList("100.17"), formatter.format(obxs));
+		Assert.assertEquals("\"100.17\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMax() {
+	public void testFormatMax() throws IOException {
 		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
 		colConfig.setIncludeUnits(false);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
-
-		Assert.assertEquals(Collections.singletonList("500.51"), formatter.format(obxs));
+		Assert.assertEquals("\"500.51\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatAvg() {
+	public void testFormatAvg() throws IOException {
 		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.AVG);
 		colConfig.setIncludeUnits(false);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
-
-		Assert.assertEquals(Collections.singletonList("300.35"), formatter.format(obxs));
+		Assert.assertEquals("\"300.35\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMinUnits() {
+	public void testFormatMinUnits() throws IOException {
 		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MIN);
 		colConfig.setIncludeUnits(true);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<>();
-		expected.add("100.17");
-		expected.add("U");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"100.17\",\"U\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatMaxUnits() {
+	public void testFormatMaxUnits() throws IOException {
 		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
 		colConfig.setIncludeUnits(true);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<>();
-		expected.add("500.51");
-		expected.add("U");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"500.51\",\"U\"", formatString(formatter));
 	}
 
 	@Test
-	public void testFormatAvgUnits() {
+	public void testFormatAvgUnits() throws IOException {
 		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.AVG);
 		colConfig.setIncludeUnits(true);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
 
-		List<String> expected = new ArrayList<>();
-		expected.add("300.35");
-		expected.add("U");
-		Assert.assertEquals(expected, formatter.format(obxs));
+		Assert.assertEquals("\"300.35\",\"U\"", formatString(formatter));
 	}
+	
 }

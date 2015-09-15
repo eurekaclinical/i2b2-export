@@ -19,13 +19,13 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Formatter for the header row of an entire result set.
@@ -33,42 +33,52 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-public final class HeaderRowOutputFormatter {
+public final class HeaderRowOutputFormatter extends AbstractFormatter implements RowOutputFormatter {
+
 	private final OutputConfiguration outputConfiguration;
 
 	/**
-	 * Default constructor. Accepts the output configuration to use to format the header.
+	 * Default constructor. Accepts the output configuration to use to format
+	 * the header.
 	 *
-	 * @param outputConfiguration the {@link OutputConfiguration} to use to format the header
+	 * @param outputConfiguration the {@link OutputConfiguration} to use to
+	 * format the header
 	 */
 	public HeaderRowOutputFormatter(OutputConfiguration outputConfiguration) {
+		super(outputConfiguration);
 		this.outputConfiguration = outputConfiguration;
 	}
 
 	/**
-	 * Formats the header row according to the instance's output configuration. The row is returned as an array
-	 * of strings that will be joined later using the correct delimiter.
+	 * Formats the header row according to the instance's output configuration.
+	 * The row is returned as an array of strings that will be joined later
+	 * using the correct delimiter.
 	 *
-	 * @return an array of <code>String</code>s representing the fields of the header row
+	 * @param writer
+	 * @return an array of <code>String</code>s representing the fields of the
+	 * header row
+	 * @throws java.io.IOException
 	 */
-	public String[] formatHeader() {
-		List<String> result = new ArrayList<>();
+	@Override
+	public void format(BufferedWriter writer) throws IOException {
+		int colNum = 0;
 		switch (outputConfiguration.getRowDimension()) {
 			case PROVIDER:
-				result.add("Provider_name");
+				write("Provider_name", writer, colNum++);
 				break;
 			case VISIT:
-				result.add("Visit_id");
-				result.add("Visit_start");
-				result.add("Visit_end");
-				// fall through
+				write("Patient_id", writer, colNum++);
+				write("Visit_id", writer, colNum++);
+				write("Visit_start", writer, colNum++);
+				write("Visit_end", writer, colNum++);
+				break;
 			case PATIENT:
-				result.add(0, "Patient_id"); // patient ID always goes first
+				write("Patient_id", writer, colNum++);
 				break;
 			default:
-				throw new RuntimeException("row dimension not provided: user:" +
-						" " + outputConfiguration.getUsername() + ", " +
-						"name: " + outputConfiguration.getName());
+				throw new RuntimeException("row dimension not provided: user:"
+						+ " " + outputConfiguration.getUsername() + ", "
+						+ "name: " + outputConfiguration.getName());
 		}
 		Collections.sort(outputConfiguration.getColumnConfigs());
 		for (int i = 0; i < outputConfiguration.getColumnConfigs().size(); i++) {
@@ -81,42 +91,43 @@ public final class HeaderRowOutputFormatter {
 			}
 			switch (colConfig.getDisplayFormat()) {
 				case EXISTENCE:
-					result.add(baseColName);
+					write(baseColName, writer, colNum++);
 					break;
 				case VALUE:
 					for (int j = 0; j < colConfig.getHowMany(); j++) {
-						result.add(baseColName + "_value");
+						write(baseColName + "_value", writer, colNum++);
 						if (colConfig.getIncludeUnits()) {
-							result.add(baseColName + "_units");
+							write(baseColName + "_units", writer, colNum++);
 						}
 						if (colConfig.getIncludeTimeRange()) {
-							result.add(baseColName + "_start");
-							result.add(baseColName + "_end");
+							write(baseColName + "_start", writer, colNum++);
+							write(baseColName + "_end", writer, colNum++);
 						}
 					}
 					break;
 				case AGGREGATION:
 					switch (colConfig.getAggregation()) {
 						case MIN:
-							result.add(baseColName + "_min");
+							write(baseColName + "_min", writer, colNum++);
 							break;
 						case MAX:
-							result.add(baseColName + "_max");
+							write(baseColName + "_max", writer, colNum++);
 							break;
 						case AVG:
-							result.add(baseColName + "_avg");
+							write(baseColName + "_avg", writer, colNum++);
 							break;
 						default:
 							continue;
 					}
 					if (colConfig.getIncludeUnits()) {
-						result.add(baseColName + "_units");
+						write(baseColName + "_units", writer, colNum++);
 					}
 					break;
 				default:
 					break;
 			}
 		}
-		return result.toArray(new String[result.size()]);
+		writer.write(IOUtils.LINE_SEPARATOR);
 	}
+
 }

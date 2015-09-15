@@ -30,9 +30,11 @@ import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
+import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import edu.emory.bmi.aiw.i2b2export.output.DataOutputFormatter;
 import edu.emory.bmi.aiw.i2b2export.output.HeaderRowOutputFormatter;
 import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
+import java.io.BufferedWriter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +47,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.StreamingOutput;
 
 /**
  * A Jersey resource for handling requests relating to retrieving data from i2b2.
@@ -96,12 +102,25 @@ public final class DataResource {
 		authMetadata.setProjectId(i2b2ProjectId);
 
 		if (this.userAuthenticator.authenticateUser(authMetadata)) {
-			String output = new DataOutputFormatter(outputConfig,
+			final DataOutputFormatter dataOutputFormatter = 
+					new DataOutputFormatter(outputConfig,
 					this.pdoRetriever.retrieve(authMetadata,
-							extractConcepts(outputConfig), patientSet)).format();
-
-			return Response.ok(output, "text/csv").header("Content-Disposition", "attachment;" +
-							"filename=i2b2PatientData.csv").build();
+							extractConcepts(outputConfig), patientSet));
+			
+			StreamingOutput stream = new StreamingOutput() {
+				
+				@Override
+				public void write(OutputStream out) throws IOException, WebApplicationException {
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+					dataOutputFormatter.format(writer);
+					writer.flush();
+				}
+				
+			};
+			return Response.ok(stream, "text/csv")
+					.header("Content-Disposition", "attachment;" +
+							"filename=i2b2PatientData.csv")
+					.build();
 		} else {
 			LOGGER.warn("User not authenticated: {}", i2b2Username);
 			return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -241,17 +260,19 @@ public final class DataResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response generatePreview(OutputConfiguration config) {
 		if (null != config) {
-			HeaderRowOutputFormatter headerFormatter = new
+			final HeaderRowOutputFormatter headerFormatter = new
 					HeaderRowOutputFormatter(config);
-			StringWriter csvStr = new StringWriter();
-			CSVWriter writer;
-			if (null == config.getQuoteChar() || config.getQuoteChar().isEmpty()) {
-				writer = new CSVWriter(csvStr, config.getSeparator().charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
-			} else {
-				writer = new CSVWriter(csvStr, config.getSeparator().charAt(0), config.getQuoteChar().charAt(0));
-			}
-			writer.writeNext(headerFormatter.formatHeader());
-			return Response.ok().entity(csvStr.toString()).build();
+			StreamingOutput stream = new StreamingOutput() {
+				
+				@Override
+				public void write(OutputStream out) throws IOException, WebApplicationException {
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+					headerFormatter.format(writer);
+					writer.flush();
+				}
+				
+			};
+			return Response.ok(stream).build();
 		} else {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}

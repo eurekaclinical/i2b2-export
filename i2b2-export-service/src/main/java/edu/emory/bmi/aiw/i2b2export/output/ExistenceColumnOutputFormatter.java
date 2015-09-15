@@ -22,10 +22,10 @@ package edu.emory.bmi.aiw.i2b2export.output;
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Column formatter for existence columns. Displays true or false depending on whether the data to be formatted is
@@ -49,11 +49,12 @@ final class ExistenceColumnOutputFormatter extends
 	}
 
 	@Override
-	public List<String> format(Collection<Observation> data) {
+	public int format(Collection<Observation> data, BufferedWriter writer, int colNum) throws IOException {
 		if (null == data || data.isEmpty()) {
-			return Collections.singletonList("false");
+			write("false", writer, colNum++);
 		} else {
-			return Collections.singletonList("true");
+			write("true", writer, colNum++);
 		}
+		return colNum;
 	}
 }

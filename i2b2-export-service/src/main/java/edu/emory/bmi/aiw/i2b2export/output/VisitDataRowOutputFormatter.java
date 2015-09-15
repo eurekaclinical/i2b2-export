@@ -19,18 +19,21 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Output formatter for visit rows.
@@ -39,44 +42,51 @@ import java.util.List;
  * @since 1.0
  */
 final class VisitDataRowOutputFormatter extends DataRowOutputFormatter {
+
 	private final Event visit;
+	private final Map<String, List<Observation>> keyToObx;
+	private final DateFormat fmt;
 
 	VisitDataRowOutputFormatter(OutputConfiguration config, Event visit) {
 		super(config);
 		this.visit = visit;
+		this.keyToObx = new HashMap<>();
+		for (Observation o : this.visit.getObservations()) {
+			org.arp.javautil.collections.Collections.putList(this.keyToObx, o.getConceptPath(), o);
+		}
+		this.fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 	}
 
 	@Override
-	public List<String> rowPrefix() {
-		List<String> result = new ArrayList<>();
-		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
-
-		result.add(visit.getPatient().getPatientId());
-		result.add(visit.getEventId());
+	public int rowPrefix(BufferedWriter writer) throws IOException {
+		int colNum = 0;
+		write(visit.getPatient().getPatientId(), writer, colNum++);
+		write(visit.getEventId(), writer, colNum++);
 		if (null != visit.getStartDate()) {
-			result.add(fmt.format(visit.getStartDate()));
+			synchronized (this.fmt) {
+				write(fmt.format(visit.getStartDate()), writer, colNum++);
+			}
 		} else {
-			result.add("");
+			write("", writer, colNum++);
 		}
 		if (null != visit.getEndDate()) {
-			result.add(fmt.format(visit.getEndDate()));
+			synchronized (this.fmt) {
+				write(fmt.format(visit.getEndDate()), writer, colNum++);
+			}
 		} else {
-			result.add("");
+			write("", writer, colNum++);
 		}
 
-		return result;
+		return colNum;
 	}
 
 	@Override
 	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
-		Collection<Observation> result = new ArrayList<>();
-
-		for (Observation o : visit.getObservations()) {
-			if (o.getConceptPath().equals(i2b2Concept.getI2b2Key())) {
-				result.add(o);
-			}
+		List<Observation> get = this.keyToObx.get(i2b2Concept.getI2b2Key());
+		if (get != null) {
+			return Collections.unmodifiableCollection(get);
+		} else {
+			return Collections.emptyList();
 		}
-
-		return result;
 	}
 }

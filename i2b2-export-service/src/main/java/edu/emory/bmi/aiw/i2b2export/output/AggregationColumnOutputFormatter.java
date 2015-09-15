@@ -22,11 +22,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Column formatter for aggregation columns.
@@ -47,12 +47,11 @@ final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatt
 	}
 
 	@Override
-	public List<String> format(Collection<Observation> data) {
-		List<String> result = new ArrayList<>();
+	public int format(Collection<Observation> data, BufferedWriter writer, int numCol) throws IOException {
 		String units = "";
 
 		if (data == null || data.isEmpty()) {
-			result.add(getFormatOptions().getMissingData());
+			write(getFormatOptions().getMissingData(), writer, numCol++);
 			units = getFormatOptions().getMissingData();
 		} else {
 			switch (getColumnConfig().getAggregation()) {
@@ -65,7 +64,7 @@ final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatt
 							units = obx.getUnits();
 						}
 					}
-					result.add(minValue.toString());
+					write(minValue.toString(), writer, numCol++);
 					break;
 				case MAX:
 					BigDecimal maxValue = new BigDecimal(Double.MIN_VALUE);
@@ -76,7 +75,7 @@ final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatt
 							units = obx.getUnits();
 						}
 					}
-					result.add(maxValue.toString());
+					write(maxValue.toString(), writer, numCol++);
 					break;
 				case AVG:
 					BigDecimal sum = new BigDecimal(0.0);
@@ -96,16 +95,16 @@ final class AggregationColumnOutputFormatter extends AbstractColumnOutputFormatt
 					}
 					BigDecimal avg = sum.divide(new BigDecimal(data.size()),
 							scale);
-					result.add(avg.toString());
+					write(avg.toString(), writer, numCol++);
 					break;
 				default:
 					throw new RuntimeException("aggregation type not provided");
 			}
 		}
 		if (getColumnConfig().getIncludeUnits()) {
-			result.add(units);
+			write(units, writer, numCol++);
 		}
 
-		return result;
+		return numCol;
 	}
 }

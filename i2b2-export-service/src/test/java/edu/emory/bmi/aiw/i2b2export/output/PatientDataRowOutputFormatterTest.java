@@ -27,7 +27,7 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
-import org.apache.commons.lang3.StringUtils;
+import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,10 +36,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class PatientDataRowOutputFormatterTest {
+public class PatientDataRowOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
-	private OutputConfiguration config;
-	private Patient patient;
+	private final OutputConfiguration config;
+	private final Patient patient;
 
 	public PatientDataRowOutputFormatterTest() throws ParseException {
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
@@ -50,7 +50,6 @@ public class PatientDataRowOutputFormatterTest {
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
-		config.setQuoteChar("\"");
 		config.setWhitespaceReplacement("_");
 		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
 
@@ -156,8 +155,8 @@ public class PatientDataRowOutputFormatterTest {
 	}
 
 	@Test
-	public void testFormat() {
+	public void testFormat() throws IOException {
 		PatientDataRowOutputFormatter formatter = new PatientDataRowOutputFormatter(config, patient);
-		Assert.assertEquals("P1,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", StringUtils.join(formatter.format(), ','));
+		Assert.assertEquals("P1,true,1.0,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.75,2013-03-03T09:00:00.000-0500,2013-03-03T09:05:00.000-0500,1.8,2013-02-02T09:00:00.000-0500,2013-02-02T09:05:00.000-0500,1.5,2013-01-01T09:00:00.000-0500,2013-01-01T09:05:00.000-0500,(NULL),(NULL),(NULL),500,U", formatString(formatter));
 	}
 }

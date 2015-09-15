@@ -19,13 +19,13 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Output formatter for when each row represents a patient.
@@ -33,23 +33,22 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-final class PatientDataOutputFormatter {
+final class PatientDataOutputFormatter extends AbstractFormatter {
 
 	private final OutputConfiguration config;
 	private final Collection<Patient> patients;
 
 	PatientDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
+		super(config);
 		this.config = config;
 		this.patients = patients;
 	}
 
-	public List<String[]> format() {
-		List<String[]> result = new ArrayList<>();
-
+	public void format(BufferedWriter writer) throws IOException {
 		for (Patient patient : this.patients) {
-			result.add(new PatientDataRowOutputFormatter(this.config, patient).format());
+			new PatientDataRowOutputFormatter(this.config, patient).format(writer);
+			writer.write(IOUtils.LINE_SEPARATOR);
 		}
 
-		return result;
 	}
 }

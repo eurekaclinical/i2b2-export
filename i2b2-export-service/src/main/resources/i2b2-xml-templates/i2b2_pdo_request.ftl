@@ -84,8 +84,12 @@
 					<item>
 						<item_key>${item.i2b2Key}</item_key>
 						<hlevel>${item.level}</hlevel>
-						<dim_tablename>${item.tableName}</dim_tablename>
-						<dim_dimcode>${item.dimensionCode}</dim_dimcode>
+						<dim_tablename>${item.tableName?xml}</dim_tablename>
+						<dim_columnname>${item.columnName?xml}</dim_columnname>
+						<dim_dimcode>${item.dimensionCode?xml}</dim_dimcode>
+						<dim_columndatatype>${item.columnDataType?xml}</dim_columndatatype>
+						<dim_operator>${item.operator?xml}</dim_operator>
+						<facttablecolumn>${item.factTableColumn?xml}</facttablecolumn>
 						<item_is_synonym>${item.isSynonym}</item_is_synonym>
 					</item>
 				</panel>

@@ -29,6 +29,7 @@ import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
+import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,10 +39,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DataOutputFormatterTest {
+public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
-	private OutputConfiguration config;
-	private I2b2PdoResults data;
+	private final OutputConfiguration config;
+	private final I2b2PdoResults data;
 	private DataOutputFormatter formatter;
 
 	public DataOutputFormatterTest() throws ParseException {
@@ -284,7 +285,7 @@ public class DataOutputFormatterTest {
 	}
 
 	@Test
-	public void testPatientOutputFormatter() {
+	public void testPatientOutputFormatter() throws IOException {
 		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
 		formatter = new DataOutputFormatter(config, data);
 
@@ -292,11 +293,12 @@ public class DataOutputFormatterTest {
 				"\"P1\",\"true\",\"300\",\"U\",\"200\",\"U\",\"100\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
 				"\"P2\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.8\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
 				"\"P3\",\"true\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"140\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"90\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n";
-		Assert.assertEquals(expected, formatter.format());
+		
+		Assert.assertEquals(expected, formatString(formatter));
 	}
 
 	@Test
-	public void testVisitOutputFormatter() {
+	public void testVisitOutputFormatter() throws IOException {
 		config.setRowDimension(OutputConfiguration.RowDimension.VISIT);
 		formatter = new DataOutputFormatter(config, data);
 
@@ -308,11 +310,11 @@ public class DataOutputFormatterTest {
 				"\"P2\",\"E22\",\"2013-05-05T09:00:00.000-0400\",\"2013-05-05T14:00:00.000-0400\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.8\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
 				"\"P2\",\"E23\",\"2013-06-06T09:00:00.000-0400\",\"2013-06-06T14:00:00.000-0400\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.75\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
 				"\"P3\",\"E31\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T14:00:00.000-0400\",\"true\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"140\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"90\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n";
-		Assert.assertEquals(expected, formatter.format());
+		Assert.assertEquals(expected, formatString(formatter));
 	}
 
 	@Test
-	public void testProviderOutputFormatter() {
+	public void testProviderOutputFormatter() throws IOException {
 		config.setRowDimension(OutputConfiguration.RowDimension.PROVIDER);
 		formatter = new DataOutputFormatter(config, data);
 
@@ -321,6 +323,6 @@ public class DataOutputFormatterTest {
 				"\"DOE, JANE\",\"false\",\"300\",\"U\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
 				"\"SALK, JONAS\",\"false\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"1.8\",\"X\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n" +
 				"\"HIPPOCRATES, BRIAN\",\"true\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"140\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\",\"90\",\"2013-07-07T09:00:00.000-0400\",\"2013-07-07T10:00:00.000-0400\",\"(NULL)\",\"(NULL)\",\"(NULL)\"\n";
-		Assert.assertEquals(expected, formatter.format());
+		Assert.assertEquals(expected, formatString(formatter));
 	}
 }

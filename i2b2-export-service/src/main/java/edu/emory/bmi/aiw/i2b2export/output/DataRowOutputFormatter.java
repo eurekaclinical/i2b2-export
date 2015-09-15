@@ -24,10 +24,10 @@ import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Abstract class for formatting a row of output. Depending on what a row represents (patient, visit, or provider),
@@ -38,12 +38,13 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-abstract class DataRowOutputFormatter {
+abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOutputFormatter {
 
-	private final OutputConfiguration config;
+	final OutputConfiguration config;
 	private final FormatOptions formatOptions;
 
 	DataRowOutputFormatter(OutputConfiguration config) {
+		super(config);
 		this.config = config;
 		this.formatOptions = new FormatOptions(config);
 	}
@@ -60,7 +61,7 @@ abstract class DataRowOutputFormatter {
 	 * Finds the observations that match the given i2b2 concept path.
 	 *
 	 * @param i2b2Concept the i2b2 concept to match
-	 * @return a {@link Collection} of {@link Observation}s that match the given concept path
+	 * @return an unmodifiable {@link Collection} of {@link Observation}s that match the given concept path
 	 */
 	abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept);
 
@@ -72,7 +73,7 @@ abstract class DataRowOutputFormatter {
 	 * @return the first fields of the row, as a {@link String}, joined by the column separator specified in the
 	 *         output configuration
 	 */
-	abstract List<String> rowPrefix();
+	abstract int rowPrefix(BufferedWriter writer) throws IOException;
 
 	/**
 	 * Formats a row of data according to the instance's column configurations and format options. The result is
@@ -80,28 +81,26 @@ abstract class DataRowOutputFormatter {
 	 *
 	 * @return an array of {@link String}s representing a single row of output
 	 */
-	final String[] format() {
-		List<String> result = new ArrayList<>();
-
-		result.addAll(rowPrefix());
+	@Override
+	public final void format(BufferedWriter writer) throws IOException {
+		int colNum = rowPrefix(writer);
 		for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {
 			Collection<Observation> obxs = matchingObservations(colConfig
 					.getI2b2Concept());
 			switch (colConfig.getDisplayFormat()) {
 				case EXISTENCE:
-					result.addAll(new ExistenceColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
+					colNum = new ExistenceColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs, writer, colNum);
 					break;
 				case VALUE:
-					result.addAll(new ValueColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
+					colNum = new ValueColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs, writer, colNum);
 					break;
 				case AGGREGATION:
-					result.addAll(new AggregationColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs));
+					colNum = new AggregationColumnOutputFormatter(colConfig, getFormatOptions()).format(obxs, writer, colNum);
 					break;
 				default:
 					throw new RuntimeException("display format not provided");
 			}
 		}
 
-		return result.toArray(new String[result.size()]);
 	}
 }

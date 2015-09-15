@@ -22,10 +22,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Output formatter for when each row represents a provider.
@@ -43,13 +44,11 @@ final class ProviderDataOutputFormatter {
 		this.providers = providers;
 	}
 
-	public List<String[]> format() {
-		List<String[]> result = new ArrayList<>();
-
+	public void format(BufferedWriter writer) throws IOException {
 		for (Observer provider : this.providers) {
-			result.add(new ProviderDataRowOutputFormatter(this.config, provider).format());
+			new ProviderDataRowOutputFormatter(this.config, provider).format(writer);
+			writer.write(IOUtils.LINE_SEPARATOR);
 		}
 
-		return result;
 	}
 }

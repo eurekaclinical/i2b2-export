@@ -28,11 +28,12 @@ import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
  * @author Michel Mansour
  * @since 1.0
  */
-abstract class AbstractColumnOutputFormatter implements ColumnOutputFormatter {
+abstract class AbstractColumnOutputFormatter extends AbstractFormatter implements ColumnOutputFormatter {
 	private final OutputColumnConfiguration columnConfig;
 	private final FormatOptions formatOptions;
 
 	AbstractColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+		super(columnConfig.getOutputConfig());
 		this.columnConfig = columnConfig;
 		this.formatOptions = formatOptions;
 	}

@@ -19,7 +19,6 @@ package edu.emory.bmi.aiw.i2b2export.entity;
  * limitations under the License.
  * #L%
  */
-
 import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import javax.persistence.CascadeType;
@@ -42,7 +41,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "output_configs", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"username", "config_name"})})
+	@UniqueConstraint(columnNames = {"username", "config_name"})})
 public class OutputConfiguration {
 
 	@Id
@@ -63,16 +62,15 @@ public class OutputConfiguration {
 	 * Valid row dimensin values
 	 */
 	public static enum RowDimension {
+
 		/**
 		 * each row represents a patient
 		 */
 		PATIENT,
-
 		/**
 		 * each row represents a visit
 		 */
 		VISIT,
-
 		/**
 		 * each row represents a provider
 		 */
@@ -83,7 +81,7 @@ public class OutputConfiguration {
 	private RowDimension rowDimension;
 
 	@Column(name = "separator", length = 1)
-	private String separator;
+	private String separator = "\t";
 
 	@Column(name = "quote_char", length = 1)
 	private String quoteChar;
@@ -202,7 +200,11 @@ public class OutputConfiguration {
 	 * @param separator the separator
 	 */
 	public void setSeparator(String separator) {
-		this.separator = separator;
+		if (separator == null) {
+			this.separator = "\t";
+		} else {
+			this.separator = separator;
+		}
 	}
 
 	/**
@@ -242,7 +244,8 @@ public class OutputConfiguration {
 	}
 
 	/**
-	 * Gets the list of output column configurations that make up this output configuration.
+	 * Gets the list of output column configurations that make up this output
+	 * configuration.
 	 *
 	 * @return a list of {@link OutputColumnConfiguration}s
 	 */

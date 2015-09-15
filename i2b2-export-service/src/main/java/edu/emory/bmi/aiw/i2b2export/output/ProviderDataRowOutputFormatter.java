@@ -24,10 +24,14 @@ import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.arp.javautil.collections.Collections;
 
 /**
  * Output formatter for a provider row.
@@ -37,29 +41,31 @@ import java.util.List;
  */
 final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Observer provider;
+	private final Map<String, List<Observation>> keyToObx;
 
 	ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider) {
 		super(config);
 		this.provider = provider;
+		this.keyToObx = new HashMap<>();
+		
+		for (Observation o : provider.getObservations()) {
+			Collections.putList(keyToObx, o.getConceptPath(), o);
+		}
 	}
 
 	@Override
-	protected List<String> rowPrefix() {
-		List<String> result = new ArrayList<>();
-		result.add(provider.getName());
-		return result;
+	protected int rowPrefix(BufferedWriter writer) throws IOException {
+		write(provider.getName(), writer, 0);
+		return 1;
 	}
 
 	@Override
 	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
-		Collection<Observation> result = new ArrayList<>();
-
-		for (Observation o : provider.getObservations()) {
-			if (o.getConceptPath().equals(i2b2Concept.getI2b2Key())) {
-				result.add(o);
-			}
+		List<Observation> get = this.keyToObx.get(i2b2Concept.getI2b2Key());
+		if (get != null) {
+			return java.util.Collections.unmodifiableCollection(get);
+		} else {
+			return java.util.Collections.emptyList();
 		}
-
-		return result;
 	}
 }

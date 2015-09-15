@@ -23,6 +23,8 @@ package edu.emory.bmi.aiw.i2b2export.output;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -69,8 +71,7 @@ final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 	};
 
 	@Override
-	public List<String> format(Collection<Observation> data) {
-		List<String> result = new ArrayList<>();
+	public int format(Collection<Observation> data, BufferedWriter writer, int colNum) throws IOException {
 		List<Observation> dataList = new ArrayList<>(data);
 		Collections.sort(dataList, OBX_COMP);
 
@@ -85,33 +86,32 @@ final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 		for (int i = 0; i < getColumnConfig().getHowMany(); i++) {
 			if (null == dataList || dataList.isEmpty() || i >= dataList.size()) {
 				for (int j = 0; j < numCols; j++) {
-					result.add(getFormatOptions().getMissingData());
+					write(getFormatOptions().getMissingData(), writer, colNum++);
 				}
 			} else {
 				final Observation obx = dataList.get(i);
 				if (obx.getValuetype() != null && obx.getValuetype().equals("N")) {
-					result.add(obx.getNval());
+					write(obx.getNval(), writer, colNum++);
 				} else {
-					result.add(obx.getTval());
+					write(obx.getTval(), writer, colNum++);
 				}
 				if (getColumnConfig().getIncludeUnits()) {
-					result.add(obx.getUnits());
+					write(obx.getUnits(), writer, colNum++);
 				}
 				if (getColumnConfig().getIncludeTimeRange()) {
 					if (null != obx.getStartDate()) {
-						result.add(i2b2DateFormat.format(obx.getStartDate()));
+						write(i2b2DateFormat.format(obx.getStartDate()), writer, colNum++);
 					} else {
-						result.add("");
+						write("", writer, colNum++);
 					}
 					if (null != obx.getEndDate()) {
-						result.add(i2b2DateFormat.format(obx.getEndDate()));
+						write(i2b2DateFormat.format(obx.getEndDate()), writer, colNum++);
 					} else {
-						result.add("");
+						write("", writer, colNum++);
 					}
 				}
 			}
 		}
-
-		return result;
+		return colNum;
 	}
 }
