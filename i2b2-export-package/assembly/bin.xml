@@ -18,7 +18,7 @@
             <directory>src/main/resources</directory>
             <outputDirectory>liquibase-3</outputDirectory>
             <includes>
-                <include>liquibase-i2b2export.properties</include>
+                <include>liquibase-*.properties</include>
             </includes>
             <filtered>true</filtered>
         </fileSet>
