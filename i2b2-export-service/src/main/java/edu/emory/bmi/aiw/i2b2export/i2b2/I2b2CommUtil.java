@@ -197,7 +197,11 @@ public final class I2b2CommUtil {
 		xmlEntity.setContentType("text/xml");
 		i2b2Post.setEntity(xmlEntity);
 		HttpResponse resp = http.execute(i2b2Post);
-
+		int statusCode = resp.getStatusLine().getStatusCode();
+		LOGGER.debug("Response status {}", statusCode);
+		if (statusCode != 200) {
+			throw new IOException("Connection to i2b2 services failed with status code " + statusCode);
+		}
 		if (LOGGER.isDebugEnabled()) {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
 			StringBuilder respXml = new StringBuilder();
