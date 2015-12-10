@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>edu.emory.bmi.aiw</groupId>
+		<groupId>org.eurekaclinical</groupId>
 		<artifactId>i2b2-export</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
@@ -18,34 +18,41 @@
 		<oracle-version>11.2.0.3</oracle-version>
 		<i2b2-export-version>1.1-SNAPSHOT</i2b2-export-version>
 	</properties>
+	
+	<repositories>
+		<repository>
+			<id>codelds</id>
+			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
-			<groupId>edu.emory.bmi.aiw</groupId>
+			<groupId>org.eurekaclinical</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
 			<version>${i2b2-export-version}</version>
 			<classifier>plugin</classifier>
 			<type>zip</type>
 		</dependency>
 		<dependency>
-			<groupId>edu.emory.bmi.aiw</groupId>
+			<groupId>org.eurekaclinical</groupId>
 			<artifactId>i2b2-export-service</artifactId>
 			<version>${i2b2-export-version}</version>
 			<type>war</type>
 		</dependency>
 		<dependency>
-			<groupId>edu.emory.bmi.aiw</groupId>
+			<groupId>org.eurekaclinical</groupId>
 			<artifactId>i2b2-export-plugin</artifactId>
 			<version>${i2b2-export-version}</version>
 			<classifier>plugin</classifier>
 			<type>tar.gz</type>
 		</dependency>
 		<dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>${oracle-version}</version>
-            <scope>compile</scope>
-        </dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>${oracle-version}</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -63,7 +70,6 @@
 								<descriptor>assembly/bin.xml</descriptor>
 								<descriptor>assembly/src.xml</descriptor>
 							</descriptors>
-							<tarLongFileMode>gnu</tarLongFileMode>
 						</configuration>
 					</execution>
 				</executions>

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>edu.emory.bmi.aiw</groupId>
+		<groupId>org.eurekaclinical</groupId>
 		<artifactId>i2b2-export</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
@@ -16,61 +16,18 @@
 		user-defined configuration, as well as saving configurations.
 	</description>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-			<distribution>manual</distribution>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>arpost</id>
-			<name>Andrew Post</name>
-			<email>arpost@emory.edu</email>
-			<roles>
-				<role>Faculty Project Lead</role>
-			</roles>
-			<organization>Department of Biomedical Informatics, Emory University</organization>
-		</developer>
-		<developer>
-			<id>mmansour</id>
-			<name>Michel Mansour</name>
-			<email>michel.mansour@emory.edu</email>
-			<roles>
-				<role>Software Developer</role>
-			</roles>
-			<organization>Department of Biomedical Informatics, Emory University
-			</organization>
-		</developer>
-	</developers>
-
 	<properties>
 		<jersey-version>1.8</jersey-version>
-		<javautil-version>2.4-SNAPSHOT</javautil-version>
 		<!-- Don't upgrade h2 yet. There is a bug causing ORDER BY to be 
 		ignored in SELECT queries with a WHERE clause. -->
-		<h2-version>1.4.185</h2-version>
 	</properties>
 
 	<build>
 		<finalName>i2b2-export-service</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<inherited>true</inherited>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>1.4</version>
 				<configuration>
 					<licenseName>apache_v2</licenseName>
 					<roots>
@@ -89,96 +46,35 @@
 						<exclude>**/*.css</exclude>
 					</excludes>
 				</configuration>
-				<executions>
-					<execution>
-						<id>first</id>
-						<goals>
-							<goal>update-file-header</goal>
-						</goals>
-						<phase>process-sources</phase>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jasig.maven</groupId>
 				<artifactId>maven-notice-plugin</artifactId>
-				<version>1.0.5</version>
 				<configuration>
 					<noticeTemplate>etc/NOTICE.template</noticeTemplate>
 					<licenseMapping>
 						<param>etc/license-mappings.xml</param>
 					</licenseMapping>
 				</configuration>
-				<executions>
-					<execution>
-						<id>checkontest</id>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<phase>test</phase>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
 					<descriptors>
 						<descriptor>assembly/bin.xml</descriptor>
 						<descriptor>assembly/src.xml</descriptor>
 					</descriptors>
 				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.16</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.11</version>
-				<configuration>
-					<configLocation>http://aiw.sourceforge.net/dev/aiw-checkstyle-1.0/eureka-checkstyle.xml</configLocation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-
 	<dependencies>
 		<dependency>
-			<groupId>org.arp</groupId>
+			<groupId>org.eurekaclinical</groupId>
 			<artifactId>javautil</artifactId>
-			<version>${javautil-version}</version>
+			<version>3.0-Alpha-4</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -211,7 +107,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -222,7 +117,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
@@ -278,7 +172,6 @@
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
-			<version>2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -288,26 +181,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>${h2-version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>m2.java.net</id>
-			<name>Java.net Maven 2 Repository</name>
-			<url>http://download.java.net/maven/2</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>m2.java.net</id>
-			<name>Java.net Maven 2 Repository</name>
-			<url>http://download.java.net/maven/2</url>
-			<layout>default</layout>
-		</pluginRepository>
-	</pluginRepositories>
 </project>

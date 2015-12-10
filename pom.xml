@@ -3,18 +3,22 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>edu.emory.bmi.aiw</groupId>
+	<groupId>org.eurekaclinical</groupId>
 	<artifactId>i2b2-export</artifactId>
 	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>i2b2 Export</name>
-	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. This project includes both the web client plugin that the user interacts with and the Java service that manages users' export configurations and communicates with i2b2 to retrieve data.</description>
+	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. 
+This project includes both the web client plugin that the user interacts with and the Java 
+service that manages users' export configurations and communicates with i2b2 to retrieve data.
+	</description>
 	<inceptionYear>2013</inceptionYear>
-	<organization>
-		<name>Emory University</name>
-		<url>http://www.emory.edu</url>
-	</organization>
+	<parent>
+		<groupId>org.eurekaclinical</groupId>
+		<artifactId>eurekaclinical-parent</artifactId>
+		<version>1-Alpha-4</version>
+	</parent>
 
 	<modules>
 		<module>i2b2-export-plugin</module>
@@ -22,99 +26,37 @@
 		<module>i2b2-export-package</module>
 	</modules>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
 	<scm>
-		<developerConnection>scm:git:ssh://git.cci.emory.edu:/opt/git/aiw/i2b2-export.git</developerConnection>
-		<url>ssh://git.cci.emory.edu:/opt/git/aiw/i2b2-export.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
+        <developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
+        <url>https://github.com/eurekaclinical/i2b2-export.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
 	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.cci.emory.edu:8080/jira/secure/Dashboard.jspa</url>
+		<system>GitHub</system>
+		<url>https://github.com/eurekaclinical/i2b2-export/issues</url>
 	</issueManagement>
-
-	<distributionManagement>
-		<site>
-			<id>aiw.sourceforge.net</id>
-			<url>scp://shell.sourceforge.net/home/project-web/aiw/htdocs/dev/i2b2-export-${project.version}</url>
-		</site>
-		<repository>
-			<id>aiw</id>
-			<name>AIW Repo</name>
-			<url>http://maven.cci.emory.edu/nexus/content/repositories/aiw/</url>
-		</repository>
-		<snapshotRepository>
-			<id>aiw-snapshots</id>
-			<name>AIW Snapshots Repo</name>
-			<url>http://maven.cci.emory.edu/nexus/content/repositories/aiw-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.5</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.3</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh</artifactId>
-							<version>2.5</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-		</plugins>
-	</reporting>
-
+	
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-			<distribution>manual</distribution>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-	<developers>
-		<developer>
-			<id>arpost</id>
-			<name>Andrew Post</name>
-			<email>arpost@emory.edu</email>
-			<roles>
-				<role>Faculty Project Lead</role>
-			</roles>
-			<organization>Department of Biomedical Informatics, Emory University</organization>
-		</developer>
-		<developer>
-			<id>mmansour</id>
-			<name>Michel Mansour</name>
-			<email>michel.mansour@emory.edu</email>
-			<roles>
-				<role>Software Developer</role>
-			</roles>
-			<organization>Department of Biomedical Informatics, Emory University
-			</organization>
-		</developer>
-	</developers>
+	
+	<build>
+		<plugins>
+			<plugin>
+                <groupId>org.jasig.maven</groupId>
+				<artifactId>maven-notice-plugin</artifactId>
+				<configuration>
+					<licenseMapping>
+                        <param>etc/license-mappings.xml</param>
+                    </licenseMapping>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
