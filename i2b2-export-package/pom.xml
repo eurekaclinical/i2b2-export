@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.eurekaclinical</groupId>
 		<artifactId>i2b2-export</artifactId>
-		<version>1.1-Alpha-1</version>
+		<version>1.1-Alpha-2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>i2b2-export-package</artifactId>
@@ -16,7 +16,7 @@
 	
 	<properties>
 		<oracle-version>11.2.0.3</oracle-version>
-		<i2b2-export-version>1.1-Alpha-1</i2b2-export-version>
+		<i2b2-export-version>1.1-Alpha-2-SNAPSHOT</i2b2-export-version>
 	</properties>
 	
 	<repositories>
