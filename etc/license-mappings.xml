@@ -58,4 +58,16 @@
 		<version>1.0.1.Final</version>
 		<license>Sun Binary Code License</license>
 	</artifact>
+	<artifact>
+        <groupId>avalon-framework</groupId>
+        <artifactId>avalon-framework</artifactId>
+        <version>4.1.3</version>
+		<license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>logkit</groupId>
+        <artifactId>logkit</artifactId>
+        <version>1.0.1</version>
+		<license>Apache License, Version 2.0</license>
+    </artifact>
 </license-lookup>

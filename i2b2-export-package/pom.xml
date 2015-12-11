@@ -19,20 +19,6 @@
 		<i2b2-export-version>1.1-Alpha-3-SNAPSHOT</i2b2-export-version>
 	</properties>
 	
-	<repositories>
-		<repository>
-			<id>maven.oracle.com</id>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<url>https://maven.oracle.com</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.eurekaclinical</groupId>
@@ -57,8 +43,6 @@
 		<dependency>
 			<groupId>com.oracle.weblogic</groupId>
 			<artifactId>ojdbc6</artifactId>
-			<version>${oracle-version}</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
