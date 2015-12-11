@@ -15,14 +15,21 @@
 	<description>A project to package up for distribution both pieces of the i2b2 data export plugin: the Javascript front-end and the corresponding Java web service.</description>
 	
 	<properties>
-		<oracle-version>11.2.0.3</oracle-version>
+		<oracle-version>12.1.2-0-0</oracle-version>
 		<i2b2-export-version>1.1-Alpha-2-SNAPSHOT</i2b2-export-version>
 	</properties>
 	
 	<repositories>
 		<repository>
-			<id>codelds</id>
-			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
+			<id>maven.oracle.com</id>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>https://maven.oracle.com</url>
+			<layout>default</layout>
 		</repository>
 	</repositories>
 
@@ -48,7 +55,7 @@
 			<type>tar.gz</type>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle</groupId>
+			<groupId>com.oracle.weblogic</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>${oracle-version}</version>
 			<scope>compile</scope>

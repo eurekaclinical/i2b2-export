@@ -24,7 +24,7 @@ This project includes:
   Apache Solr Solrj under Apache 2
   ASM Core under Apache License, Version 2.0
   Code Generation Library under ASF 2.0
-  com.oracle:ojdbc6 under Oracle Technology Network Development and Distribution License Agreement
+  com.oracle.weblogic:ojdbc6 under Oracle Technology Network Development and Distribution License Agreement
   Commons IO under The Apache Software License, Version 2.0
   Commons Lang under The Apache Software License, Version 2.0
   Commons Logging under The Apache Software License, Version 2.0
