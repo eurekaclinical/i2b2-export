@@ -14,6 +14,9 @@ This project includes both the web client plugin that the user interacts with an
 service that manages users' export configurations and communicates with i2b2 to retrieve data.
 	</description>
 	<inceptionYear>2013</inceptionYear>
+	
+	<url>http://eurekaclinical.org</url>
+	
 	<parent>
 		<groupId>org.eurekaclinical</groupId>
 		<artifactId>eurekaclinical-parent</artifactId>
