@@ -5,7 +5,7 @@
 
 	<groupId>org.eurekaclinical</groupId>
 	<artifactId>i2b2-export</artifactId>
-	<version>1.1-Alpha-5-SNAPSHOT</version>
+	<version>1.1-Alpha-5</version>
 	<packaging>pom</packaging>
 
 	<name>i2b2 Export</name>
@@ -33,7 +33,7 @@ service that manages users' export configurations and communicates with i2b2 to 
         <connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
         <developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
         <url>https://github.com/eurekaclinical/i2b2-export.git</url>
-        <tag>HEAD</tag>
+        <tag>i2b2-export-1.1-Alpha-5</tag>
     </scm>
 
 	<issueManagement>
