@@ -27,6 +27,7 @@
 		<dependencySet>
 			<includes>
 				<include>com.oracle.weblogic:ojdbc6</include>
+				<include>org.postgresql:postgresql</include>
 			</includes>
 			<unpack>false</unpack>
 			<outputDirectory>lib</outputDirectory>
