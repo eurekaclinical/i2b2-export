@@ -16,4 +16,5 @@ This project includes:
   i2b2 Export Plugin under Apache License, Version 2.0
   i2b2 Export Service under Apache License, Version 2.0
   ojdbc6 under Oracle Technology Network Development and Distribution License Agreement
+  PostgreSQL JDBC Driver under The PostgreSQL License
 
