@@ -20,7 +20,7 @@ service that manages users' export configurations and communicates with i2b2 to 
 	<parent>
 		<groupId>org.eurekaclinical</groupId>
 		<artifactId>eurekaclinical-parent</artifactId>
-		<version>1-Alpha-9-SNAPSHOT</version>
+		<version>1-Alpha-9</version>
 	</parent>
 
 	<modules>
