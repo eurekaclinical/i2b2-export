@@ -30,11 +30,11 @@ service that manages users' export configurations and communicates with i2b2 to 
 	</modules>
 
 	<scm>
-        <connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
-        <developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
-        <url>https://github.com/eurekaclinical/i2b2-export.git</url>
-        <tag>HEAD</tag>
-    </scm>
+                <connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
+                <developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
+                <url>https://github.com/eurekaclinical/i2b2-export.git</url>
+                <tag>HEAD</tag>
+        </scm>
 
 	<issueManagement>
 		<system>GitHub</system>
