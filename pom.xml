@@ -10,8 +10,8 @@
 
 	<name>i2b2 Export</name>
 	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. 
-This project includes both the web client plugin that the user interacts with and the Java 
-service that manages users' export configurations and communicates with i2b2 to retrieve data.
+		This project includes both the web client plugin that the user interacts with and the Java 
+		service that manages users' export configurations and communicates with i2b2 to retrieve data.
 	</description>
 	<inceptionYear>2013</inceptionYear>
 	
@@ -20,7 +20,7 @@ service that manages users' export configurations and communicates with i2b2 to 
 	<parent>
 		<groupId>org.eurekaclinical</groupId>
 		<artifactId>eurekaclinical-parent</artifactId>
-		<version>1-Alpha-9</version>
+		<version>1-Alpha-13</version>
 	</parent>
 
 	<modules>
@@ -30,11 +30,11 @@ service that manages users' export configurations and communicates with i2b2 to 
 	</modules>
 
 	<scm>
-        <connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
-        <developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
-        <url>https://github.com/eurekaclinical/i2b2-export.git</url>
-        <tag>HEAD</tag>
-    </scm>
+		<connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
+		<developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
+		<url>https://github.com/eurekaclinical/i2b2-export.git</url>
+		<tag>HEAD</tag>
+	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
@@ -49,15 +49,25 @@ service that manages users' export configurations and communicates with i2b2 to 
 		</license>
 	</licenses>
 	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.eurekaclinical</groupId>
+				<artifactId>javautil</artifactId>
+				<version>3.0-Alpha-6</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<build>
 		<plugins>
 			<plugin>
-                <groupId>org.jasig.maven</groupId>
+				<groupId>org.jasig.maven</groupId>
 				<artifactId>maven-notice-plugin</artifactId>
 				<configuration>
 					<licenseMapping>
-                        <param>etc/license-mappings.xml</param>
-                    </licenseMapping>
+						<param>etc/license-mappings.xml</param>
+					</licenseMapping>
 				</configuration>
 			</plugin>
 		</plugins>

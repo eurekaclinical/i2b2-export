@@ -129,7 +129,7 @@ public final class DataResource {
 	 * client formatted according to the configuration indicated by the full
 	 * configuration in the request. The user must be authenticated
 	 * according to the security tokens passed in.
-	 * <p/>
+	 * 
 	 * This method accepts form parameters instead of raw JSON because in
 	 * order for the browser to trigger its download dialog, it must submit an
 	 * actual HTML form.
@@ -184,7 +184,7 @@ public final class DataResource {
 	 * client formatted according to the configuration indicated by the
 	 * configuration ID in the request. The user must be authenticated
 	 * according to the security tokens passed in.
-	 * <p/>
+	 * 
 	 * This method accepts form parameters instead of raw JSON because in
 	 * order for the browser to trigger its download dialog, it must submit an
 	 * actual HTML form.

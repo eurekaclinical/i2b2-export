@@ -54,10 +54,8 @@ public final class HeaderRowOutputFormatter extends AbstractFormatter implements
 	 * The row is returned as an array of strings that will be joined later
 	 * using the correct delimiter.
 	 *
-	 * @param writer
-	 * @return an array of <code>String</code>s representing the fields of the
-	 * header row
-	 * @throws java.io.IOException
+	 * @param writer the stream to which the results will go.
+	 * @throws java.io.IOException if an error occurred writing the results.
 	 */
 	@Override
 	public void format(BufferedWriter writer) throws IOException {

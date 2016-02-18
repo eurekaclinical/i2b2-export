@@ -19,7 +19,6 @@ package edu.emory.bmi.aiw.i2b2export.i2b2.pdo;
  * limitations under the License.
  * #L%
  */
-
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import edu.emory.bmi.aiw.i2b2export.xml.XmlUtil;
@@ -33,8 +32,10 @@ import org.w3c.dom.NodeList;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,11 +51,6 @@ import java.util.Set;
 public class I2b2PdoResultParser {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(I2b2PdoResultParser.class);
-
-	/*
-	 * the i2b2 date format
-	 */
-	private final DateFormat i2b2DateFormat;
 
 	/*
 	 * maps from IDs to patients, events, and observers (providers)
@@ -80,7 +76,6 @@ public class I2b2PdoResultParser {
 	 */
 	public I2b2PdoResultParser(Document xmlDoc) {
 		d = xmlDoc;
-		i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 		patients = new HashMap<>();
 		events = new HashMap<>();
 		observers = new HashMap<>();
@@ -88,9 +83,11 @@ public class I2b2PdoResultParser {
 	}
 
 	/**
-	 * Parses the instance's XML document and returns the PDO results contained in it.
+	 * Parses the instance's XML document and returns the PDO results contained
+	 * in it.
 	 *
-	 * @return an {@link I2b2PdoResults} containing all of the PDO results found in the XML
+	 * @return an {@link I2b2PdoResults} containing all of the PDO results found
+	 * in the XML
 	 * @throws I2b2ExportServiceXmlException if there is a parsing error
 	 */
 	public I2b2PdoResults parse() throws I2b2ExportServiceXmlException {
@@ -104,8 +101,8 @@ public class I2b2PdoResultParser {
 	}
 
 	/**
-	 * Parses all of the patients, events, observers and observations from the result XML and ties together all
-	 * related entities.
+	 * Parses all of the patients, events, observers and observations from the
+	 * result XML and ties together all related entities.
 	 *
 	 * @throws XPathExpressionException if there is an XPath error
 	 */
@@ -202,7 +199,7 @@ public class I2b2PdoResultParser {
 		String patientId = text(eventXml, "patient_id");
 		Event.Builder eb = new Event.Builder(id, this.patients.get(patientId))
 				.startDate(date(eventXml, "start_date")).endDate(
-						date(eventXml, "end_date"));
+				date(eventXml, "end_date"));
 		NodeList params = eventXml.getElementsByTagName("param");
 		Map<String, String> pm = new CustomNullHashMap<>("N/A");
 		for (int i = 0; i < params.getLength(); i++) {
@@ -265,20 +262,13 @@ public class I2b2PdoResultParser {
 
 	private Date date(Element elt, String tagName) {
 		String dtTxt = text(elt, tagName);
-		// remove the last colon (:)
-		// we have to do this because Java's SimpleDateFormat does not directly
-		// support the format i2b2 is using: 2001-07-04T12:08:56.235-07:00
-		// even though it is a valid ISO-8601 date
-		// the closest Java has is: 2001-07-04T12:08:56.235-0700 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)
-		// the other alternative is write our own date parser
-		int colonIdx = dtTxt.lastIndexOf(':');
-		if (colonIdx >= 0) {
-			dtTxt = dtTxt.substring(0, colonIdx).concat(dtTxt.substring(colonIdx + 1));
-		}
-
 		try {
-			return i2b2DateFormat.parse(dtTxt);
-		} catch (ParseException e) {
+			if (dtTxt.endsWith("Z")) {
+				return Date.from(Instant.parse(dtTxt));
+			} else {
+				return Date.from(OffsetDateTime.parse(dtTxt).toInstant());
+			}
+		} catch (DateTimeParseException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Unable to parse date: {}", dtTxt);
 			} else if (null != dtTxt && !dtTxt.isEmpty()) {

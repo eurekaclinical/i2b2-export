@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,8 @@ import java.util.List;
  * @since 1.0
  */
 final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
+	private static final Date MIN_DATE = new Date(Long.MIN_VALUE);
+	private static final Date MAX_DATE = new Date(Long.MAX_VALUE);
 
 	/*
 	 * the i2b2 date format
@@ -58,16 +61,28 @@ final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 		i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 	}
 
-	private static final Comparator<Observation> OBX_COMP = new Comparator<Observation>() {
-
-		@Override
-		public int compare(Observation o1, Observation o2) {
-			final int startComp = -1 * o1.getStartDate().compareTo(o2.getStartDate());
-			if (startComp == 0) {
-				return -1 * o1.getEndDate().compareTo(o2.getEndDate());
-			}
-			return startComp;
+	private static final Comparator<Observation> OBX_COMP = (Observation o1, Observation o2) -> {
+		Date o1Start = o1.getStartDate();
+		if (o1Start == null) {
+			o1Start = MIN_DATE;
 		}
+		Date o2Start = o2.getStartDate();
+		if (o2Start == null) {
+			o2Start = MIN_DATE;
+		}
+		final int startComp = -1 * o1Start.compareTo(o2Start);
+		if (startComp == 0) {
+			Date o1End = o1.getEndDate();
+			if (o1End == null) {
+				o1End = MAX_DATE;
+			}
+			Date o2End = o2.getEndDate();
+			if (o2End == null) {
+				o2End = MAX_DATE;
+			}
+			return -1 * o1End.compareTo(o2End);
+		}
+		return startComp;
 	};
 
 	@Override

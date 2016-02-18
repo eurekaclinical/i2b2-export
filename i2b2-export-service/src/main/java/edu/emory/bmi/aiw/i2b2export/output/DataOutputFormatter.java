@@ -53,9 +53,8 @@ public final class DataOutputFormatter extends AbstractFormatter implements RowO
 	/**
 	 * Returns the instance's i2b2 results formatted according to the instance's output configuration.
 	 *
-	 * @param writer
-	 * @return the formatted results as a {@link String}
-	 * @throws java.io.IOException
+	 * @param writer the stream to which the formatted results will go.
+	 * @throws java.io.IOException if an error occurred writing the results.
 	 */
 	@Override
 	public void format(BufferedWriter writer) throws IOException {
