@@ -5,7 +5,7 @@
 
 	<groupId>org.eurekaclinical</groupId>
 	<artifactId>i2b2-export</artifactId>
-	<version>1.1-Alpha-7</version>
+	<version>1.1-Alpha-8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>i2b2 Export</name>
@@ -33,7 +33,7 @@
 		<connection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</connection>
 		<developerConnection>scm:git:https://github.com/eurekaclinical/i2b2-export.git</developerConnection>
 		<url>https://github.com/eurekaclinical/i2b2-export.git</url>
-		<tag>i2b2-export-1.1-Alpha-7</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>

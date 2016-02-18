@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.eurekaclinical</groupId>
 		<artifactId>i2b2-export</artifactId>
-		<version>1.1-Alpha-7</version>
+		<version>1.1-Alpha-8-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>i2b2-export-package</artifactId>
@@ -15,7 +15,7 @@
 	<description>A project to package up for distribution both pieces of the i2b2 data export plugin: the Javascript front-end and the corresponding Java web service.</description>
 	
 	<properties>
-		<i2b2-export-version>1.1-Alpha-7</i2b2-export-version>
+		<i2b2-export-version>1.1-Alpha-8-SNAPSHOT</i2b2-export-version>
 	</properties>
 	
 	<dependencies>
