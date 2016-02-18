@@ -20,7 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
@@ -56,7 +56,7 @@ final class ValueColumnOutputFormatter extends AbstractColumnOutputFormatter {
 	 * @param columnConfig the configuration of the column to format
 	 * @param formatOptions the global format options to apply to the column
 	 */
-	ValueColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	ValueColumnOutputFormatter(OutputColumnConfigurationEntity columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 		i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 	}

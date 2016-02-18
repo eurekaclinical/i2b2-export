@@ -19,9 +19,12 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.AggregationType;
+import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
@@ -40,20 +43,20 @@ import java.util.ArrayList;
 
 public class VisitDataRowOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
-	private final OutputConfiguration config;
+	private final OutputConfigurationEntity config;
 	private final Event visit;
 
 	public VisitDataRowOutputFormatterTest() throws ParseException {
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
-		config = new OutputConfiguration();
+		config = new OutputConfigurationEntity();
 		config.setUsername("i2b2");
 		config.setName("foo");
-		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
+		config.setRowDimension(RowDimension.PATIENT);
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
 		config.setWhitespaceReplacement("_");
-		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
+		config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
 
 		Patient patient = new Patient.Builder("P1").build();
 		visit = new Event.Builder("visit", patient).startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T14:00:00.000-0500")).build();
@@ -86,38 +89,38 @@ public class VisitDataRowOutputFormatterTest extends AbstractRowOutputFormatterT
 				.valuetype("N").units("X").build());
 		visit.addObservation(new Observation.Builder(visit).conceptPath("\\\\i2b2\\Concepts\\MyConcept3").startDate(fmt.parse("2013-01-01T09:00:00.000-0500")).endDate(fmt.parse("2013-01-01T10:00:00.000-0500")).build());
 
-		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig1 = new OutputColumnConfigurationEntity();
 		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
-		I2b2Concept concept1 = new I2b2Concept("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
+		I2b2ConceptEntity concept1 = new I2b2ConceptEntity("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
 				"MyConcept3", "N");
 		colConfig1.setI2b2Concept(concept1);
 		colConfig1.setColumnName("MyConcept3");
-		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
+		colConfig1.setDisplayFormat(DisplayFormat.EXISTENCE);
 		config.getColumnConfigs().add(colConfig1);
 
-		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig2 = new OutputColumnConfigurationEntity();
 		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
-		I2b2Concept concept2 = new I2b2Concept("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
+		I2b2ConceptEntity concept2 = new I2b2ConceptEntity("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
 				"MyConcept2", "N");
 		colConfig2.setI2b2Concept(concept2);
 		colConfig2.setColumnName("MyConcept2");
-		colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig2.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig2.setHowMany(5);
 		colConfig2.setIncludeTimeRange(true);
 		colConfig2.setIncludeUnits(false);
 		config.getColumnConfigs().add(colConfig2);
 
-		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig3 = new OutputColumnConfigurationEntity();
 		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
-		I2b2Concept concept3 = new I2b2Concept("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
+		I2b2ConceptEntity concept3 = new I2b2ConceptEntity("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
 				"MyConcept1", "N");
 		colConfig3.setI2b2Concept(concept3);
 		colConfig3.setColumnName("MyConcept1");
-		colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
-		colConfig3.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
+		colConfig3.setDisplayFormat(DisplayFormat.AGGREGATION);
+		colConfig3.setAggregation(AggregationType.MAX);
 		colConfig3.setIncludeUnits(true);
 		config.getColumnConfigs().add(colConfig3);
 	}

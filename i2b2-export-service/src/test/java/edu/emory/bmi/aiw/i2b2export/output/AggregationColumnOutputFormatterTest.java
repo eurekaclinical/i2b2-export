@@ -19,8 +19,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.AggregationType;
+import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
@@ -37,25 +40,25 @@ import java.util.Collection;
 
 public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatterTest {
 
-	private OutputColumnConfiguration colConfig;
+	private OutputColumnConfigurationEntity colConfig;
 	private FormatOptions formatOptions;
 	
 	public AggregationColumnOutputFormatterTest() throws ParseException {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
-		colConfig = new OutputColumnConfiguration();
+		colConfig = new OutputColumnConfigurationEntity();
 		colConfig.setColumnOrder(0);
-		colConfig.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
+		colConfig.setDisplayFormat(DisplayFormat.AGGREGATION);
 
-		OutputConfiguration config = new OutputConfiguration();
+		OutputConfigurationEntity config = new OutputConfigurationEntity();
 		config.setName("foo");
 		config.setUsername("i2b2");
-		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
+		config.setRowDimension(RowDimension.PATIENT);
 		config.setSeparator(",");
 		config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
-		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
+		config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
 
 		colConfig.setOutputConfig(config);
 
@@ -75,7 +78,7 @@ public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatte
 
 	@Test
 	public void testFormatMin() throws IOException {
-		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MIN);
+		colConfig.setAggregation(AggregationType.MIN);
 		colConfig.setIncludeUnits(false);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
@@ -84,7 +87,7 @@ public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatte
 
 	@Test
 	public void testFormatMax() throws IOException {
-		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
+		colConfig.setAggregation(AggregationType.MAX);
 		colConfig.setIncludeUnits(false);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
@@ -93,7 +96,7 @@ public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatte
 
 	@Test
 	public void testFormatAvg() throws IOException {
-		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.AVG);
+		colConfig.setAggregation(AggregationType.AVG);
 		colConfig.setIncludeUnits(false);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
@@ -102,7 +105,7 @@ public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatte
 
 	@Test
 	public void testFormatMinUnits() throws IOException {
-		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MIN);
+		colConfig.setAggregation(AggregationType.MIN);
 		colConfig.setIncludeUnits(true);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
@@ -112,7 +115,7 @@ public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatte
 
 	@Test
 	public void testFormatMaxUnits() throws IOException {
-		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
+		colConfig.setAggregation(AggregationType.MAX);
 		colConfig.setIncludeUnits(true);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);
@@ -122,7 +125,7 @@ public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatte
 
 	@Test
 	public void testFormatAvgUnits() throws IOException {
-		colConfig.setAggregation(OutputColumnConfiguration.AggregationType.AVG);
+		colConfig.setAggregation(AggregationType.AVG);
 		colConfig.setIncludeUnits(true);
 
 		AggregationColumnOutputFormatter formatter = new AggregationColumnOutputFormatter(colConfig, formatOptions);

@@ -20,8 +20,10 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
@@ -42,25 +44,25 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ValueColumnOutputFormatterTest extends AbstractColumnFormatterTest {
 
-	private OutputColumnConfiguration colConfig;
+	private OutputColumnConfigurationEntity colConfig;
 	private FormatOptions formatOptions;
 
 	public ValueColumnOutputFormatterTest() throws ParseException {
 		final DateFormat i2b2DateFormat = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
-		colConfig = new OutputColumnConfiguration();
+		colConfig = new OutputColumnConfigurationEntity();
 		colConfig.setColumnOrder(0);
-		colConfig.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig.setDisplayFormat(DisplayFormat.VALUE);
 
-		OutputConfiguration config = new OutputConfiguration();
+		OutputConfigurationEntity config = new OutputConfigurationEntity();
 		config.setName("foo");
 		config.setUsername("i2b2");
-		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
+		config.setRowDimension(RowDimension.PATIENT);
 		config.setSeparator(",");
 		config.setQuoteChar("\"");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
-		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
+		config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
 
 		colConfig.setOutputConfig(config);
 		formatOptions = new FormatOptions(config);

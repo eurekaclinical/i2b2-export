@@ -19,8 +19,8 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -35,16 +35,16 @@ import org.apache.commons.io.IOUtils;
  */
 public final class HeaderRowOutputFormatter extends AbstractFormatter implements RowOutputFormatter {
 
-	private final OutputConfiguration outputConfiguration;
+	private final OutputConfigurationEntity outputConfiguration;
 
 	/**
 	 * Default constructor. Accepts the output configuration to use to format
 	 * the header.
 	 *
-	 * @param outputConfiguration the {@link OutputConfiguration} to use to
+	 * @param outputConfiguration the {@link OutputConfigurationEntity} to use to
 	 * format the header
 	 */
-	public HeaderRowOutputFormatter(OutputConfiguration outputConfiguration) {
+	public HeaderRowOutputFormatter(OutputConfigurationEntity outputConfiguration) {
 		super(outputConfiguration);
 		this.outputConfiguration = outputConfiguration;
 	}
@@ -80,7 +80,7 @@ public final class HeaderRowOutputFormatter extends AbstractFormatter implements
 		}
 		Collections.sort(outputConfiguration.getColumnConfigs());
 		for (int i = 0; i < outputConfiguration.getColumnConfigs().size(); i++) {
-			OutputColumnConfiguration colConfig = outputConfiguration
+			OutputColumnConfigurationEntity colConfig = outputConfiguration
 					.getColumnConfigs().get(i);
 			String baseColName = colConfig.getColumnName();
 			if (outputConfiguration.getWhitespaceReplacement() != null && !outputConfiguration.getWhitespaceReplacement().isEmpty()) {

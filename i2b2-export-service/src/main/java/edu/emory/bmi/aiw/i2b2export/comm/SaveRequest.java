@@ -20,7 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.comm;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 
 /**
  * A bean to communicate save requests from the client. It will generally populated from a JSON object.
@@ -62,7 +62,7 @@ public class SaveRequest {
 	/**
 	 * Gets the output configuration to save.
 	 *
-	 * @return the {@link OutputConfiguration} to save
+	 * @return the {@link OutputConfigurationEntity} to save
 	 */
 	public OutputConfiguration getOutputConfiguration() {
 		return outputConfiguration;

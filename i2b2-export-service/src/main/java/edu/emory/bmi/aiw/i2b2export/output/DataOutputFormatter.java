@@ -20,7 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public final class DataOutputFormatter extends AbstractFormatter implements RowO
 	 * @param config the output configuration to use format the result set for output
 	 * @param pdoResults the i2b2 result set to format
 	 */
-	public DataOutputFormatter(OutputConfiguration config, I2b2PdoResults pdoResults) {
+	public DataOutputFormatter(OutputConfigurationEntity config, I2b2PdoResults pdoResults) {
 		super(config);
 		this.pdoResults = pdoResults;
 	}
@@ -58,7 +58,7 @@ public final class DataOutputFormatter extends AbstractFormatter implements RowO
 	 */
 	@Override
 	public void format(BufferedWriter writer) throws IOException {
-		OutputConfiguration config = getOutputConfiguration();
+		OutputConfigurationEntity config = getOutputConfiguration();
 		new HeaderRowOutputFormatter(config).format(writer);
 		switch (config.getRowDimension()) {
 			case PATIENT:

@@ -19,7 +19,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -41,7 +41,7 @@ final class PatientDataOutputFormatter extends AbstractFormatter {
 
 	private final Collection<Patient> patients;
 
-	PatientDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
+	PatientDataOutputFormatter(OutputConfigurationEntity config, Collection<Patient> patients) {
 		super(config);
 		this.patients = patients;
 	}

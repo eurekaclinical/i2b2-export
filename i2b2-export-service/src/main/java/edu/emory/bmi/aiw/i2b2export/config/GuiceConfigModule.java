@@ -21,9 +21,7 @@ package edu.emory.bmi.aiw.i2b2export.config;
  */
 
 import com.google.inject.AbstractModule;
-import edu.emory.bmi.aiw.i2b2export.dao.JpaOutputColumnConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.dao.JpaOutputConfigurationDao;
-import edu.emory.bmi.aiw.i2b2export.dao.OutputColumnConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetrieverImpl;
@@ -41,7 +39,6 @@ public class GuiceConfigModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(OutputConfigurationDao.class).to(JpaOutputConfigurationDao.class);
-		bind(OutputColumnConfigurationDao.class).to(JpaOutputColumnConfigurationDao.class);
 		bind(I2b2UserAuthenticator.class).to(I2b2UserAuthenticatorImpl.class);
 		bind(I2b2PdoRetriever.class).to(I2b2PdoRetrieverImpl.class);
 	}

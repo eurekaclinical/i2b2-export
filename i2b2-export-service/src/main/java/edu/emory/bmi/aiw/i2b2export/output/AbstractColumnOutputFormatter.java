@@ -20,25 +20,25 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 
 /**
- * Abstract class for formatting an output column based on a {@link OutputColumnConfiguration} and {@link FormatOptions}.
+ * Abstract class for formatting an output column based on a {@link OutputColumnConfigurationEntity} and {@link FormatOptions}.
  *
  * @author Michel Mansour
  * @since 1.0
  */
 abstract class AbstractColumnOutputFormatter extends AbstractFormatter implements ColumnOutputFormatter {
-	private final OutputColumnConfiguration columnConfig;
+	private final OutputColumnConfigurationEntity columnConfig;
 	private final FormatOptions formatOptions;
 
-	AbstractColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	AbstractColumnOutputFormatter(OutputColumnConfigurationEntity columnConfig, FormatOptions formatOptions) {
 		super(columnConfig.getOutputConfig());
 		this.columnConfig = columnConfig;
 		this.formatOptions = formatOptions;
 	}
 
-	OutputColumnConfiguration getColumnConfig() {
+	OutputColumnConfigurationEntity getColumnConfig() {
 		return columnConfig;
 	}
 

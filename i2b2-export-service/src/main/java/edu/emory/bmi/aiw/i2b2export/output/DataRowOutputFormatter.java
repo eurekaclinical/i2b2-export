@@ -19,9 +19,9 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.BufferedWriter;
@@ -51,19 +51,19 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataRowOutputFormatter.class);
 
-	private final OutputConfiguration config;
+	private final OutputConfigurationEntity config;
 	private final FormatOptions formatOptions;
 	private final Connection con;
 	private DatabaseProduct databaseProduct;
 
-	DataRowOutputFormatter(Connection con, OutputConfiguration config) {
+	DataRowOutputFormatter(Connection con, OutputConfigurationEntity config) {
 		super(config);
 		this.config = config;
 		this.formatOptions = new FormatOptions(config);
 		this.con = con;
 	}
 
-	final OutputConfiguration getConfig() {
+	final OutputConfigurationEntity getConfig() {
 		return config;
 	}
 
@@ -78,7 +78,7 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 	 * @return an unmodifiable {@link Collection} of {@link Observation}s that
 	 * match the given concept path
 	 */
-	abstract Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) throws SQLException;
+	abstract Collection<Observation> matchingObservations(I2b2ConceptEntity i2b2Concept) throws SQLException;
 
 	/**
 	 * Generates the first fields of the row that depend on the row dimension
@@ -101,7 +101,7 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 	@Override
 	public final void format(BufferedWriter writer) throws IOException, SQLException {
 		int colNum = rowPrefix(writer);
-		for (OutputColumnConfiguration colConfig : getConfig().getColumnConfigs()) {
+		for (OutputColumnConfigurationEntity colConfig : getConfig().getColumnConfigs()) {
 			Collection<Observation> obxs = matchingObservations(colConfig
 					.getI2b2Concept());
 			switch (colConfig.getDisplayFormat()) {
@@ -121,7 +121,7 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 
 	}
 
-	boolean compareDimensionColumnValue(I2b2Concept i2b2Concept, Patient patient) throws SQLException {
+	boolean compareDimensionColumnValue(I2b2ConceptEntity i2b2Concept, Patient patient) throws SQLException {
 		String op = i2b2Concept.getOperator();
 		String columnDataType = i2b2Concept.getColumnDataType();
 		String dimCode = i2b2Concept.getDimensionCode();
@@ -169,7 +169,7 @@ abstract class DataRowOutputFormatter extends AbstractFormatter implements RowOu
 		}
 	}
 
-	String getParam(Patient patient, I2b2Concept i2b2Concept) {
+	String getParam(Patient patient, I2b2ConceptEntity i2b2Concept) {
 		switch (StringUtils.lowerCase(i2b2Concept.getColumnName())) {
 			case "age_in_years_num":
 				return patient.getAgeInYears();

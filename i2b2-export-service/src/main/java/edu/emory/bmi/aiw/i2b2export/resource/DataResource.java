@@ -24,9 +24,9 @@ import com.google.inject.Inject;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2PatientSet;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
 import edu.emory.bmi.aiw.i2b2export.output.DataOutputFormatter;
@@ -87,7 +87,7 @@ public final class DataResource {
 									String i2b2ProjectId,
 									Integer i2b2PatientSetCollId,
 									Integer i2b2PatientSetSize,
-									OutputConfiguration outputConfig) throws I2b2ExportServiceXmlException {
+									OutputConfigurationEntity outputConfig) throws I2b2ExportServiceXmlException {
 		I2b2PatientSet patientSet = new I2b2PatientSet();
 		patientSet.setPatientSetCollId(i2b2PatientSetCollId);
 		patientSet.setPatientSetSize(i2b2PatientSetSize);
@@ -166,7 +166,7 @@ public final class DataResource {
 				"user: {}", i2b2Username);
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			OutputConfiguration outputConfig = mapper.readValue(outputConfigJson, OutputConfiguration.class);
+			OutputConfigurationEntity outputConfig = mapper.readValue(outputConfigJson, OutputConfigurationEntity.class);
 			return generateOutput(i2b2Domain, i2b2Username, i2b2PasswordNode,
 					i2b2ProjectId, i2b2PatientSetCollId, i2b2PatientSetSize,
 					outputConfig);
@@ -210,7 +210,7 @@ public final class DataResource {
 		LOGGER.info("Received request to export data from configuration id: " +
 				"{} from user: {}", i2b2Username, outputConfigId);
 
-		OutputConfiguration outputConfig = this.dao.getById(outputConfigId);
+		OutputConfigurationEntity outputConfig = this.dao.getById(outputConfigId);
 		if (null == outputConfig) {
 			LOGGER.warn("No configuration found with id: {}", outputConfigId);
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -231,13 +231,13 @@ public final class DataResource {
 	 * Convenience method for pulling out the i2b2 concepts from an output configuration.
 	 *
 	 * @param config the output configuration to get the concepts from
-	 * @return a collection of {@link I2b2Concept}s
+	 * @return a collection of {@link I2b2ConceptEntity}s
 	 */
-	private Collection<I2b2Concept> extractConcepts(OutputConfiguration config) {
-		Collection<I2b2Concept> result = new
+	private Collection<I2b2ConceptEntity> extractConcepts(OutputConfigurationEntity config) {
+		Collection<I2b2ConceptEntity> result = new
 				HashSet<>();
 
-		for (OutputColumnConfiguration colConfig : config.getColumnConfigs()) {
+		for (OutputColumnConfigurationEntity colConfig : config.getColumnConfigs()) {
 			result.add(colConfig.getI2b2Concept());
 		}
 
@@ -248,14 +248,14 @@ public final class DataResource {
 	 * Generates a preview of the CSV header row based on the provided output configuration. The preview is returned
 	 * to the client as a JSON string.
 	 *
-	 * @param config the {@link OutputConfiguration} to use to format the header row
+	 * @param config the {@link OutputConfigurationEntity} to use to format the header row
 	 * @return the formatted header or a status code indicating failure
 	 */
 	@POST
 	@Path("/preview")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response generatePreview(OutputConfiguration config) {
+	public Response generatePreview(OutputConfigurationEntity config) {
 		if (null != config) {
 			final HeaderRowOutputFormatter headerFormatter = new
 					HeaderRowOutputFormatter(config);

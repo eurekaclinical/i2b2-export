@@ -21,13 +21,15 @@ package edu.emory.bmi.aiw.i2b2export.resource;
  */
 
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import edu.emory.bmi.aiw.i2b2export.comm.DeleteRequest;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.LoadRequest;
+import edu.emory.bmi.aiw.i2b2export.comm.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.comm.OutputConfigurationSummary;
 import edu.emory.bmi.aiw.i2b2export.comm.SaveRequest;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
 import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import org.slf4j.Logger;
@@ -87,16 +89,18 @@ public class OutputConfigurationResource {
 
 		try {
 			if (this.userAuthenticator.authenticateUser(request.getAuthMetadata())) {
-				OutputConfiguration config = this.dao
-						.getByUsernameAndConfigName(request
-								.getAuthMetadata().getUsername(),
+				String username = request.getAuthMetadata().getUsername();
+				OutputConfigurationEntity config = this.dao
+						.getByUsernameAndConfigName(username,
 								request.getOutputConfiguration().getName());
 				if (config != null) {
-					if (config.getUsername().equals(request
-							.getAuthMetadata().getUsername())) {
+					if (config.getUsername().equals(username)) {
 						LOGGER.info("Configuration with name: {} already exists for user: {}. Updating existing configuration.",
 								config.getName(), config.getUsername());
-						this.dao.update(config, request.getOutputConfiguration());
+						OutputConfiguration outputConfiguration = request.getOutputConfiguration();
+						outputConfiguration.setId(config.getId());
+						outputConfiguration.setUsername(username);
+						this.dao.update(outputConfiguration.toEntity());
 					} else {
 						LOGGER.warn("Usernames do not match: request username: {}, existing configuration username: {}",
 								request.getAuthMetadata().getUsername(), config.getUsername());
@@ -106,9 +110,8 @@ public class OutputConfigurationResource {
 				} else {
 					LOGGER.info("Creating new configuration for user: {} with name: {}", request.getAuthMetadata().getUsername(),
 							request.getOutputConfiguration().getName());
-					request.getOutputConfiguration().setUsername(request
-							.getAuthMetadata().getUsername());
-					this.dao.create(request.getOutputConfiguration());
+					request.getOutputConfiguration().setUsername(username);
+					this.dao.create(request.getOutputConfiguration().toEntity());
 				}
 
 				return Response.ok().build();
@@ -129,39 +132,38 @@ public class OutputConfigurationResource {
 	 *                operation, including the configuration ID and the
 	 *                i2b2 authentication tokens
 	 * @return the output configuration or a status code indicating failure
-	 * @throws I2b2ExportServiceException if any errors occur while handling the request
-	 *
 	 */
 	@POST
 	@Path("/load")
-	public Response loadConfiguration(LoadRequest request) throws I2b2ExportServiceException {
+	@Transactional
+	public OutputConfiguration loadConfiguration(LoadRequest request) {
 		LOGGER.info("Received request to load configuration for user: {} with id: {}",
 				request.getAuthMetadata().getUsername(), request.getOutputConfigurationId());
 
 		try {
 			if (this.userAuthenticator.authenticateUser(request.getAuthMetadata())) {
-				OutputConfiguration config = this.dao
+				OutputConfigurationEntity config = this.dao
 						.getById(request.getOutputConfigurationId());
 				if (config != null) {
 					if (config.getUsername().equals(request.getAuthMetadata().getUsername())) {
 						LOGGER.info("Found configuration with name: {}", config.getName());
-						return Response.ok().entity(config).build();
+						return config.toDTO();
 					} else {
 						LOGGER.warn("Found configuration with name: {}, but usernames do not match: request user: {}, config user: {}",
 								new String[]{config.getName(), request.getAuthMetadata().getUsername(), config.getUsername()});
-						return Response.status(Response.Status.UNAUTHORIZED).build();
+						throw new HttpStatusException(Response.Status.UNAUTHORIZED);
 					}
 				} else {
 					LOGGER.warn("Configuration not found with id: {}", request.getOutputConfigurationId());
-					return Response.status(Response.Status.NOT_FOUND).build();
+					throw new HttpStatusException(Response.Status.NOT_FOUND);
 				}
 			} else {
 				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
-				return Response.status(Response.Status.UNAUTHORIZED).build();
+				throw new HttpStatusException(Response.Status.UNAUTHORIZED);
 			}
 		} catch (I2b2ExportServiceXmlException e) {
 			logError(e);
-			throw new I2b2ExportServiceException(e);
+			throw new HttpStatusException(Response.Status.INTERNAL_SERVER_ERROR, e);
 		}
 	}
 
@@ -181,8 +183,8 @@ public class OutputConfigurationResource {
 		try {
 			if (this.userAuthenticator.authenticateUser(authMetadata)) {
 				List<OutputConfigurationSummary> result = new ArrayList<>();
-				List<OutputConfiguration> configs = this.dao.getAllByUsername(authMetadata.getUsername());
-				for (OutputConfiguration config : configs) {
+				List<OutputConfigurationEntity> configs = this.dao.getAllByUsername(authMetadata.getUsername());
+				for (OutputConfigurationEntity config : configs) {
 					if (config.getUsername().equals(authMetadata.getUsername())) {
 						result.add(new OutputConfigurationSummary(config.getId(),
 								config.getName()));
@@ -207,25 +209,25 @@ public class OutputConfigurationResource {
 	/**
 	 * Deletes the output configurations specified in the given request.
 	 *
-	 * @param request contains the information needed to complete the delete
-	 *                operation, including the configuration ID and the
-	 *                i2b2 authentication tokens
+	 * @param request contains the information needed to complete the remove
+                operation, including the configuration ID and the
+                i2b2 authentication tokens
 	 * @return a status code indicating success or failure
 	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 *
 	 */
 	@POST
 	@Path("/delete")
-	public Response deleteConfiguration(DeleteRequest request) throws I2b2ExportServiceException {
+	public Response removeConfiguration(DeleteRequest request) throws I2b2ExportServiceException {
 		LOGGER.info("Received request to delete configuration with id: {}", request.getOutputConfigurationId());
 
 		try {
 			if (this.userAuthenticator.authenticateUser(request.getAuthMetadata())) {
-				OutputConfiguration config = this.dao.getById(request.getOutputConfigurationId());
+				OutputConfigurationEntity config = this.dao.getById(request.getOutputConfigurationId());
 				if (config != null) {
 					LOGGER.debug("Found configuration with id: {}", config.getId());
 					if (config.getUsername().equals(request.getAuthMetadata().getUsername())) {
-						this.dao.delete(config);
+						this.dao.remove(config);
 						return Response.ok().build();
 					} else {
 						LOGGER.warn("Not deleting configuration with id: {} because request username does not match" +

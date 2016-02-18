@@ -22,6 +22,7 @@ package edu.emory.bmi.aiw.i2b2export.config;
 
 import com.google.inject.persist.PersistFilter;
 import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
@@ -39,9 +40,10 @@ public class ServletConfigModule extends JerseyServletModule {
 	@Override
 	protected void configureServlets() {
 		filter("/rest/*").through(PersistFilter.class);
+		super.configureServlets();
 
 		Map<String, String> params = new HashMap<>();
-		params.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
+		params.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
 		params.put(PackagesResourceConfig.PROPERTY_PACKAGES,
 				"edu.emory.bmi.aiw.i2b2export.resource");
 		serve("/rest/*").with(GuiceContainer.class, params);

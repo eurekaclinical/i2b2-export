@@ -20,8 +20,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.AggregationType;
+import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
 import java.io.IOException;
 import java.sql.SQLException;
 import org.junit.Assert;
@@ -37,60 +40,60 @@ public class HeaderRowOutputFormatterTest extends AbstractRowOutputFormatterTest
 
 	@Test
 	public void testFormatHeader() throws IOException, SQLException {
-		OutputConfiguration config = new OutputConfiguration();
+		OutputConfigurationEntity config = new OutputConfigurationEntity();
 		config.setName("foo");
 		config.setUsername("i2b2");
-		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
+		config.setRowDimension(RowDimension.PATIENT);
 		config.setSeparator(",");
 		config.setMissingValue("(NULL)");
 		config.setWhitespaceReplacement("_");
-		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
+		config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
 
-		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig1 = new OutputColumnConfigurationEntity();
 		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
 		colConfig1.setColumnName("Concept FOO");
-		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
+		colConfig1.setDisplayFormat(DisplayFormat.EXISTENCE);
 
-		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig2 = new OutputColumnConfigurationEntity();
 		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
 		colConfig2.setColumnName("Concept BAR 1");
-		colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig2.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig2.setHowMany(3);
 		colConfig2.setIncludeTimeRange(true);
 		colConfig2.setIncludeUnits(true);
 
-		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig3 = new OutputColumnConfigurationEntity();
 		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
 		colConfig3.setColumnName("ConceptAgg");
-		colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
-		colConfig3.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
+		colConfig3.setDisplayFormat(DisplayFormat.AGGREGATION);
+		colConfig3.setAggregation(AggregationType.MAX);
 		colConfig3.setIncludeUnits(true);
 
-		OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig4 = new OutputColumnConfigurationEntity();
 		colConfig4.setOutputConfig(config);
 		colConfig4.setColumnOrder(4);
 		colConfig4.setColumnName("Concept BAZ");
-		colConfig4.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig4.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig4.setHowMany(1);
 		colConfig4.setIncludeUnits(false);
 		colConfig4.setIncludeTimeRange(false);
 
-		OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig5 = new OutputColumnConfigurationEntity();
 		colConfig5.setOutputConfig(config);
 		colConfig5.setColumnOrder(5);
 		colConfig5.setColumnName("ConceptAgg2");
-		colConfig5.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
-		colConfig5.setAggregation(OutputColumnConfiguration.AggregationType.AVG);
+		colConfig5.setDisplayFormat(DisplayFormat.AGGREGATION);
+		colConfig5.setAggregation(AggregationType.AVG);
 		colConfig5.setIncludeUnits(false);
 
-		OutputColumnConfiguration colConfig6 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig6 = new OutputColumnConfigurationEntity();
 		colConfig6.setOutputConfig(config);
 		colConfig6.setColumnOrder(6);
 		colConfig6.setColumnName("Concept QUUX");
-		colConfig6.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig6.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig6.setHowMany(1);
 		colConfig6.setIncludeUnits(false);
 		colConfig6.setIncludeTimeRange(true);

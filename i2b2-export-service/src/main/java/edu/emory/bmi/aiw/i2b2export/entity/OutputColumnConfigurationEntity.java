@@ -20,6 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.entity;
  * #L%
  */
 
+import edu.emory.bmi.aiw.i2b2export.comm.OutputColumnConfiguration;
 import org.codehaus.jackson.annotate.JsonBackReference;
 
 import javax.persistence.CascadeType;
@@ -33,6 +34,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * A JPA entity representing an output column configuration.
@@ -42,8 +44,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "column_configs")
-public class OutputColumnConfiguration implements
-		Comparable<OutputColumnConfiguration> {
+public class OutputColumnConfigurationEntity implements
+		Comparable<OutputColumnConfigurationEntity> {
 
 	@Id
 	@SequenceGenerator(name = "OUTPUT_COL_CONFIG_SEQ_GENERATOR",
@@ -55,37 +57,17 @@ public class OutputColumnConfiguration implements
 
 	@ManyToOne
 	@JoinColumn(name = "config_id")
-	private OutputConfiguration outputConfig;
+	private OutputConfigurationEntity outputConfig;
 
 	@Column(name = "column_order", nullable = false)
 	private Integer columnOrder;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "i2b2_concept_id")
-	private I2b2Concept i2b2Concept;
+	private I2b2ConceptEntity i2b2Concept;
 
 	@Column(name = "column_name", nullable = false)
 	private String columnName;
-
-	/**
-	 * Valid display formats for a column configuration
-	 */
-	public static enum DisplayFormat {
-		/**
-		 * whether data exists for this concept
-		 */
-		EXISTENCE,
-
-		/**
-		 * the value of the data for this concept
-		 */
-		VALUE,
-
-		/**
-		 * an aggregation of all of the data for this concept
-		 */
-		AGGREGATION
-	}
 
 	@Column(name = "display_format", nullable = false)
 	private DisplayFormat displayFormat;
@@ -98,26 +80,6 @@ public class OutputColumnConfiguration implements
 
 	@Column(name = "include_time_range")
 	private Boolean includeTimeRange;
-
-	/**
-	 * Valid aggregation types.
-	 */
-	public static enum AggregationType {
-		/**
-		 * the minimum value across all data for this concept
-		 */
-		MIN,
-
-		/**
-		 * the maximum value across all data for this concept
-		 */
-		MAX,
-
-		/**
-		 * the average value of data for this concept
-		 */
-		AVG
-	}
 
 	@Column(name = "aggregation")
 	private AggregationType aggregation;
@@ -134,10 +96,9 @@ public class OutputColumnConfiguration implements
 	/**
 	 * Gets the output configuration this column configuration belongs to.
 	 *
-	 * @return the {@link OutputConfiguration} this column configuration belongs to
+	 * @return the {@link OutputConfigurationEntity} this column configuration belongs to
 	 */
-	@JsonBackReference
-	public OutputConfiguration getOutputConfig() {
+	public OutputConfigurationEntity getOutputConfig() {
 		return outputConfig;
 	}
 
@@ -146,9 +107,16 @@ public class OutputColumnConfiguration implements
 	 *
 	 * @param outputConfig the output configuration
 	 */
-	@JsonBackReference
-	public void setOutputConfig(OutputConfiguration outputConfig) {
-		this.outputConfig = outputConfig;
+	public void setOutputConfig(OutputConfigurationEntity outputConfig) {
+		if (this.outputConfig != outputConfig) {
+			if (this.outputConfig != null) {
+				this.outputConfig.removeOutputColumnConfiguration(this);
+			}
+			this.outputConfig = outputConfig;
+			if (this.outputConfig != null) {
+				this.outputConfig.addOutputColumnConfiguration(this);
+			}
+		}
 	}
 
 	/**
@@ -172,9 +140,9 @@ public class OutputColumnConfiguration implements
 	/**
 	 * Gets the i2b2 concept this column is configured for.
 	 *
-	 * @return the {@link I2b2Concept} this column is configured for
+	 * @return the {@link I2b2ConceptEntity} this column is configured for
 	 */
-	public I2b2Concept getI2b2Concept() {
+	public I2b2ConceptEntity getI2b2Concept() {
 		return i2b2Concept;
 	}
 
@@ -182,7 +150,7 @@ public class OutputColumnConfiguration implements
 	 * Sets the i2b2 concept.
 	 * @param i2b2Concept the i2b2 concept
 	 */
-	public void setI2b2Concept(I2b2Concept i2b2Concept) {
+	public void setI2b2Concept(I2b2ConceptEntity i2b2Concept) {
 		this.i2b2Concept = i2b2Concept;
 	}
 
@@ -298,7 +266,26 @@ public class OutputColumnConfiguration implements
 	}
 
 	@Override
-	public int compareTo(OutputColumnConfiguration other) {
+	public int compareTo(OutputColumnConfigurationEntity other) {
 		return this.columnOrder.compareTo(other.getColumnOrder());
 	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+	
+	OutputColumnConfiguration toDTO() {
+		OutputColumnConfiguration result = new OutputColumnConfiguration();
+		result.setAggregation(this.aggregation);
+		result.setColumnName(this.columnName);
+		result.setColumnOrder(this.columnOrder);
+		result.setDisplayFormat(this.displayFormat);
+		result.setHowMany(this.howMany);
+		result.setI2b2Concept(i2b2Concept.toDTO());
+		result.setIncludeTimeRange(this.includeTimeRange);
+		result.setIncludeUnits(this.includeUnits);
+		return result;
+	}
+	
 }

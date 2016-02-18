@@ -1,4 +1,4 @@
-package edu.emory.bmi.aiw.i2b2export.entity;
+package edu.emory.bmi.aiw.i2b2export.comm;
 
 /*
  * #%L
@@ -19,18 +19,12 @@ package edu.emory.bmi.aiw.i2b2export.entity;
  * limitations under the License.
  * #L%
  */
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
+import java.util.ArrayList;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.util.List;
 
 /**
@@ -39,60 +33,24 @@ import java.util.List;
  * @author Michel Mansour
  * @since 1.0
  */
-@Entity
-@Table(name = "output_configs", uniqueConstraints = {
-	@UniqueConstraint(columnNames = {"username", "config_name"})})
 public class OutputConfiguration {
 
-	@Id
-	@SequenceGenerator(name = "OUTPUT_CONFIG_SEQ_GENERATOR",
-			sequenceName = "OUTPUT_CONFIG_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.AUTO,
-			generator = "OUTPUT_CONFIG_SEQ_GENERATOR")
-	@Column(name = "config_id")
 	private Long id;
 
-	@Column(nullable = false)
 	private String username;
 
-	@Column(name = "config_name")
 	private String name;
 
-	/**
-	 * Valid row dimensin values
-	 */
-	public static enum RowDimension {
-
-		/**
-		 * each row represents a patient
-		 */
-		PATIENT,
-		/**
-		 * each row represents a visit
-		 */
-		VISIT,
-		/**
-		 * each row represents a provider
-		 */
-		PROVIDER
-	}
-
-	@Column(name = "row_dimension", nullable = false)
 	private RowDimension rowDimension;
 
-	@Column(name = "separator", length = 1)
 	private String separator = "\t";
 
-	@Column(name = "quote_char", length = 1)
 	private String quoteChar;
 
-	@Column(name = "whitespace_replacement")
 	private String whitespaceReplacement;
 
-	@Column(name = "missing_value")
 	private String missingValue;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "outputConfig")
 	private List<OutputColumnConfiguration> columnConfigs;
 
 	/**
@@ -261,5 +219,25 @@ public class OutputConfiguration {
 	@JsonManagedReference
 	public void setColumnConfigs(List<OutputColumnConfiguration> columnConfigs) {
 		this.columnConfigs = columnConfigs;
+	}
+
+	public OutputConfigurationEntity toEntity() {
+		OutputConfigurationEntity result = new OutputConfigurationEntity();
+		List<OutputColumnConfigurationEntity> columnConfigs = new ArrayList<>();
+		if (this.columnConfigs != null) {
+			for (OutputColumnConfiguration columnConfig : this.columnConfigs) {
+				columnConfigs.add(columnConfig.toEntity());
+			}
+		}
+		result.setColumnConfigs(columnConfigs);
+		result.setId(this.id);
+		result.setMissingValue(this.missingValue);
+		result.setName(this.name);
+		result.setQuoteChar(this.quoteChar);
+		result.setRowDimension(this.rowDimension);
+		result.setSeparator(this.separator);
+		result.setUsername(this.username);
+		result.setWhitespaceReplacement(this.whitespaceReplacement);
+		return result;
 	}
 }

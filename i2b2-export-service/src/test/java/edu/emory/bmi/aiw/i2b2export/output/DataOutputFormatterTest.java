@@ -20,9 +20,12 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.AggregationType;
+import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
 import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
@@ -42,21 +45,21 @@ import java.util.Collection;
 
 public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
-	private final OutputConfiguration config;
+	private final OutputConfigurationEntity config;
 	private final I2b2PdoResults data;
 	private DataOutputFormatter formatter;
 
 	public DataOutputFormatterTest() throws ParseException {
 		DateFormat fmt = new SimpleDateFormat(I2b2CommUtil.I2B2_DATE_FMT);
 
-		config = new OutputConfiguration();
+		config = new OutputConfigurationEntity();
 		config.setUsername("i2b2");
 		config.setName("foo");
 		config.setMissingValue("(NULL)");
 		config.setSeparator(",");
 		config.setQuoteChar("\"");
 		config.setWhitespaceReplacement("_");
-		config.setColumnConfigs(new ArrayList<OutputColumnConfiguration>());
+		config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
 
 		Collection<Patient> patients = new ArrayList<>();
 		Patient p1 = new Patient.Builder("P1").build();
@@ -217,63 +220,63 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
 		data = new I2b2PdoResults(patients, visits, providers, observations);
 
-		OutputColumnConfiguration colConfig1 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig1 = new OutputColumnConfigurationEntity();
 		colConfig1.setOutputConfig(config);
 		colConfig1.setColumnOrder(1);
-		I2b2Concept concept1 = new I2b2Concept
+		I2b2ConceptEntity concept1 = new I2b2ConceptEntity
 				("\\\\i2b2\\Concepts\\MyConcept3", 2, "concept_dimension",
 						"MyConcept3", "N");
 		colConfig1.setI2b2Concept(concept1);
 		colConfig1.setColumnName("Concept 3");
-		colConfig1.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.EXISTENCE);
+		colConfig1.setDisplayFormat(DisplayFormat.EXISTENCE);
 
-		OutputColumnConfiguration colConfig2 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig2 = new OutputColumnConfigurationEntity();
 		colConfig2.setOutputConfig(config);
 		colConfig2.setColumnOrder(2);
-		I2b2Concept concept2 = new I2b2Concept
+		I2b2ConceptEntity concept2 = new I2b2ConceptEntity
 				("\\\\i2b2\\Concepts\\MyConcept1", 2, "concept_dimension",
 						"MyConcept1", "N");
 		colConfig2.setI2b2Concept(concept2);
 		colConfig2.setColumnName("Concept 1");
-		colConfig2.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig2.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig2.setHowMany(3);
 		colConfig2.setIncludeUnits(true);
 		colConfig2.setIncludeTimeRange(false);
 
-		OutputColumnConfiguration colConfig3 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig3 = new OutputColumnConfigurationEntity();
 		colConfig3.setOutputConfig(config);
 		colConfig3.setColumnOrder(3);
-		I2b2Concept concept3 = new I2b2Concept
+		I2b2ConceptEntity concept3 = new I2b2ConceptEntity
 				("\\\\i2b2\\Concepts\\MyConcept2", 2, "concept_dimension",
 						"MyConcept2", "N");
 		colConfig3.setI2b2Concept(concept3);
 		colConfig3.setColumnName("Concept 2");
-		colConfig3.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.AGGREGATION);
-		colConfig3.setAggregation(OutputColumnConfiguration.AggregationType.MAX);
+		colConfig3.setDisplayFormat(DisplayFormat.AGGREGATION);
+		colConfig3.setAggregation(AggregationType.MAX);
 		colConfig3.setIncludeUnits(true);
 
-		OutputColumnConfiguration colConfig4 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig4 = new OutputColumnConfigurationEntity();
 		colConfig4.setOutputConfig(config);
 		colConfig4.setColumnOrder(4);
-		I2b2Concept concept4 = new I2b2Concept
+		I2b2ConceptEntity concept4 = new I2b2ConceptEntity
 				("\\\\i2b2\\Concepts\\MyConcept4", 2, "concept_dimension",
 						"MyConcept4", "N");
 		colConfig4.setI2b2Concept(concept4);
 		colConfig4.setColumnName("Systolic");
-		colConfig4.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig4.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig4.setIncludeTimeRange(true);
 		colConfig4.setIncludeUnits(false);
 		colConfig4.setHowMany(2);
 
-		OutputColumnConfiguration colConfig5 = new OutputColumnConfiguration();
+		OutputColumnConfigurationEntity colConfig5 = new OutputColumnConfigurationEntity();
 		colConfig5.setOutputConfig(config);
 		colConfig5.setColumnOrder(5);
-		I2b2Concept concept5 = new I2b2Concept
+		I2b2ConceptEntity concept5 = new I2b2ConceptEntity
 				("\\\\i2b2\\Concepts\\MyConcept5", 2, "concept_dimension",
 						"MyConcept5", "N");
 		colConfig5.setI2b2Concept(concept5);
 		colConfig5.setColumnName("Diastolic");
-		colConfig5.setDisplayFormat(OutputColumnConfiguration.DisplayFormat.VALUE);
+		colConfig5.setDisplayFormat(DisplayFormat.VALUE);
 		colConfig5.setIncludeTimeRange(true);
 		colConfig5.setIncludeUnits(false);
 		colConfig5.setHowMany(2);
@@ -287,7 +290,7 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
 	@Test
 	public void testPatientOutputFormatter() throws IOException, SQLException {
-		config.setRowDimension(OutputConfiguration.RowDimension.PATIENT);
+		config.setRowDimension(RowDimension.PATIENT);
 		formatter = new DataOutputFormatter(config, data);
 
 		String expected = "\"Patient_id\",\"Concept_3\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_2_max\",\"Concept_2_units\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\"\n" +
@@ -300,7 +303,7 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
 	@Test
 	public void testVisitOutputFormatter() throws IOException, SQLException {
-		config.setRowDimension(OutputConfiguration.RowDimension.VISIT);
+		config.setRowDimension(RowDimension.VISIT);
 		formatter = new DataOutputFormatter(config, data);
 
 		String expected = "\"Patient_id\",\"Visit_id\",\"Visit_start\",\"Visit_end\",\"Concept_3\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_2_max\",\"Concept_2_units\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\"\n" +
@@ -316,7 +319,7 @@ public class DataOutputFormatterTest extends AbstractRowOutputFormatterTest {
 
 	@Test
 	public void testProviderOutputFormatter() throws IOException, SQLException {
-		config.setRowDimension(OutputConfiguration.RowDimension.PROVIDER);
+		config.setRowDimension(RowDimension.PROVIDER);
 		formatter = new DataOutputFormatter(config, data);
 
 		String expected = "\"Provider_name\",\"Concept_3\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_1_value\",\"Concept_1_units\",\"Concept_2_max\",\"Concept_2_units\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Systolic_value\",\"Systolic_start\",\"Systolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\",\"Diastolic_value\",\"Diastolic_start\",\"Diastolic_end\"\n" +

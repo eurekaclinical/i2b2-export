@@ -24,8 +24,9 @@ import com.sun.jersey.api.client.ClientResponse;
 import edu.emory.bmi.aiw.i2b2export.comm.DeleteRequest;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.LoadRequest;
+import edu.emory.bmi.aiw.i2b2export.comm.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.comm.SaveRequest;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import org.junit.Assert;
 import org.junit.Test;
 

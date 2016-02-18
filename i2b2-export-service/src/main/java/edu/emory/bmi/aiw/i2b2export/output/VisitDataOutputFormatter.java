@@ -19,7 +19,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.BufferedWriter;
@@ -39,10 +39,10 @@ import org.apache.commons.io.IOUtils;
  */
 final class VisitDataOutputFormatter {
 
-	private final OutputConfiguration config;
+	private final OutputConfigurationEntity config;
 	private final Collection<Patient> patients;
 
-	VisitDataOutputFormatter(OutputConfiguration config, Collection<Patient> patients) {
+	VisitDataOutputFormatter(OutputConfigurationEntity config, Collection<Patient> patients) {
 		this.config = config;
 		this.patients = patients;
 	}

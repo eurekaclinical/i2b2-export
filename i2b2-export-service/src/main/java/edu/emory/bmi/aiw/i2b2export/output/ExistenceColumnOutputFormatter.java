@@ -20,7 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -44,7 +44,7 @@ final class ExistenceColumnOutputFormatter extends
 	 * @param columnConfig the configuration of the column to format
 	 * @param formatOptions the global format options to apply to the column
 	 */
-	ExistenceColumnOutputFormatter(OutputColumnConfiguration columnConfig, FormatOptions formatOptions) {
+	ExistenceColumnOutputFormatter(OutputColumnConfigurationEntity columnConfig, FormatOptions formatOptions) {
 		super(columnConfig, formatOptions);
 	}
 

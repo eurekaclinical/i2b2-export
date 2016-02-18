@@ -20,6 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.entity;
  * #L%
  */
 
+import edu.emory.bmi.aiw.i2b2export.comm.I2b2Concept;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,7 @@ import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * A JPA entity representing an i2b2 concept.
@@ -38,7 +40,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Entity
 @Table(name = "i2b2_concepts")
-public final class I2b2Concept {
+public class I2b2ConceptEntity {
 
 	@Id
 	@SequenceGenerator(name = "I2B2_CONCEPT_SEQ_GENERATOR",
@@ -91,7 +93,7 @@ public final class I2b2Concept {
 	/**
 	 * Default no-arg constructor. Sets all fields to null. Modifiers should be called immediately after.
 	 */
-	public I2b2Concept() {
+	public I2b2ConceptEntity() {
 		this(null, null, null, null, null);
 	}
 
@@ -104,7 +106,7 @@ public final class I2b2Concept {
 	 * @param dimensionCode the concept's dimension code
 	 * @param isSynonym the concept's synonym code
 	 */
-	public I2b2Concept(String key, Integer level, String tableName,
+	public I2b2ConceptEntity(String key, Integer level, String tableName,
 					String dimensionCode, String isSynonym) {
 		this.i2b2Key = key;
 		this.level = level;
@@ -378,8 +380,8 @@ public final class I2b2Concept {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof I2b2Concept) {
-			I2b2Concept c = (I2b2Concept) o;
+		if (o instanceof I2b2ConceptEntity) {
+			I2b2ConceptEntity c = (I2b2ConceptEntity) o;
 			return c.getI2b2Key().equals(this.getI2b2Key());
 		}
 		return false;
@@ -387,19 +389,24 @@ public final class I2b2Concept {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder("{");
-		result.append("i2b2Key: ");
-		result.append(getI2b2Key());
-		result.append(", level: ");
-		result.append(getLevel());
-		result.append(", tableName: ");
-		result.append(getTableName());
-		result.append(", dimensionCode: ");
-		result.append(getDimensionCode());
-		result.append(", isSynonym: ");
-		result.append(getIsSynonym());
-		result.append("}");
-
-		return result.toString();
+		return ToStringBuilder.reflectionToString(this);
+	}
+	
+	I2b2Concept toDTO() {
+		I2b2Concept result = new I2b2Concept();
+		result.setColumnName(this.columnName);
+		result.setDimensionCode(this.dimensionCode);
+		result.setDisplayName(this.displayName);
+		result.setHasChildren(this.hasChildren);
+		result.setI2b2Key(this.i2b2Key);
+		result.setIcd9(this.icd9);
+		result.setIsSynonym(this.isSynonym);
+		result.setLevel(this.level);
+		result.setName(this.name);
+		result.setOperator(this.operator);
+		result.setTableName(this.tableName);
+		result.setTooltip(this.tooltip);
+		result.setXmlOrig(this.xmlOrig);
+		return result;
 	}
 }

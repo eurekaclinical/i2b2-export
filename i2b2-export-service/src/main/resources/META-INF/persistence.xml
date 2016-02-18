@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
   i2b2 Export Service
@@ -17,31 +18,24 @@
   limitations under the License.
   #L%
   -->
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-        version="2.0">
-    <persistence-unit name="i2b2-export-persist"
-                      transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <non-jta-data-source>java:comp/env/jdbc/I2b2ExportServiceDS</non-jta-data-source>
-
-        <class>edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept</class>
-        <class>edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration</class>
-        <class>edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration</class>
-
-        <properties>
-            <!-- Disable the second-level cache -->
-            <!--<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />-->
-            <property name="hibernate.show_sql" value="true"/>
-            <!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
-            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />-->
-            <!-- Default is false for backwards compatibility. Should be used on all
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="i2b2-export-persist" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <non-jta-data-source>java:comp/env/jdbc/I2b2ExportServiceDS</non-jta-data-source>
+    <class>edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity</class>
+    <class>edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity</class>
+    <class>edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity</class>
+    <properties>
+      <!-- Disable the second-level cache -->
+      <!--<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />-->
+      <property name="hibernate.show_sql" value="true"/>
+      <!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
+      <!--<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />-->
+      <!-- Default is false for backwards compatibility. Should be used on all
                                 new projects -->
-            <property name="hibernate.id.new_generator_mappings" value="true" />
-
-            <!-- for testing purposes ONLY -->
-            <!-- <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+      <property name="hibernate.id.new_generator_mappings" value="true"/>
+      <!-- for testing purposes ONLY -->
+      <!-- <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url"
                       value="jdbc:h2:file:/tmp/i2b2-export-test" />
@@ -49,6 +43,6 @@
             <property name="hibernate.connection.password" value="" />
             <property name="hibernate.connection.pool_size" value="1" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />-->
-        </properties>
-    </persistence-unit>
+    </properties>
+  </persistence-unit>
 </persistence>

@@ -23,9 +23,9 @@ package edu.emory.bmi.aiw.i2b2export.dao;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration_;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity_;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,21 +50,14 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 
 	private final Provider<EntityManager> provider;
 
-	/*
-	 * the column configuration DAO to use to propagate changes to the appropriate column configurations
-	 */
-	private final OutputColumnConfigurationDao colConfigDao;
-
 	/**
 	 * Default constructor.
 	 *
 	 * @param provider the entity manager provider
-	 * @param colConfigDao the column configuration DAO
 	 */
 	@Inject
-	public JpaOutputConfigurationDao(Provider<EntityManager> provider, OutputColumnConfigurationDao colConfigDao) {
+	public JpaOutputConfigurationDao(Provider<EntityManager> provider) {
 		this.provider = provider;
-		this.colConfigDao = colConfigDao;
 	}
 
 	private EntityManager getEntityManager() {
@@ -72,24 +65,24 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 	}
 
 	@Override
-	public List<OutputConfiguration> getAllByUsername(String username) {
+	public List<OutputConfigurationEntity> getAllByUsername(String username) {
 		LOGGER.debug("Retrieving all configurations for user: {}", username);
 
 		EntityManager entityManager = this.getEntityManager();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<OutputConfiguration> query = builder.createQuery(OutputConfiguration.class);
-		Root<OutputConfiguration> root = query.from(OutputConfiguration.class);
-		Path<String> usernamePath = root.get(OutputConfiguration_.username);
-		CriteriaQuery<OutputConfiguration> where = query.where(builder.and(
+		CriteriaQuery<OutputConfigurationEntity> query = builder.createQuery(OutputConfigurationEntity.class);
+		Root<OutputConfigurationEntity> root = query.from(OutputConfigurationEntity.class);
+		Path<String> usernamePath = root.get(OutputConfigurationEntity_.username);
+		CriteriaQuery<OutputConfigurationEntity> where = query.where(builder.and(
 				builder.equal(usernamePath, username)));
-		TypedQuery<OutputConfiguration> typedQuery = entityManager
+		TypedQuery<OutputConfigurationEntity> typedQuery = entityManager
 				.createQuery(where);
 
-		List<OutputConfiguration> result = typedQuery.getResultList();
+		List<OutputConfigurationEntity> result = typedQuery.getResultList();
 
 		if (LOGGER.isDebugEnabled()) {
 			List<String> names = new ArrayList<>();
-			for (OutputConfiguration config : result) {
+			for (OutputConfigurationEntity config : result) {
 				names.add(config.getName());
 			}
 			LOGGER.debug("Retrieved configurations: {}", names);
@@ -99,34 +92,34 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 	}
 
 	@Override
-	public OutputConfiguration getById(Long configId) {
+	public OutputConfigurationEntity getById(Long configId) {
 		LOGGER.debug("Retrieving configuration with id: {}", configId);
-		OutputConfiguration config = this.getEntityManager().find(OutputConfiguration.class,
+		OutputConfigurationEntity config = this.getEntityManager().find(OutputConfigurationEntity.class,
 				configId);
 		LOGGER.debug("Retrieved configuration: {}", config.getName());
 		return config;
 	}
 
 	@Override
-	public OutputConfiguration getByUsernameAndConfigName(String username,
+	public OutputConfigurationEntity getByUsernameAndConfigName(String username,
 														String configName) {
 		LOGGER.debug("Retrieving configuration for user: {} and with name: {}", username, configName);
 		EntityManager entityManager = this.getEntityManager();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<OutputConfiguration> query = builder.createQuery(OutputConfiguration.class);
-		Root<OutputConfiguration> root = query.from(OutputConfiguration.class);
-		Path<String> usernamePath = root.get(OutputConfiguration_.username);
-		Path<String> configNamePath = root.get(OutputConfiguration_.name);
-		CriteriaQuery<OutputConfiguration> where = query.where(builder.and(builder.equal(usernamePath, username),
+		CriteriaQuery<OutputConfigurationEntity> query = builder.createQuery(OutputConfigurationEntity.class);
+		Root<OutputConfigurationEntity> root = query.from(OutputConfigurationEntity.class);
+		Path<String> usernamePath = root.get(OutputConfigurationEntity_.username);
+		Path<String> configNamePath = root.get(OutputConfigurationEntity_.name);
+		CriteriaQuery<OutputConfigurationEntity> where = query.where(builder.and(builder.equal(usernamePath, username),
 						builder.equal(configNamePath, configName)));
-		TypedQuery<OutputConfiguration> typedQuery = entityManager.createQuery(where);
+		TypedQuery<OutputConfigurationEntity> typedQuery = entityManager.createQuery(where);
 
-		List<OutputConfiguration> result = typedQuery.getResultList();
+		List<OutputConfigurationEntity> result = typedQuery.getResultList();
 		if (result == null || result.isEmpty()) {
 			LOGGER.warn("No configuration found for user: {} and with name: {}", username, configName);
 			return null;
 		} else {
-			OutputConfiguration config = result.get(0);
+			OutputConfigurationEntity config = result.get(0);
 			LOGGER.debug("Found configuration with name: {}", config.getName());
 			return config;
 		}
@@ -134,39 +127,36 @@ public class JpaOutputConfigurationDao implements OutputConfigurationDao {
 
 	@Override
 	@Transactional
-	public void create(OutputConfiguration config) {
+	public void create(OutputConfigurationEntity config) {
 		LOGGER.debug("Creating configuration for user {} and with name {}", config.getUsername(), config.getName());
-		for (OutputColumnConfiguration colConfig : config.getColumnConfigs()) {
-			colConfig.setOutputConfig(config);
-		}
 		this.getEntityManager().persist(config);
 		LOGGER.debug("Created configuration with id: {}", config.getId());
 	}
 
 	@Override
 	@Transactional
-	public void update(OutputConfiguration existingConfig, OutputConfiguration newConfig) {
-		LOGGER.debug("Updating configuration with id: {}", existingConfig.getId());
-		for (OutputColumnConfiguration colConfig : existingConfig.getColumnConfigs()) {
-			this.colConfigDao.delete(colConfig);
-		}
-		existingConfig.setRowDimension(newConfig.getRowDimension());
-		existingConfig.setWhitespaceReplacement(newConfig.getWhitespaceReplacement());
-		existingConfig.setSeparator(newConfig.getSeparator());
-		existingConfig.setMissingValue(newConfig.getMissingValue());
-		existingConfig.getColumnConfigs().clear();
-		for (OutputColumnConfiguration colConfig : newConfig.getColumnConfigs()) {
-			existingConfig.getColumnConfigs().add(colConfig);
-			colConfig.setOutputConfig(existingConfig);
-		}
+	public void update(OutputConfigurationEntity config) {
+		LOGGER.debug("Updating configuration with id: {}", config.getId());
+		this.getEntityManager().merge(config);
 		LOGGER.debug("Configuration updated");
 	}
 
 	@Override
 	@Transactional
-	public void delete(OutputConfiguration config) {
+	public void remove(OutputConfigurationEntity config) {
 		LOGGER.debug("Deleting configuration with id: {}", config.getId());
-		this.getEntityManager().remove(config);
+		EntityManager entityManager = this.getEntityManager();
+		if (entityManager.contains(config)) {
+			entityManager.remove(config);
+		} else {
+			entityManager.remove(entityManager.merge(config));
+		}
 		LOGGER.debug("Configuration deleted");
+	}
+	
+	@Override
+	public OutputConfigurationEntity refresh(OutputConfigurationEntity config) {
+		this.getEntityManager().refresh(config);
+		return config;
 	}
 }

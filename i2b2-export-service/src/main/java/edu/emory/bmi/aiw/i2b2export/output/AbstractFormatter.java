@@ -20,7 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -29,21 +29,21 @@ import java.io.IOException;
  * @author Andrew Post
  */
 public abstract class AbstractFormatter {
-	private final OutputConfiguration outputConfiguration;
+	private final OutputConfigurationEntity outputConfiguration;
 
 	/**
 	 * Default constructor. Accepts the output configuration to use to format
 	 * the header.
 	 *
-	 * @param outputConfiguration the {@link OutputConfiguration} to use to
+	 * @param outputConfiguration the {@link OutputConfigurationEntity} to use to
 	 * format the header
 	 */
-	AbstractFormatter(OutputConfiguration outputConfiguration) {
+	AbstractFormatter(OutputConfigurationEntity outputConfiguration) {
 		assert outputConfiguration != null : "outputConfiguration cannot be null";
 		this.outputConfiguration = outputConfiguration;
 	}
 
-	public OutputConfiguration getOutputConfiguration() {
+	public OutputConfigurationEntity getOutputConfiguration() {
 		return outputConfiguration;
 	}
 	

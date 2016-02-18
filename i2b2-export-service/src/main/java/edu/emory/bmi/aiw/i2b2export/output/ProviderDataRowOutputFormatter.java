@@ -20,8 +20,8 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
 import java.io.BufferedWriter;
@@ -44,7 +44,7 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Observer provider;
 	private final Map<String, List<Observation>> keyToObx;
 
-	ProviderDataRowOutputFormatter(OutputConfiguration config, Observer provider, Connection con) {
+	ProviderDataRowOutputFormatter(OutputConfigurationEntity config, Observer provider, Connection con) {
 		super(con, config);
 		this.provider = provider;
 		this.keyToObx = new HashMap<>();
@@ -61,7 +61,7 @@ final class ProviderDataRowOutputFormatter extends DataRowOutputFormatter {
 	}
 
 	@Override
-	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) {
+	protected Collection<Observation> matchingObservations(I2b2ConceptEntity i2b2Concept) {
 		List<Observation> get = this.keyToObx.get(i2b2Concept.getI2b2Key());
 		if (get != null) {
 			return java.util.Collections.unmodifiableCollection(get);

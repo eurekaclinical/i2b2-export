@@ -22,7 +22,7 @@ package edu.emory.bmi.aiw.i2b2export.i2b2;
 
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.I2b2PatientSet;
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResultParser;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
@@ -66,7 +66,7 @@ public final class I2b2PdoRetrieverImpl implements I2b2PdoRetriever {
 
 	@Override
 	public I2b2PdoResults retrieve(I2b2AuthMetadata authMetadata,
-								Collection<I2b2Concept> concepts,
+								Collection<I2b2ConceptEntity> concepts,
 								I2b2PatientSet patientSet) throws I2b2ExportServiceXmlException {
 		try {
 			Template tmpl = this.config.getTemplate(I2b2CommUtil.TEMPLATES_DIR + "/i2b2_pdo_request.ftl");

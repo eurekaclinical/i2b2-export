@@ -19,8 +19,8 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * limitations under the License.
  * #L%
  */
-import edu.emory.bmi.aiw.i2b2export.entity.I2b2Concept;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
@@ -47,7 +47,7 @@ final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	private final Patient patient;
 	private final Map<String, List<Observation>> keyToObx;
 
-	PatientDataRowOutputFormatter(OutputConfiguration config, Patient patient, Connection con) {
+	PatientDataRowOutputFormatter(OutputConfigurationEntity config, Patient patient, Connection con) {
 		super(con, config);
 		this.patient = patient;
 		this.keyToObx = new HashMap<>();
@@ -65,7 +65,7 @@ final class PatientDataRowOutputFormatter extends DataRowOutputFormatter {
 	}
 
 	@Override
-	protected Collection<Observation> matchingObservations(I2b2Concept i2b2Concept) throws SQLException {
+	protected Collection<Observation> matchingObservations(I2b2ConceptEntity i2b2Concept) throws SQLException {
 		switch (StringUtils.upperCase(i2b2Concept.getTableName())) {
 			case "CONCEPT_DIMENSION":
 				List<Observation> obxs = this.keyToObx.get(i2b2Concept.getI2b2Key());

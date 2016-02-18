@@ -20,7 +20,7 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfiguration;
+import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 
 /**
  * Container for the formatting options that apply to the entire output configuration but that must be applied at
@@ -37,7 +37,7 @@ final class FormatOptions {
 	 *
 	 * @param config the output configuration
 	 */
-	FormatOptions(OutputConfiguration config) {
+	FormatOptions(OutputConfigurationEntity config) {
 		this.missingData = config.getMissingValue();
 	}
 
