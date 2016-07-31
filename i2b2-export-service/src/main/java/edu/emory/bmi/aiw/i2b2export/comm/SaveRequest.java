@@ -21,6 +21,7 @@ package edu.emory.bmi.aiw.i2b2export.comm;
  */
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
+import org.eurekaclinical.i2b2.client.comm.I2b2AuthMetadata;
 
 /**
  * A bean to communicate save requests from the client. It will generally populated from a JSON object.

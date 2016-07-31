@@ -21,12 +21,12 @@ package edu.emory.bmi.aiw.i2b2export.output;
  */
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
 
 /**
  * Column formatter for aggregation columns.

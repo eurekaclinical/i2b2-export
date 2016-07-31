@@ -21,7 +21,6 @@ package edu.emory.bmi.aiw.i2b2export.entity;
  */
 
 import edu.emory.bmi.aiw.i2b2export.comm.OutputColumnConfiguration;
-import org.codehaus.jackson.annotate.JsonBackReference;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

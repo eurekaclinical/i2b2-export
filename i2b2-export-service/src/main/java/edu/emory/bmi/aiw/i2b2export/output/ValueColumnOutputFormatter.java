@@ -21,8 +21,6 @@ package edu.emory.bmi.aiw.i2b2export.output;
  */
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -34,6 +32,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import org.eurekaclinical.i2b2.client.I2b2CommUtil;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
 
 /**
  * Column formatter for value columns.

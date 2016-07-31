@@ -20,11 +20,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.util.Collection;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
 
 /**
  * Interface for formatting columns for output. It defines one method, <code>format</code>, that accepts a collection

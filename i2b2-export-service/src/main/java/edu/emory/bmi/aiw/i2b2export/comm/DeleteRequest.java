@@ -1,5 +1,7 @@
 package edu.emory.bmi.aiw.i2b2export.comm;
 
+import org.eurekaclinical.i2b2.client.comm.I2b2AuthMetadata;
+
 /*
  * #%L
  * i2b2 Export Service

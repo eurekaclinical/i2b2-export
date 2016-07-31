@@ -28,6 +28,8 @@ package edu.emory.bmi.aiw.i2b2export.resource;
  */
 public class I2b2ExportServiceException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Default no-arg constructor.
 	 */

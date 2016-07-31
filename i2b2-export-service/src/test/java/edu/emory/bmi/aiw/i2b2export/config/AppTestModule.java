@@ -24,10 +24,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import edu.emory.bmi.aiw.i2b2export.dao.MockOutputConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
-import edu.emory.bmi.aiw.i2b2export.i2b2.MockI2b2PdoRetriever;
-import edu.emory.bmi.aiw.i2b2export.i2b2.MockI2b2UserAuthenticator;
+import org.eurekaclinical.i2b2.client.tests.MockI2b2PdoRetriever;
+import org.eurekaclinical.i2b2.client.tests.MockI2b2UserAuthenticator;
+import org.eurekaclinical.i2b2.client.I2b2PdoRetriever;
+import org.eurekaclinical.i2b2.client.I2b2UserAuthenticator;
 
 public class AppTestModule extends AbstractModule {
 

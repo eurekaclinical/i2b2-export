@@ -23,7 +23,6 @@ package edu.emory.bmi.aiw.i2b2export.dao;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity_;
 import org.slf4j.Logger;

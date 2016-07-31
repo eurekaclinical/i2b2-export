@@ -22,8 +22,6 @@ package edu.emory.bmi.aiw.i2b2export.output;
 
 import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observer;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -33,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.arp.javautil.collections.Collections;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
+import org.eurekaclinical.i2b2.client.pdo.Observer;
 
 /**
  * Output formatter for a provider row.

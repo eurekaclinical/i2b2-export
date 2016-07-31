@@ -25,12 +25,12 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
 
 /**
  *

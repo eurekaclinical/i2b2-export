@@ -23,10 +23,10 @@ package edu.emory.bmi.aiw.i2b2export.config;
 import com.google.inject.AbstractModule;
 import edu.emory.bmi.aiw.i2b2export.dao.JpaOutputConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetrieverImpl;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticatorImpl;
+import org.eurekaclinical.i2b2.client.I2b2PdoRetriever;
+import org.eurekaclinical.i2b2.client.I2b2PdoRetrieverImpl;
+import org.eurekaclinical.i2b2.client.I2b2UserAuthenticator;
+import org.eurekaclinical.i2b2.client.I2b2UserAuthenticatorImpl;
 
 /**
  * Configuration for Guice interface bindings.

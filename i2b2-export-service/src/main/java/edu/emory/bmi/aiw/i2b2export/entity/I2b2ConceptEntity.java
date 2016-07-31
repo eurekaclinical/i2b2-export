@@ -19,8 +19,6 @@ package edu.emory.bmi.aiw.i2b2export.entity;
  * limitations under the License.
  * #L%
  */
-
-import edu.emory.bmi.aiw.i2b2export.comm.I2b2Concept;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +29,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.eurekaclinical.i2b2.client.comm.I2b2Concept;
 
 /**
  * A JPA entity representing an i2b2 concept.
@@ -91,10 +90,49 @@ public class I2b2ConceptEntity {
 	private String xmlOrig;
 
 	/**
-	 * Default no-arg constructor. Sets all fields to null. Modifiers should be called immediately after.
+	 * Default no-arg constructor. Sets all fields to null. Modifiers should be
+	 * called immediately after.
 	 */
 	public I2b2ConceptEntity() {
 		this(null, null, null, null, null);
+	}
+
+	public I2b2ConceptEntity(I2b2Concept i2b2Concept) {
+		if (i2b2Concept != null) {
+			this.id = i2b2Concept.getId();
+			this.i2b2Key = i2b2Concept.getI2b2Key();
+			this.level = i2b2Concept.getLevel();
+			this.tableName = i2b2Concept.getTableName();
+			this.dimensionCode = i2b2Concept.getDimensionCode();
+			this.isSynonym = i2b2Concept.getIsSynonym();
+			this.name = i2b2Concept.getName();
+			this.columnName = i2b2Concept.getColumnName();
+			this.operator = i2b2Concept.getOperator();
+			this.displayName = i2b2Concept.getDisplayName();
+			this.tooltip = i2b2Concept.getTooltip();
+			this.hasChildren = i2b2Concept.getHasChildren();
+			this.icd9 = i2b2Concept.getIcd9();
+			this.xmlOrig = i2b2Concept.getXmlOrig();
+		}
+	}
+	
+	public I2b2Concept toI2b2Concept() {
+		I2b2Concept result = new I2b2Concept();
+		result.setId(this.id);
+		result.setI2b2Key(this.i2b2Key);
+		result.setLevel(this.level);
+		result.setTableName(this.tableName);
+		result.setDimensionCode(this.dimensionCode);
+		result.setIsSynonym(this.isSynonym);
+		result.setName(this.name);
+		result.setColumnName(this.columnName);
+		result.setOperator(this.operator);
+		result.setDisplayName(this.displayName);
+		result.setTooltip(this.tooltip);
+		result.setHasChildren(this.hasChildren);
+		result.setIcd9(this.icd9);
+		result.setXmlOrig(this.xmlOrig);
+		return result;
 	}
 
 	/**
@@ -107,7 +145,7 @@ public class I2b2ConceptEntity {
 	 * @param isSynonym the concept's synonym code
 	 */
 	public I2b2ConceptEntity(String key, Integer level, String tableName,
-					String dimensionCode, String isSynonym) {
+			String dimensionCode, String isSynonym) {
 		this.i2b2Key = key;
 		this.level = level;
 		this.tableName = tableName;
@@ -357,11 +395,11 @@ public class I2b2ConceptEntity {
 	public void setXmlOrig(String xmlOrig) {
 		this.xmlOrig = xmlOrig;
 	}
-	
+
 	public String getColumnDataType() {
 		return "T";
 	}
-	
+
 	public String getFactTableColumn() {
 		String tableNameUC = StringUtils.upperCase(this.tableName);
 		if ("CONCEPT_DIMENSION".equals(tableNameUC)) {
@@ -391,7 +429,7 @@ public class I2b2ConceptEntity {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
+
 	I2b2Concept toDTO() {
 		I2b2Concept result = new I2b2Concept();
 		result.setColumnName(this.columnName);

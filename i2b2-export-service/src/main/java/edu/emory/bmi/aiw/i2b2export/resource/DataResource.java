@@ -21,17 +21,12 @@ package edu.emory.bmi.aiw.i2b2export.resource;
  */
 
 import com.google.inject.Inject;
-import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
-import edu.emory.bmi.aiw.i2b2export.comm.I2b2PatientSet;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2PdoRetriever;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
 import edu.emory.bmi.aiw.i2b2export.output.DataOutputFormatter;
 import edu.emory.bmi.aiw.i2b2export.output.HeaderRowOutputFormatter;
-import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import java.io.BufferedWriter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -49,8 +44,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.StreamingOutput;
+import org.eurekaclinical.i2b2.client.I2b2PdoRetriever;
+import org.eurekaclinical.i2b2.client.I2b2UserAuthenticator;
+import org.eurekaclinical.i2b2.client.comm.I2b2AuthMetadata;
+import org.eurekaclinical.i2b2.client.comm.I2b2Concept;
+import org.eurekaclinical.i2b2.client.comm.I2b2PatientSet;
+import org.eurekaclinical.i2b2.client.xml.I2b2XmlException;
 
 /**
  * A Jersey resource for handling requests relating to retrieving data from i2b2.
@@ -87,7 +89,7 @@ public final class DataResource {
 									String i2b2ProjectId,
 									Integer i2b2PatientSetCollId,
 									Integer i2b2PatientSetSize,
-									OutputConfigurationEntity outputConfig) throws I2b2ExportServiceXmlException {
+									OutputConfigurationEntity outputConfig) throws I2b2XmlException {
 		I2b2PatientSet patientSet = new I2b2PatientSet();
 		patientSet.setPatientSetCollId(i2b2PatientSetCollId);
 		patientSet.setPatientSetSize(i2b2PatientSetSize);
@@ -173,9 +175,9 @@ public final class DataResource {
 		} catch (IOException e) {
 			logError(e);
 			throw new I2b2ExportServiceException(e);
-		} catch (I2b2ExportServiceException e) {
-			logError(e);
-			throw e;
+		} catch (I2b2XmlException ex) {
+			logError(ex);
+			throw new I2b2ExportServiceException(ex);
 		}
 	}
 
@@ -220,9 +222,9 @@ public final class DataResource {
 						i2b2PasswordNode, i2b2ProjectId,
 						i2b2PatientSetCollId, i2b2PatientSetSize,
 						outputConfig);
-			} catch (I2b2ExportServiceException e) {
+			} catch (I2b2XmlException e) {
 				logError(e);
-				throw e;
+				throw new I2b2ExportServiceException(e);
 			}
 		}
 	}
@@ -233,12 +235,12 @@ public final class DataResource {
 	 * @param config the output configuration to get the concepts from
 	 * @return a collection of {@link I2b2ConceptEntity}s
 	 */
-	private Collection<I2b2ConceptEntity> extractConcepts(OutputConfigurationEntity config) {
-		Collection<I2b2ConceptEntity> result = new
+	private Collection<I2b2Concept> extractConcepts(OutputConfigurationEntity config) {
+		Collection<I2b2Concept> result = new
 				HashSet<>();
 
 		for (OutputColumnConfigurationEntity colConfig : config.getColumnConfigs()) {
-			result.add(colConfig.getI2b2Concept());
+			result.add(colConfig.getI2b2Concept().toI2b2Concept());
 		}
 
 		return result;

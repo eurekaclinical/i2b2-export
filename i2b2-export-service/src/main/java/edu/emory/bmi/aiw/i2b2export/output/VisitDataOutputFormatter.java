@@ -20,8 +20,6 @@ package edu.emory.bmi.aiw.i2b2export.output;
  * #L%
  */
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,6 +28,8 @@ import java.sql.SQLException;
 
 import java.util.Collection;
 import org.apache.commons.io.IOUtils;
+import org.eurekaclinical.i2b2.client.pdo.Event;
+import org.eurekaclinical.i2b2.client.pdo.Patient;
 
 /**
  * Output formatter for when each row represents a visit.

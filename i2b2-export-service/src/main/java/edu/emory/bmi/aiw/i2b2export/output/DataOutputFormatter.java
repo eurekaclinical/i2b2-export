@@ -21,9 +21,9 @@ package edu.emory.bmi.aiw.i2b2export.output;
  */
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.I2b2PdoResults;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import org.eurekaclinical.i2b2.client.pdo.I2b2PdoResults;
 
 
 /**

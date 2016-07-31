@@ -22,16 +22,15 @@ package edu.emory.bmi.aiw.i2b2export.resource;
 
 import com.sun.jersey.api.client.ClientResponse;
 import edu.emory.bmi.aiw.i2b2export.comm.DeleteRequest;
-import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.LoadRequest;
 import edu.emory.bmi.aiw.i2b2export.comm.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.comm.SaveRequest;
-import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import org.junit.Assert;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import org.eurekaclinical.i2b2.client.comm.I2b2AuthMetadata;
 
 public class OutputConfigurationResourceTest extends AbstractResourceTest {
 

@@ -22,8 +22,6 @@ package edu.emory.bmi.aiw.i2b2export.output;
 import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,6 +32,8 @@ import java.sql.Statement;
 import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 import org.arp.javautil.sql.DatabaseProduct;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
+import org.eurekaclinical.i2b2.client.pdo.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

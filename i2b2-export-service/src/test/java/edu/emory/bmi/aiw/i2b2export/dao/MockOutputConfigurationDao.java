@@ -49,7 +49,7 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 			config1.setQuoteChar("\"");
 			config1.setWhitespaceReplacement("_");
 			config1.setMissingValue("(null)");
-			config1.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
+			config1.setColumnConfigs(new ArrayList<>());
 
 			result.add(config1);
 
@@ -62,7 +62,7 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 			config2.setQuoteChar("\"");
 			config2.setWhitespaceReplacement("_");
 			config2.setMissingValue("(null)");
-			config2.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
+			config2.setColumnConfigs(new ArrayList<>());
 
 			result.add(config2);
 
@@ -84,7 +84,7 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 			config.setQuoteChar("\"");
 			config.setWhitespaceReplacement("_");
 			config.setMissingValue("(null)");
-			config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
+			config.setColumnConfigs(new ArrayList<>());
 
 			return config;
 		} else {
@@ -97,7 +97,7 @@ public class MockOutputConfigurationDao implements OutputConfigurationDao {
 			config.setQuoteChar("\"");
 			config.setWhitespaceReplacement("_");
 			config.setMissingValue("(null)");
-			config.setColumnConfigs(new ArrayList<OutputColumnConfigurationEntity>());
+			config.setColumnConfigs(new ArrayList<>());
 
 			return config;
 		}

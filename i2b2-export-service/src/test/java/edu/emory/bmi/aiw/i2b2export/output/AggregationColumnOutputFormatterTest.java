@@ -24,10 +24,6 @@ import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.RowDimension;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2CommUtil;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Event;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Patient;
 import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,6 +33,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.eurekaclinical.i2b2.client.I2b2CommUtil;
+import org.eurekaclinical.i2b2.client.pdo.Event;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
+import org.eurekaclinical.i2b2.client.pdo.Patient;
 
 public class AggregationColumnOutputFormatterTest extends AbstractColumnFormatterTest {
 

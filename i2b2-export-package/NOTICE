@@ -15,6 +15,13 @@ This project includes:
   i2b2 Export Package under Apache License, Version 2.0
   i2b2 Export Plugin under Apache License, Version 2.0
   i2b2 Export Service under Apache License, Version 2.0
-  ojdbc6 under Oracle Technology Network Development and Distribution License Agreement
-  PostgreSQL JDBC Driver under The PostgreSQL License
+  ojdbc6 under The "Oracle Technology Network License Agreement - Oracle
+            Maven Repository" is the license for this Project Object
+            Model (POM) file and the associated software and
+            documentation unless you have accepted or agreed to
+            different license terms with Oracle when you obtained the
+            right to use the POM file, software and documentation.
+            Please refer to the comments below for additional
+            information.
+  PostgreSQL JDBC Driver - JDBC 4.1 under The PostgreSQL License
 

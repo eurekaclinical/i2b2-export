@@ -21,11 +21,11 @@ package edu.emory.bmi.aiw.i2b2export.output;
  */
 
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.pdo.Observation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.util.Collection;
+import org.eurekaclinical.i2b2.client.pdo.Observation;
 
 /**
  * Column formatter for existence columns. Displays true or false depending on whether the data to be formatted is

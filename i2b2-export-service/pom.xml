@@ -17,44 +17,13 @@
 	</description>
 
 	<properties>
-		<annotation-version>1.0</annotation-version>
-		<hibernate-version>5.0.6.Final</hibernate-version>
-		<jersey-version>1.17.1</jersey-version>
-		<javax-jta-version>1.1</javax-jta-version>
-		<hibernate-persistence-version>1.0.0.Final</hibernate-persistence-version>
-		<guice-version>3.0</guice-version>
-		<jpamodelgen-version>5.0.6.Final</jpamodelgen-version>
+		<eurekaclinical-common-version>1.0-Alpha-7</eurekaclinical-common-version>
+		<i2b2-client-version>1.0-Alpha-1</i2b2-client-version>
 	</properties>
 
 	<build>
 		<finalName>i2b2-export-service</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<licenseName>apache_v2</licenseName>
-					<roots>
-						<root>src/main</root>
-						<root>src/test/java/</root>
-					</roots>
-					<extraExtensions>
-						<!-- .xsd files are not supported by default -->
-						<!-- but should be commented in XML style -->
-						<xsd>xml</xsd>
-					</extraExtensions>
-					<excludes>
-						<exclude>**/*.htm</exclude>
-						<exclude>**/*.html</exclude>
-						<exclude>**/*.js</exclude>
-						<exclude>**/*.css</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jasig.maven</groupId>
-				<artifactId>maven-notice-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -71,117 +40,29 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.eurekaclinical</groupId>
-			<artifactId>javautil</artifactId>
+			<artifactId>eurekaclinical-common</artifactId>
+			<version>${eurekaclinical-common-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>${jersey-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<version>${jersey-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey-version}</version>
-			<scope>test</scope>
+			<groupId>org.eurekaclinical</groupId>
+			<artifactId>i2b2-client</artifactId>
+			<version>${i2b2-client-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.jersey-test-framework</groupId>
 			<artifactId>jersey-test-framework-grizzly2</artifactId>
-			<version>${jersey-version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.19</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>${guice-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-servlet</artifactId>
-			<version>${guice-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-persist</artifactId>
-			<version>${guice-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>${javax-jta-version}</version>
-		</dependency>                       
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>jsr250-api</artifactId>
-			<version>${annotation-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>${hibernate-persistence-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-guice</artifactId>
-			<version>${jersey-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-jndi</artifactId>
-			<version>${guice-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>${jpamodelgen-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.6.4</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eurekaclinical</groupId>
+			<artifactId>javautil</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>

@@ -23,15 +23,12 @@ package edu.emory.bmi.aiw.i2b2export.resource;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import edu.emory.bmi.aiw.i2b2export.comm.DeleteRequest;
-import edu.emory.bmi.aiw.i2b2export.comm.I2b2AuthMetadata;
 import edu.emory.bmi.aiw.i2b2export.comm.LoadRequest;
 import edu.emory.bmi.aiw.i2b2export.comm.OutputConfiguration;
 import edu.emory.bmi.aiw.i2b2export.comm.OutputConfigurationSummary;
 import edu.emory.bmi.aiw.i2b2export.comm.SaveRequest;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputConfigurationEntity;
-import edu.emory.bmi.aiw.i2b2export.i2b2.I2b2UserAuthenticator;
-import edu.emory.bmi.aiw.i2b2export.xml.I2b2ExportServiceXmlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +40,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import org.eurekaclinical.i2b2.client.I2b2UserAuthenticator;
+import org.eurekaclinical.i2b2.client.comm.I2b2AuthMetadata;
+import org.eurekaclinical.i2b2.client.xml.I2b2XmlException;
 
 /**
  * A Jersey resource for handling requests relating to output configurations.
@@ -119,7 +119,7 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2ExportServiceXmlException e) {
+		} catch (I2b2XmlException e) {
 			logError(e);
 			throw new I2b2ExportServiceException(e);
 		}
@@ -161,7 +161,7 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
 				throw new HttpStatusException(Response.Status.UNAUTHORIZED);
 			}
-		} catch (I2b2ExportServiceXmlException e) {
+		} catch (I2b2XmlException e) {
 			logError(e);
 			throw new HttpStatusException(Response.Status.INTERNAL_SERVER_ERROR, e);
 		}
@@ -200,7 +200,7 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", authMetadata.getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2ExportServiceXmlException e) {
+		} catch (I2b2XmlException e) {
 			logError(e);
 			throw new I2b2ExportServiceException(e);
 		}
@@ -243,7 +243,7 @@ public class OutputConfigurationResource {
 				LOGGER.warn("User not authenticated: {}", request.getAuthMetadata().getUsername());
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
-		} catch (I2b2ExportServiceXmlException e) {
+		} catch (I2b2XmlException e) {
 			logError(e);
 			throw new I2b2ExportServiceException(e);
 		}

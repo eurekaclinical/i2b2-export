@@ -22,8 +22,10 @@ package edu.emory.bmi.aiw.i2b2export.comm;
 
 import edu.emory.bmi.aiw.i2b2export.entity.AggregationType;
 import edu.emory.bmi.aiw.i2b2export.entity.DisplayFormat;
+import edu.emory.bmi.aiw.i2b2export.entity.I2b2ConceptEntity;
 import edu.emory.bmi.aiw.i2b2export.entity.OutputColumnConfigurationEntity;
 import org.codehaus.jackson.annotate.JsonBackReference;
+import org.eurekaclinical.i2b2.client.comm.I2b2Concept;
 
 
 /**
@@ -242,7 +244,7 @@ public class OutputColumnConfiguration implements
 		result.setColumnOrder(this.columnOrder);
 		result.setDisplayFormat(this.displayFormat);
 		result.setHowMany(this.howMany);
-		result.setI2b2Concept(i2b2Concept.toEntity());
+		result.setI2b2Concept(new I2b2ConceptEntity(this.i2b2Concept));
 		result.setIncludeTimeRange(this.includeTimeRange);
 		result.setIncludeUnits(this.includeUnits);
 		return result;
