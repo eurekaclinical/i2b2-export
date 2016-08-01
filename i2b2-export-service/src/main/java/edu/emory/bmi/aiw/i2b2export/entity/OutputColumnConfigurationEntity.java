@@ -281,7 +281,7 @@ public class OutputColumnConfigurationEntity implements
 		result.setColumnOrder(this.columnOrder);
 		result.setDisplayFormat(this.displayFormat);
 		result.setHowMany(this.howMany);
-		result.setI2b2Concept(i2b2Concept.toDTO());
+		result.setI2b2Concept(i2b2Concept.toI2b2Concept());
 		result.setIncludeTimeRange(this.includeTimeRange);
 		result.setIncludeUnits(this.includeUnits);
 		return result;

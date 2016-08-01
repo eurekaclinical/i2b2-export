@@ -17,8 +17,8 @@
 	</description>
 
 	<properties>
-		<eurekaclinical-common-version>1.0-Alpha-7</eurekaclinical-common-version>
-		<i2b2-client-version>1.0-Alpha-1</i2b2-client-version>
+		<eurekaclinical-common-version>1.0-Alpha-8</eurekaclinical-common-version>
+		<i2b2-client-version>1.0-Alpha-3</i2b2-client-version>
 	</properties>
 
 	<build>

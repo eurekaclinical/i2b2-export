@@ -24,10 +24,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import edu.emory.bmi.aiw.i2b2export.dao.MockOutputConfigurationDao;
 import edu.emory.bmi.aiw.i2b2export.dao.OutputConfigurationDao;
+import edu.emory.bmi.aiw.i2b2export.props.I2b2ExportServicesProperties;
 import org.eurekaclinical.i2b2.client.tests.MockI2b2PdoRetriever;
 import org.eurekaclinical.i2b2.client.tests.MockI2b2UserAuthenticator;
 import org.eurekaclinical.i2b2.client.I2b2PdoRetriever;
 import org.eurekaclinical.i2b2.client.I2b2UserAuthenticator;
+import org.eurekaclinical.i2b2.client.props.I2b2Properties;
 
 public class AppTestModule extends AbstractModule {
 
@@ -37,5 +39,6 @@ public class AppTestModule extends AbstractModule {
 		bind(OutputConfigurationDao.class).to(MockOutputConfigurationDao.class);
 		bind(I2b2UserAuthenticator.class).to(MockI2b2UserAuthenticator.class);
 		bind(I2b2PdoRetriever.class).to(MockI2b2PdoRetriever.class);
+		bind(I2b2Properties.class).to(I2b2ExportServicesProperties.class);
 	}
 }

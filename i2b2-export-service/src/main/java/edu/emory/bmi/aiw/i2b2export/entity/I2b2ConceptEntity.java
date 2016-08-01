@@ -134,7 +134,7 @@ public class I2b2ConceptEntity {
 		result.setXmlOrig(this.xmlOrig);
 		return result;
 	}
-
+	
 	/**
 	 * Constructs an i2b2 concept from required fields.
 	 *
@@ -430,21 +430,4 @@ public class I2b2ConceptEntity {
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	I2b2Concept toDTO() {
-		I2b2Concept result = new I2b2Concept();
-		result.setColumnName(this.columnName);
-		result.setDimensionCode(this.dimensionCode);
-		result.setDisplayName(this.displayName);
-		result.setHasChildren(this.hasChildren);
-		result.setI2b2Key(this.i2b2Key);
-		result.setIcd9(this.icd9);
-		result.setIsSynonym(this.isSynonym);
-		result.setLevel(this.level);
-		result.setName(this.name);
-		result.setOperator(this.operator);
-		result.setTableName(this.tableName);
-		result.setTooltip(this.tooltip);
-		result.setXmlOrig(this.xmlOrig);
-		return result;
-	}
 }
