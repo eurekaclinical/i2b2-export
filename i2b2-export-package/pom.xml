@@ -33,13 +33,6 @@
 			<type>war</type>
 		</dependency>
 		<dependency>
-			<groupId>org.eurekaclinical</groupId>
-			<artifactId>i2b2-export-plugin</artifactId>
-			<version>${i2b2-export-version}</version>
-			<classifier>plugin</classifier>
-			<type>tar.gz</type>
-		</dependency>
-		<dependency>
 			<groupId>com.oracle.weblogic</groupId>
 			<artifactId>ojdbc6</artifactId>
 		</dependency>
