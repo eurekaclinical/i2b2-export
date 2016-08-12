@@ -44,7 +44,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.logging.Level;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.StreamingOutput;
 import org.eurekaclinical.i2b2.client.I2b2PdoRetriever;
@@ -144,8 +143,6 @@ public final class DataResource {
 	 * @param i2b2PatientSetCollId the i2b2 patient set ID
 	 * @param i2b2PatientSetSize   the i2b2 patient set size
 	 * @return the formatted output or a status code indicating failure
-	 * @throws I2b2ExportServiceException
-	 *          if something goes wrong
 	 */
 	@POST
 	@Path("/configDetails")
@@ -163,7 +160,7 @@ public final class DataResource {
 													@FormParam
 															("patient-set-coll-id") Integer i2b2PatientSetCollId,
 													@FormParam("patient-set-size")
-													Integer i2b2PatientSetSize) throws I2b2ExportServiceException {
+													Integer i2b2PatientSetSize) {
 		LOGGER.info("Received request to export data from config details for " +
 				"user: {}", i2b2Username);
 		try {
@@ -172,12 +169,9 @@ public final class DataResource {
 			return generateOutput(i2b2Domain, i2b2Username, i2b2PasswordNode,
 					i2b2ProjectId, i2b2PatientSetCollId, i2b2PatientSetSize,
 					outputConfig);
-		} catch (IOException e) {
+		} catch (IOException | I2b2XmlException e) {
 			logError(e);
-			throw new I2b2ExportServiceException(e);
-		} catch (I2b2XmlException ex) {
-			logError(ex);
-			throw new I2b2ExportServiceException(ex);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -199,8 +193,6 @@ public final class DataResource {
 	 * @param i2b2PatientSetCollId the i2b2 patient set ID
 	 * @param i2b2PatientSetSize   the i2b2 patient set size
 	 * @return the formatted output or a status code indicating failure
-	 * @throws I2b2ExportServiceException
-	 *          if something goes wrong
 	 */
 	@POST
 	@Path("/configId")
@@ -208,7 +200,7 @@ public final class DataResource {
 	public Response generateOutputFromConfigId(@FormParam("i2b2-domain") String i2b2Domain, @FormParam("i2b2-user") String i2b2Username,
 											@FormParam("i2b2-pass") String i2b2PasswordNode, @FormParam("i2b2-project") String i2b2ProjectId,
 											@FormParam("config-id") Long outputConfigId, @FormParam ("patient-set-coll-id") Integer i2b2PatientSetCollId,
-											@FormParam("patient-set-size") Integer i2b2PatientSetSize) throws I2b2ExportServiceException {
+											@FormParam("patient-set-size") Integer i2b2PatientSetSize) {
 		LOGGER.info("Received request to export data from configuration id: " +
 				"{} from user: {}", i2b2Username, outputConfigId);
 
@@ -224,7 +216,7 @@ public final class DataResource {
 						outputConfig);
 			} catch (I2b2XmlException e) {
 				logError(e);
-				throw new I2b2ExportServiceException(e);
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
 		}
 	}
