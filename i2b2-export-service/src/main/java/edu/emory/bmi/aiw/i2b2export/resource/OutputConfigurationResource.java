@@ -43,6 +43,7 @@ import java.util.List;
 import org.eurekaclinical.i2b2.client.I2b2UserAuthenticator;
 import org.eurekaclinical.i2b2.client.comm.I2b2AuthMetadata;
 import org.eurekaclinical.i2b2.client.xml.I2b2XmlException;
+import org.eurekaclinical.standardapis.exception.HttpStatusException;
 
 /**
  * A Jersey resource for handling requests relating to output configurations.
@@ -79,12 +80,11 @@ public class OutputConfigurationResource {
 	 * @param request the create request, containing the configuration to create
 	 *                along with the i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 *
 	 */
 	@POST
 	@Path("/save")
-	public Response saveConfiguration(SaveRequest request) throws I2b2ExportServiceException {
+	public Response saveConfiguration(SaveRequest request) {
 		LOGGER.info("Received request to save configuration for user: {}", request.getAuthMetadata().getUsername());
 
 		try {
@@ -121,7 +121,7 @@ public class OutputConfigurationResource {
 			}
 		} catch (I2b2XmlException e) {
 			logError(e);
-			throw new I2b2ExportServiceException(e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -173,11 +173,10 @@ public class OutputConfigurationResource {
 	 *
 	 * @param authMetadata the i2b2 authentication tokens identifying the user
 	 * @return a list of configuration names or a status indicating failure
-	 * @throws I2b2ExportServiceException if any errors occur while handling the request
 	 */
 	@POST
 	@Path("/getAll")
-	public Response getConfigurationsByUser(I2b2AuthMetadata authMetadata) throws I2b2ExportServiceException {
+	public Response getConfigurationsByUser(I2b2AuthMetadata authMetadata) {
 		LOGGER.info("Received request to retrieve all configurations for user: {}", authMetadata.getUsername());
 
 		try {
@@ -202,7 +201,7 @@ public class OutputConfigurationResource {
 			}
 		} catch (I2b2XmlException e) {
 			logError(e);
-			throw new I2b2ExportServiceException(e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -213,12 +212,10 @@ public class OutputConfigurationResource {
                 operation, including the configuration ID and the
                 i2b2 authentication tokens
 	 * @return a status code indicating success or failure
-	 * @throws I2b2ExportServiceException if any errors occur while handling the request
-	 *
 	 */
 	@POST
 	@Path("/delete")
-	public Response removeConfiguration(DeleteRequest request) throws I2b2ExportServiceException {
+	public Response removeConfiguration(DeleteRequest request) {
 		LOGGER.info("Received request to delete configuration with id: {}", request.getOutputConfigurationId());
 
 		try {
@@ -245,7 +242,7 @@ public class OutputConfigurationResource {
 			}
 		} catch (I2b2XmlException e) {
 			logError(e);
-			throw new I2b2ExportServiceException(e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
