@@ -37,7 +37,7 @@ Perform the following steps:
 2) Get a JDBC driver for your database and put it the liquibase lib directory.
 3) Run the following:
 ```
-java -jar liquibase.jar \
+./liquibase \
       --driver=JDBC_DRIVER_CLASS_NAME \
       --classpath=/path/to/jdbcdriver.jar:/path/to/i2b2-export-service.war \
       --changeLogFile=dbmigration/changelog-master.xml \
