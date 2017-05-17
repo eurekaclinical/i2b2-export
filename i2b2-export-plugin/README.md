@@ -7,14 +7,16 @@ from i2b2 to CSV files. Users can configure the format of the CSV file using the
 plugin's interface, as well as save, load, and delete configurations. More
 information on doing so is available in the plugin's Help tab. The plugin
 communicates with i2b2's cells via the i2b2 Export Service, a RESTful
-web service that routes requests from the plugin to the appropriate i2b2 cell,
-as well as providing authentication.
+web service that routes requests from the plugin to the appropriate i2b2 cell
+and provides authentication.
 
-## Version 1.0 development series
-This plugin was originally developed as part of the [i2b2-eureka](https://github.com/eurekaclinical/i2b2-eureka) project. We have split that project's modules into separate projects, including the send patient set plugin.
+## Version 1.1 development series
+* Update dependencies
+* 
 
 ## Version history
-No final releases yet
+### Version 1.0
+Supports specifying rows and columns, saving and loading output templates, and exporting data.
 
 ## Requirements
 * [i2b2](http://www.i2b2.org) version 1.7
