@@ -10,8 +10,8 @@
 
 	<name>i2b2 Export</name>
 	<description>An i2b2 plugin and Java web service for exporting patient data to CSV files. 
-		This project includes both the web client plugin that the user interacts with and the Java 
-		service that manages users' export configurations and communicates with i2b2 to retrieve data.
+This project includes both the web client plugin that the user interacts with and the Java 
+service that manages users' export configurations and communicates with i2b2 to retrieve data.
 	</description>
 	<inceptionYear>2013</inceptionYear>
 	
@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>org.eurekaclinical</groupId>
 		<artifactId>eurekaclinical-parent-standard-deps</artifactId>
-		<version>1-Alpha-5</version>
+		<version>1</version>
 	</parent>
 
 	<modules>
@@ -46,7 +46,7 @@
 			<dependency>
 				<groupId>org.eurekaclinical</groupId>
 				<artifactId>javautil</artifactId>
-				<version>3.0-Alpha-7</version>
+				<version>3.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
