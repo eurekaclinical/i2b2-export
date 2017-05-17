@@ -5,7 +5,7 @@
 It is a module of the [I2b2 Export](https://github.com/eurekaclinical/i2b2-export) project that builds a distribution archive containing the i2b2 plugin and web service packages.
 
 ## Version 1.1 development series
-Latest release: [![Latest release](https://maven-badges.herokuapp.com/maven-central/org.eurekaclinical/i2b2-export-service/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.eurekaclinical/i2b2-export-service)
+Latest release: [![Latest release](https://maven-badges.herokuapp.com/maven-central/org.eurekaclinical/i2b2-export-package/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.eurekaclinical/i2b2-export-package)
 
 The 1.1 development series will migrate this package to the Eureka! Clinical build system.
 
@@ -18,7 +18,7 @@ Initial release.
 * [Maven 3.2.5 or greater](https://maven.apache.org)
 
 ## Building it
-Refer to the build instructions for the parent project. You can build this project separately by going to the parent project's root directory, and running `mvn clean install -pl i2b2-export-service` or `mvn install -pl i2b2-export-package`.
+Follow the build instructions for the parent project. You can build this project separately by going to the parent project's root directory, and running `mvn clean install -pl i2b2-export-package` or `mvn install -pl i2b2-export-package`.
 
 ## Installation
 See the README.md files for the i2b2 plugin and web services packages for installation instructions.

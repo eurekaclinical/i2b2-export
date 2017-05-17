@@ -19,17 +19,30 @@ Initial release.
 
 ## Runtime requirements
 * [Oracle Java JRE 8](http://www.oracle.com/technetwork/java/javase/overview/index.html)
-* [Tomcat 7](https://tomcat.apache.org) (for `i2b2-export-service`)
+* [Tomcat 7](https://tomcat.apache.org)
 * [i2b2 version 1.7](http://www.i2b2.org)
 
 ## Building it
-Refer to the build instructions for the parent project. You can build this project separately by going to the parent project's root directory, and running `mvn clean install -pl i2b2-export-service` or `mvn install -pl i2b2-export-service`.
+Follow the build instructions for the parent project. You can build this project separately by going to the parent project's root directory, and running `mvn clean install -pl i2b2-export-service` or `mvn install -pl i2b2-export-service`.
 
 ## Installation
 ### Database schema creation
-A [Liquibase](http://www.liquibase.org) changelog is provided in `src/main/resources/dbmigration/` for creating the schema and objects. Liquibase 3.3 or greater is required.
+A [Liquibase](http://www.liquibase.org) changelog is provided in `src/main/resources/dbmigration/` for creating the schema and objects. Liquibase 3.3 or greater is required. A suitable copy of Liquibase is provided in the `i2b2-export-package` module.
+Perform the following steps:
+1) Get a JDBC driver for your database and put it the liquibase lib directory.
+2) Run the following:
+```
+java -jar liquibase.jar \
+      --driver=JDBC_DRIVER_CLASS_NAME \
+      --classpath=/path/to/jdbcdriver.jar:/path/to/i2b2-export-service.war \
+      --changeLogFile=dbmigration/changelog-master.xml \
+      --url="JDBC_CONNECTION_URL" \
+      --username=DB_USER \
+      --password=DB_PASS \
+      update
+```
 
-Once the schema and objects are created, add the following Resource to Tomcat's `context.xml` file:
+Once the schema and objects are created, add the following Resource tag to Tomcat's `context.xml` file:
 ```
 <Context>
 ...
