@@ -21,6 +21,10 @@ Initial release.
 * [Oracle Java JRE 8](http://www.oracle.com/technetwork/java/javase/overview/index.html)
 * [Tomcat 7](https://tomcat.apache.org)
 * [i2b2 version 1.7](http://www.i2b2.org)
+* One of the following relational databases:
+  * [Oracle](https://www.oracle.com/database/index.html) 11g or greater
+  * [PostgreSQL](https://www.postgresql.org) 9.1 or greater
+  * [H2](http://h2database.com) 1.4.193 or greater (for testing)
 
 ## Building it
 Follow the build instructions for the parent project. You can build this project separately by going to the parent project's root directory, and running `mvn clean install -pl i2b2-export-service` or `mvn install -pl i2b2-export-service`.
@@ -29,8 +33,9 @@ Follow the build instructions for the parent project. You can build this project
 ### Database schema creation
 A [Liquibase](http://www.liquibase.org) changelog is provided in `src/main/resources/dbmigration/` for creating the schema and objects. Liquibase 3.3 or greater is required. A suitable copy of Liquibase is provided in the `i2b2-export-package` module.
 Perform the following steps:
-1) Get a JDBC driver for your database and put it the liquibase lib directory.
-2) Run the following:
+1) Create a schema for i2b2-export-service in your database.
+2) Get a JDBC driver for your database and put it the liquibase lib directory.
+3) Run the following:
 ```
 java -jar liquibase.jar \
       --driver=JDBC_DRIVER_CLASS_NAME \
@@ -41,8 +46,7 @@ java -jar liquibase.jar \
       --password=DB_PASS \
       update
 ```
-
-Once the schema and objects are created, add the following Resource tag to Tomcat's `context.xml` file:
+4) Add the following Resource tag to Tomcat's `context.xml` file:
 ```
 <Context>
 ...
@@ -52,11 +56,14 @@ Once the schema and objects are created, add the following Resource tag to Tomca
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
             url="JDBC_CONNECTION_URL"
             username="DB_USER" password="DB_PASS"
-            initialSize="1" maxActive="3" maxIdle="3" minIdle="1"
-            maxWait="-1"/>
+            initialSize="3" maxActive="20" maxIdle="3" minIdle="1"
+            maxWait="-1" validationQuery="SELECT 1" testOnBorrow="true"/>
 ...
 </Context>
 ```
+
+The validation query above is suitable for PostgreSQL. For Oracle and H2, use
+`SELECT 1 FROM DUAL`.
 
 ### Configuration file creation
 There are two application properties that must be configured in order for the
@@ -76,6 +83,8 @@ i2b2ServiceHostUrl - The URL where the core i2b2 services are hosted. The i2b2
 These properties are specified in a standard Java properties file. By default,
 the application looks for the file in /etc/i2b2export/i2b2export.properties.
 This location can be overridden using the Java system property `i2b2export.propertiesFile`.
+
+A Tomcat restart is required to detect any changes to the configuration file.
 
 ### WAR installation
 Stop tomcat, copy the warfile into the tomcat webapps directory, and start tomcat.
