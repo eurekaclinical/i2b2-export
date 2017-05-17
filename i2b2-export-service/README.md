@@ -87,10 +87,10 @@ This location can be overridden using the Java system property `i2b2export.prope
 A Tomcat restart is required to detect any changes to the configuration file.
 
 ### WAR installation
-1) Stop Tomcat
-2) Remove any old copies of the unpacked war from Tomcat's webapps directory
-3) Copy the warfile into the tomcat webapps directory
-4) Start tomcat
+1) Stop Tomcat.
+2) Remove any old copies of the unpacked war from Tomcat's webapps directory.
+3) Copy the warfile into the tomcat webapps directory.
+4) Start Tomcat.
 
 ## Getting help
 Feel free to contact us at help@eurekaclinical.org.
