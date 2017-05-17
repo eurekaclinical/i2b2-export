@@ -29,7 +29,7 @@ Initial release.
 ## Building it
 The project uses the maven build tool. Typically, you build it by invoking `mvn clean install` at the command line. For simple file changes, not additions or deletions, you can usually use `mvn install`. See https://github.com/eurekaclinical/dev-wiki/wiki/Building-Eureka!-Clinical-projects for more details.
 
-## Installing it
+## Installation
 See the READMEs for the `i2b2-export-plugin` and `i2b2-export-service` modules for installation instructions.
 
 ## Getting help
