@@ -38,10 +38,9 @@ the last value of the 'category' array to be `$CUSTOM_PLUGIN_DIR`.
 
 4) Inside `$CUSTOM_PLUGIN_DIR`, create a new directory, `PatientDataExport`.
 
-5) Copy the entire directory and its contents into the PatientDataExport directory
-created in step 4.
+5) Copy the entire directory and its contents into the `PatientDataExport` directory.
 
-6) IMPORTANT: In PatientDataExport_ctrlr.js, change the value of `i2b2.PatientDataExort.SERVICE_URL`
+6) In `PatientDataExport_ctrlr.js`, change the value of `i2b2.PatientDataExort.SERVICE_URL`
 variable to the location of the i2b2 Export Service's REST methods that the
 plugin needs to call.
 
@@ -57,8 +56,6 @@ plugins. Add the following JavaScript map to the `i2b2.hive.tempCellsList` array
 where `$CUSTOM_PLUGIN_DIR` is the name of the directory you created in step 2
 (where the plugin was copied to). Where you place this block determines the
 order in which the plugin is displayed in the i2b2 plugin list.
-
-This completes the installation of the i2b2 Export plugin.
 
 For more information about i2b2 plugins, see:
 https://community.i2b2.org/wiki/display/webclient/Web+Client+Plug-in+Developers+Guide.
