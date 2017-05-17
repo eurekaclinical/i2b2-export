@@ -31,7 +31,7 @@ Follow the build instructions for the parent project. You can build this project
 
 ## Installation
 ### Database schema creation
-A [Liquibase](http://www.liquibase.org) changelog is provided in `src/main/resources/dbmigration/` for creating the schema and objects. [Liquibase 3.3 or greater](http://www.liquibase.org/download/index.html) is required. A suitable copy of Liquibase is provided in the `i2b2-export-package` module.
+A [Liquibase](http://www.liquibase.org) changelog is provided in `src/main/resources/dbmigration/` for creating the schema's objects. [Liquibase 3.3 or greater](http://www.liquibase.org/download/index.html) is required. A suitable copy of Liquibase is provided in the `i2b2-export-package` module.
 Perform the following steps:
 1) Create a schema for i2b2-export-service in your database.
 2) Get a JDBC driver for your database and put it the liquibase lib directory.
