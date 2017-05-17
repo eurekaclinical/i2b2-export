@@ -18,7 +18,6 @@ No final releases yet
 
 ## Requirements
 * [i2b2](http://www.i2b2.org) version 1.7
-* The [Eureka! Clinical i2b2 Integration webapp](https://github.com/euerkaclinical/eurekaclinical-i2b2-integration-webapp) running on the same server.
   
 ## Installation
 These instructions assume your i2b2 installation is rooted at /var/www/html/webclient.
