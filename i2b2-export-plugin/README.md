@@ -12,7 +12,8 @@ and provides authentication.
 
 ## Version 1.1 development series
 * Update dependencies
-* 
+* Port to https://github.com/eurekaclinical/i2b2-client
+* Address some modifier bugs
 
 ## Version history
 ### Version 1.0
